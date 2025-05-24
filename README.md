@@ -22,12 +22,6 @@ You need SQL Server and SQL Server Management Studio to get your connection stri
   "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=PawnVaultDB;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;Multi
 ```
 
-### 4. Apply Database Migrations (Entity Framework Core)
-This project uses Entity Framework Core for database access. To set up the database locally, apply the migrations using the following command:
-```bash
-dotnet ef database update
-```
-
 📌 Prerequisite:
 
 SQL Server , SQL Server Management Studio 
