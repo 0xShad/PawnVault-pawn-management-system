@@ -5,41 +5,32 @@ Follow the instructions below to set up the project on your local machine.
 ## 🚀 Getting Started
 
 ### 1. Clone the Repository
-
+open git bash mkdir in your chosen location 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/0xShad/PawnVault-pawn-management-system.git
+cd PawnVault-pawn-management-system
 ```
-### 2. Open .sln file
-Restore the dependencies
+### 2. Restore the dependencies
+On your git bash, cd where the clone folder located and run
 ```bash
 dotnet restore
 ```
 ### 3. Set Up Local Configuration
-
-If the project requires secrets (e.g., database connection strings, API keys), set them up using User Secrets:
-
+You need SQL Server and SQL Server Management Studio to get your connection strings.
+-You may need to change the connection string on the appsettings.json 
 ```bash
-dotnet user-secrets set "ConnectionStrings:DefaultConnection" "YourConnectionStringHere"
+  "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=PawnVaultDB;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;Multi
 ```
-Or edit appsettings.Development.json if that's being used.
 
 ### 4. Apply Database Migrations (Entity Framework Core)
-
 This project uses Entity Framework Core for database access. To set up the database locally, apply the migrations using the following command:
-
 ```bash
 dotnet ef database update
 ```
 
 📌 Prerequisite:
 
-You need the EF Core CLI installed globally to use the dotnet ef command.
-
-Install it using:
-```bash
-dotnet tool install --global dotnet-ef
-```
+SQL Server , SQL Server Management Studio 
 
 ⚠️ You only need to do this once on your machine.
 
