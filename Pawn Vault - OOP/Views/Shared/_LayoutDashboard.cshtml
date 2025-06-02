@@ -10,7 +10,7 @@
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 bg-[#003366] text-white flex flex-col shadow-lg rounded-tr-3xl rounded-br-3xl">
+        <aside class="w-64 h-screen fixed top-0 left-0 bg-[#003366] text-white flex flex-col shadow-lg rounded-tr-3xl rounded-br-3xl z-30">
             <div class="flex items-center h-16 px-6 border-b border-gray-800">
                 <a href="~/" class="flex items-center space-x-3">
                     <img src="~/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="h-8 w-8 opacity-75 shadow rounded-full" />
@@ -51,15 +51,8 @@
             </nav>
         </aside>
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
-            <!-- Header -->
-            <nav class="flex items-center h-16 px-6 bg-white shadow border-b border-gray-200">
-                <div class="flex items-center space-x-4">
-                    <img src="~/assets/img/user2-160x160.jpg" class="h-8 w-8 rounded-full shadow" alt="User Image" />
-                    <span class="hidden md:inline text-gray-700">@(User.Identity.IsAuthenticated ? User.Identity.Name : "Guest")</span>
-                </div>
-            </nav>
-            <main class="flex-1 p-6 bg-gray-100">
+        <div class="flex-1 flex flex-col ml-64">
+            <main class="flex-1 p-2 bg-white">
                 @RenderBody()
             </main>
             <footer class="bg-white text-gray-500 text-center py-4 border-t border-gray-200">
