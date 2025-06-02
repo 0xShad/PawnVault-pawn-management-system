@@ -765,16 +765,6 @@
       border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
     }
   }
-  .divide-gray-100 {
-    :where(& > :not(:last-child)) {
-      border-color: var(--color-gray-100);
-    }
-  }
-  .divide-gray-200 {
-    :where(& > :not(:last-child)) {
-      border-color: var(--color-gray-200);
-    }
-  }
   .truncate {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1154,14 +1144,8 @@
   .text-gray-700 {
     color: var(--color-gray-700);
   }
-  .text-gray-900 {
-    color: var(--color-gray-900);
-  }
-  .text-green-500 {
-    color: var(--color-green-500);
-  }
-  .text-green-700 {
-    color: var(--color-green-700);
+  .text-purple-300 {
+    color: var(--color-purple-300);
   }
   .text-red-300 {
     color: var(--color-red-300);
