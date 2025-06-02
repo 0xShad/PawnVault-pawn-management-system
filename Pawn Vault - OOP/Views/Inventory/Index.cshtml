@@ -1,9 +1,11 @@
 ﻿<div class="px-6 py-4 min-h-screen">
     <div class="flex items-center justify-between mb-1">
         <h1 class="text-3xl font-bold text-gray-900">Inventory</h1>
-        <button class="flex items-center gap-2 bg-[#0a1629] hover:bg-[#003366] text-white font-semibold px-5 py-2 rounded-lg shadow transition">
-            <span class="text-xl leading-none">+</span> Add Item
-        </button>
+        @if (User.IsInRole("Admin")) {
+            <button class="flex items-center gap-2 bg-[#0a1629] hover:bg-[#003366] text-white font-semibold px-5 py-2 rounded-lg shadow transition">
+                <span class="text-xl leading-none">+</span> Add Item
+            </button>
+        }
     </div>
     <p class="text-gray-500 mb-8">Manage your vault items and their status.</p>
 
