@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transactions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-gray-100 text-[#002B5B] font-poppins m-0">
+  <div class="p-5">
+    <!-- Header -->
+    <div class="flex justify-between items-start mb-5 relative">
+      <h2 class="flex items-center text-2xl font-bold mt-11 pt-5">
+        <span class="w-1 h-7 bg-[#D4AF37] mr-2"></span>Transactions
+      </h2>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2 mt-2 relative z-20">
+        <button class="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-lg bg-[#002B5B] text-gray-100 hover:bg-[#003c7c] transition">
+          <i class="fas fa-plus"></i> New Loan
+        </button>
+        <button class="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-lg border-[3px] border-[#D4AF37] bg-white text-[#002B5B] hover:bg-[#fef9e7] transition mr-7">
+          <i class="fas fa-user-plus"></i> Register
+        </button>
+        <!-- Profile Picture -->
+        <div class="w-9 h-9 rounded-full overflow-hidden border-2 border-[#002B5B] flex items-center justify-center mr-5">
+          <img src="profile.png" alt="profile" class="w-full h-full object-cover"/>
+        </div>
+        <!-- Icons -->
+        <div class="absolute top-[66px] right-0 flex gap-3 text-lg text-[#002B5B] cursor-pointer z-10 mr-12">
+          <i class="fas fa-search"></i>
+          <i class="fas fa-filter"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-transparent py-2 mt-4">
+      <table class="w-full border-separate border-spacing-y-3 mt-4">
+        <thead>
+          <tr>
+            <th class="text-left font-bold p-2 bg-gray-100 text-[#002B5B]">Lorem ipsum</th>
+            <th class="text-left font-bold p-2 bg-gray-100 text-[#002B5B]">Lorem ipsum</th>
+            <th class="text-left font-bold p-2 bg-gray-100 text-[#002B5B]">Lorem ipsum</th>
+            <th class="text-left font-bold p-2 bg-gray-100 text-[#002B5B]">Lorem ipsum</th>
+            <th class="text-left font-bold p-2 bg-gray-100 text-[#002B5B]">Lorem ipsum</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white rounded-xl shadow-md hover:bg-[#f1f6ff] transition">
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+          </tr>
+          <tr class="bg-white rounded-xl shadow-md hover:bg-[#f1f6ff] transition">
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+          </tr>
+          <tr class="bg-white rounded-xl shadow-md hover:bg-[#f1f6ff] transition">
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+          </tr>
+          <tr class="bg-white rounded-xl shadow-md hover:bg-[#f1f6ff] transition">
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+            <td class="p-3 text-sm rounded-lg">Lorem ipsum</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
