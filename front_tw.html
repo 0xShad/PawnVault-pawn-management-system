@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pawn Vault</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              poppins: ['Poppins', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <!-- body -->
+  <body class="h-screen bg-gradient-to-r from-[#f5f7fa] to-[#c3cfe2] flex items-center justify-center font-poppins">
+    <div class="flex items-center justify-center gap-12 p-10 bg-gradient-to-r from-[#f5f7fa] to-[#c3cfe2] rounded-xl w-[90vw] max-w-[2000px]">
+      <div class="flex-shrink-0">
+        <img
+          src="pawn.png" !--
+          alt="Pawn Icon"
+          class="w-[250px] h-auto drop-shadow-[0_0_20px_rgba(156,155,150,1)]"
+        />
+      </div>
+      <div class="flex flex-col items-start gap-5">
+        <h1 class="text-3xl pl-16 font-bold">
+          <span class="text-[#002B5B] font-bold">Pawn</span>
+          <span class="text-[#C89B3C] font-bold">Vault</span>
+        </h1>
+        <button
+          onclick="window.location.href='signin.html'"
+          class="bg-[#002B5B] text-white rounded-full px-8 py-3 text-base hover:bg-[#001f40] w-[300px] transition"
+        >
+          Sign In
+        </button>
+        <button
+          class="border-2 border-[#C89B3C] text-[#C89B3C] rounded-full px-8 py-3 text-base hover:bg-[#C89B3C] hover:text-white w-[300px] transition bg-transparent"
+        >
+          Sign Up
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
