@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - PawnVault</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="~/css/output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-[#003366] text-white flex flex-col shadow-lg rounded-tr-3xl rounded-br-3xl">
+            <div class="flex items-center h-16 px-6 border-b border-gray-800">
+                <a href="~/" class="flex items-center space-x-3">
+                    <img src="~/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="h-8 w-8 opacity-75 shadow rounded-full" />
+                    <span class="text-xl font-light">PawnVault</span>
+                </a>
+            </div>
+            <nav class="flex-1 pl-4 py-6 flex flex-col">
+                <ul class="space-y-4 flex-1">
+                    <li>
+                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="Home" asp-action="Index">
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="Transaction" asp-action="Index">
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="LoanManagement" asp-action="Index">
+                            <span>Loan Management</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="Customer" asp-action="Index">
+                            <span>Customer Profiles</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="Inventory" asp-action="Index">
+                            <span>Inventory Tracking</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="mt-4 mb-2">
+                    <partial name="_LoginPartial" />
+                </div>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <nav class="flex items-center h-16 px-6 bg-white shadow border-b border-gray-200">
+                <div class="flex items-center space-x-4">
+                    <img src="~/assets/img/user2-160x160.jpg" class="h-8 w-8 rounded-full shadow" alt="User Image" />
+                    <span class="hidden md:inline text-gray-700">@(User.Identity.IsAuthenticated ? User.Identity.Name : "Guest")</span>
+                </div>
+            </nav>
+            <main class="flex-1 p-6 bg-gray-100">
+                @RenderBody()
+            </main>
+            <footer class="bg-white text-gray-500 text-center py-4 border-t border-gray-200">
+                <strong>
+                    &copy; 2014-2024&nbsp;<a href="~/" class="text-blue-600 hover:underline">PawnVault</a>.
+                </strong> All rights reserved.
+            </footer>
+        </div>
+    </div>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
