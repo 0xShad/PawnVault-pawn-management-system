@@ -1,0 +1,147 @@
+<!--Staff Loan Management Page-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loans Items</title>
+
+    <!-- Load Poppins font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .scrollbar-left {
+            direction: rtl;
+        }
+
+            .scrollbar-left > * {
+                direction: ltr;
+            }
+
+            .scrollbar-left::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            .scrollbar-left::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+
+            .scrollbar-left::-webkit-scrollbar-thumb {
+                background-color: #d4af37;
+                border-radius: 6px;
+            }
+
+        .scrollbar-left {
+            scrollbar-width: thin;
+            scrollbar-color: #d4af37 #f1f1f1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-5">
+
+    <div class="max-w-8xl mx-auto bg-white p-6 rounded-lg shadow-md h-500">
+
+        <!-- Header Buttons -->
+        <div class="flex justify-end space-x-3">
+            <button class="flex items-center gap-2 bg-blue-900 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                <i class="fas fa-plus"></i> New Loan
+            </button>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-2xl font-semibold text-blue-900 mt-8">Loans Items</h2>
+
+        <!-- Search and Filter -->
+        <div class="flex justify-end space-x-5 mb-2 text-blue-900">
+            <i class="fas fa-search cursor-pointer"></i>
+            <i class="fas fa-filter cursor-pointer"></i>
+        </div>
+
+        <!-- Scrollable Table -->
+        <div class="scrollbar-left max-h-72 overflow-y-auto border rounded-md">
+            <table class="w-full text-sm text-left border-separate border-spacing-2">
+                <thead>
+                    <tr class="bg-white text-gray-900 font-semibold">
+                        <th class="p-4">Lorem ipsum</th>
+                        <th class="p-4">Lorem ipsum</th>
+                        <th class="p-4">Lorem ipsum</th>
+                        <th class="p-4">Lorem ipsum</th>
+                        <th class="p-4">Lorem ipsum</th>
+                        <th class="p-4">Lorem ipsum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-gray-100 border-t border-gray-300">
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                    </tr>
+                    <tr class="bg-gray-100 border-t border-gray-300">
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                    </tr>
+                    <tr class="bg-gray-100 border-t border-gray-300">
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                    </tr>
+                    <tr class="bg-gray-100 border-t border-gray-300">
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                    </tr>
+                    <tr class="bg-gray-100 border-t border-gray-300">
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                    </tr>
+                    <tr class="bg-gray-100 border-t border-gray-300">
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                    </tr>
+                    <tr class="bg-gray-100 border-t border-gray-300">
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                        <td class="p-3">Lorem ipsum</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>
