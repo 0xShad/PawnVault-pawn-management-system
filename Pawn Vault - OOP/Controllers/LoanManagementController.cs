@@ -8,5 +8,10 @@ namespace Pawn_Vault___OOP.Controllers
         {
             return View();
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

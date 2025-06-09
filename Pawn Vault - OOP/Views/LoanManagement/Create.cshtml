@@ -1,0 +1,37 @@
+@* Loan Creation Page *@
+<div class="flex items-center mb-1 mt-2">
+    <div class="w-1.5 h-6 bg-yellow-500 mr-2"></div>
+    <h1 class="text-2xl font-bold text-black">Add New Loan</h1>
+</div>
+<p class="text-gray-500 mb-6 ml-4">Fill out the form to create a new pawn loan.</p>
+
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <form method="post">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2" for="CustomerName">Customer Name</label>
+            <input class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" type="text" id="CustomerName" name="CustomerName" required />
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2" for="ItemDescription">Item Description</label>
+            <input class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" type="text" id="ItemDescription" name="ItemDescription" required />
+        </div>
+        <div class="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2" for="LoanAmount">Loan Amount</label>
+                <input class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" type="number" min="0" step="0.01" id="LoanAmount" name="LoanAmount" required />
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2" for="InterestRate">Interest Rate (%)</label>
+                <input class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" type="number" min="0" step="0.01" id="InterestRate" name="InterestRate" required />
+            </div>
+        </div>
+        <div class="mb-6">
+            <label class="block text-gray-700 font-semibold mb-2" for="DueDate">Due Date</label>
+            <input class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" type="date" id="DueDate" name="DueDate" required />
+        </div>
+        <div class="flex justify-between items-center">
+            <a href="/LoanManagement" class="text-blue-900 hover:underline font-semibold">&larr; Back</a>
+            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-lg shadow transition">Create Loan</button>
+        </div>
+    </form>
+</div> 
