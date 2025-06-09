@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pawn_Vault___OOP.Data;
+using Pawn_Vault___OOP.Interfaces;
+using Pawn_Vault___OOP.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
