@@ -49,7 +49,7 @@
                 </svg>
             </button>
         </div>
-        <div class="overflow-x-auto">
+        <div>
             <table class="min-w-full divide-y divide-gray-200">
                 <thead>
                     <tr>
@@ -76,16 +76,17 @@
                         <td class="px-4 py-3"><span class="inline-block px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-700">on loan</span></td>
                         <td class="px-4 py-3">2024-01-15</td>
                         <td class="px-4 py-3 relative">
-                            <div class="inline-block text-left">
-                                <button type="button" class="inline-flex justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none" id="menu-button-1" aria-expanded="true" aria-haspopup="true">
-                                    <svg class="w-5 h-5 text-[#003366]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/></svg>
-                                </button>
-                                <!-- Dropdown menu -->
-                                <div class="hidden absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button-1" tabindex="-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">View</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">Edit</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem" tabindex="-1">Delete</a>
-                                </div>
+                            <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-I001')">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="6" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="18" r="1" fill="currentColor"/>
+                                </svg>
+                            </button>
+                            <div id="menu-I001" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
+                                <a href="/Inventory/View/I001" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+                                <a href="/Inventory/Edit/I001" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                                <button onclick="deleteItem('I001')" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -101,15 +102,17 @@
                         <td class="px-4 py-3"><span class="inline-block px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">available</span></td>
                         <td class="px-4 py-3">2024-02-10</td>
                         <td class="px-4 py-3 relative">
-                            <div class="inline-block text-left">
-                                <button type="button" class="inline-flex justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none" id="menu-button-2" aria-expanded="true" aria-haspopup="true">
-                                    <svg class="w-5 h-5 text-[#003366]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/></svg>
-                                </button>
-                                <div class="hidden absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button-2" tabindex="-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">View</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">Edit</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem" tabindex="-1">Delete</a>
-                                </div>
+                            <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-I002')">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="6" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="18" r="1" fill="currentColor"/>
+                                </svg>
+                            </button>
+                            <div id="menu-I002" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
+                                <a href="/Inventory/View/I002" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+                                <a href="/Inventory/Edit/I002" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                                <button onclick="deleteItem('I002')" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -125,15 +128,17 @@
                         <td class="px-4 py-3"><span class="inline-block px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-700">on loan</span></td>
                         <td class="px-4 py-3">2024-01-28</td>
                         <td class="px-4 py-3 relative">
-                            <div class="inline-block text-left">
-                                <button type="button" class="inline-flex justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none" id="menu-button-3" aria-expanded="true" aria-haspopup="true">
-                                    <svg class="w-5 h-5 text-[#003366]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/></svg>
-                                </button>
-                                <div class="hidden absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button-3" tabindex="-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">View</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">Edit</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem" tabindex="-1">Delete</a>
-                                </div>
+                            <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-I003')">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="6" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="18" r="1" fill="currentColor"/>
+                                </svg>
+                            </button>
+                            <div id="menu-I003" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
+                                <a href="/Inventory/View/I003" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+                                <a href="/Inventory/Edit/I003" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                                <button onclick="deleteItem('I003')" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -149,15 +154,17 @@
                         <td class="px-4 py-3"><span class="inline-block px-2 py-1 text-xs rounded-full bg-gray-200 text-gray-700">sold</span></td>
                         <td class="px-4 py-3">2023-12-15</td>
                         <td class="px-4 py-3 relative">
-                            <div class="inline-block text-left">
-                                <button type="button" class="inline-flex justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none" id="menu-button-4" aria-expanded="true" aria-haspopup="true">
-                                    <svg class="w-5 h-5 text-[#003366]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/></svg>
-                                </button>
-                                <div class="hidden absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button-4" tabindex="-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">View</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">Edit</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem" tabindex="-1">Delete</a>
-                                </div>
+                            <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-I004')">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="6" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="18" r="1" fill="currentColor"/>
+                                </svg>
+                            </button>
+                            <div id="menu-I004" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
+                                <a href="/Inventory/View/I004" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+                                <a href="/Inventory/Edit/I004" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                                <button onclick="deleteItem('I004')" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -166,3 +173,39 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function toggleMenu(menuId) {
+            const menu = document.getElementById(menuId);
+            const allMenus = document.querySelectorAll('[id^="menu-"]');
+            
+            // Close all other menus
+            allMenus.forEach(m => {
+                if (m.id !== menuId) {
+                    m.classList.add('hidden');
+                }
+            });
+            
+            // Toggle the clicked menu
+            menu.classList.toggle('hidden');
+        }
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function(event) {
+            const menus = document.querySelectorAll('[id^="menu-"]');
+            const isClickInsideMenu = Array.from(menus).some(menu => menu.contains(event.target));
+            const isClickOnButton = event.target.closest('button');
+            
+            if (!isClickInsideMenu && !isClickOnButton) {
+                menus.forEach(menu => menu.classList.add('hidden'));
+            }
+        });
+
+        function deleteItem(itemId) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                console.log('Deleting item:', itemId);
+            }
+        }
+    </script>
+}
