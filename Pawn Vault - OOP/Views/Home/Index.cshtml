@@ -7,12 +7,163 @@
 	ViewData["Title"] = "Home Page";
 }
 
-@if (User.IsInRole("Admin"))
-{
-	<div>
-		<h1 class="text-xl font-bold text-red-300">Admin panel</h1>
+<div class="px-6 py-4 min-h-screen">
+	<!-- Welcome Section -->
+	<div class="mb-8">
+		<h1 class="text-3xl font-bold text-gray-900">Welcome back, @User.Identity?.Name!</h1>
+		<p class="text-gray-500 mt-2">Here's what's happening in your pawn shop today.</p>
 	</div>
-} else
-{
-	<h1>Hi Staff</h1>
-}
+
+	<!-- Quick Stats -->
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+		<div class="bg-white rounded-xl shadow p-6">
+			<div class="flex items-center justify-between">
+				<div>
+					<p class="text-sm text-gray-500">Today's Revenue</p>
+					<h3 class="text-2xl font-semibold text-gray-900 mt-1">$2,450</h3>
+					<p class="text-sm text-green-600 mt-1">+12.5% from yesterday</p>
+				</div>
+				<div class="p-3 bg-green-100 rounded-lg">
+					<i class="hgi hgi-stroke hgi-money-add-01 text-green-600 text-2xl"></i>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-white rounded-xl shadow p-6">
+			<div class="flex items-center justify-between">
+				<div>
+					<p class="text-sm text-gray-500">Active Loans</p>
+					<h3 class="text-2xl font-semibold text-gray-900 mt-1">24</h3>
+					<p class="text-sm text-blue-600 mt-1">3 new this week</p>
+				</div>
+				<div class="p-3 bg-blue-100 rounded-lg">
+					<i class="hgi hgi-stroke hgi-save-money-dollar text-blue-600 text-2xl"></i>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-white rounded-xl shadow p-6">
+			<div class="flex items-center justify-between">
+				<div>
+					<p class="text-sm text-gray-500">Inventory Items</p>
+					<h3 class="text-2xl font-semibold text-gray-900 mt-1">156</h3>
+					<p class="text-sm text-purple-600 mt-1">8 new this month</p>
+				</div>
+				<div class="p-3 bg-purple-100 rounded-lg">
+					<i class="hgi hgi-stroke hgi-database-01 text-purple-600 text-2xl"></i>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-white rounded-xl shadow p-6">
+			<div class="flex items-center justify-between">
+				<div>
+					<p class="text-sm text-gray-500">Overdue Loans</p>
+					<h3 class="text-2xl font-semibold text-gray-900 mt-1">5</h3>
+					<p class="text-sm text-red-600 mt-1">2 need attention</p>
+				</div>
+				<div class="p-3 bg-red-100 rounded-lg">
+					<i class="hgi hgi-stroke hgi-square-lock-02 text-red-600 text-2xl"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Recent Activity and Quick Actions -->
+	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+		<!-- Recent Transactions -->
+		<div class="bg-white rounded-xl shadow p-6">
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-xl font-semibold text-gray-900">Recent Transactions</h2>
+				<a href="/Transaction" class="text-sm text-blue-600 hover:text-blue-800">View All</a>
+			</div>
+			<div class="space-y-4">
+				<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+					<div class="flex items-center gap-3">
+						<div class="p-2 bg-green-100 rounded-lg">
+							<i class="hgi hgi-stroke hgi-money-bag text-green-600"></i>
+						</div>
+						<div>
+							<p class="font-medium text-gray-900">Loan Payment</p>
+							<p class="text-sm text-gray-500">John Doe - Gold Ring</p>
+						</div>
+					</div>
+					<div class="text-right">
+						<p class="font-medium text-gray-900">$500</p>
+						<p class="text-sm text-gray-500">2 hours ago</p>
+					</div>
+				</div>
+
+				<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+					<div class="flex items-center gap-3">
+						<div class="p-2 bg-blue-100 rounded-lg">
+							<i class="hgi hgi-stroke hgi-save-money-dollar text-blue-600"></i>
+						</div>
+						<div>
+							<p class="font-medium text-gray-900">New Loan</p>
+							<p class="text-sm text-gray-500">Jane Smith - Diamond Necklace</p>
+						</div>
+					</div>
+					<div class="text-right">
+						<p class="font-medium text-gray-900">$750</p>
+						<p class="text-sm text-gray-500">4 hours ago</p>
+					</div>
+				</div>
+
+				<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+					<div class="flex items-center gap-3">
+						<div class="p-2 bg-purple-100 rounded-lg">
+							<i class="hgi hgi-stroke hgi-shopping-bag text-purple-600"></i>
+						</div>
+						<div>
+							<p class="font-medium text-gray-900">Item Purchase</p>
+							<p class="text-sm text-gray-500">Vintage Watch - Bob Johnson</p>
+						</div>
+					</div>
+					<div class="text-right">
+						<p class="font-medium text-gray-900">$300</p>
+						<p class="text-sm text-gray-500">Yesterday</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Quick Actions -->
+		<div class="bg-white rounded-xl shadow p-6">
+			<h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+			<div class="grid grid-cols-2 gap-4">
+				<a href="/LoanManagement/Create" class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+					<div class="p-3 bg-blue-100 rounded-lg mb-2">
+						<i class="hgi hgi-stroke hgi-save-money-dollar text-blue-600 text-2xl"></i>
+					</div>
+					<span class="text-sm font-medium text-gray-900">New Loan</span>
+				</a>
+
+				<a href="/Inventory/Create" class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+					<div class="p-3 bg-purple-100 rounded-lg mb-2">
+						<i class="hgi hgi-stroke hgi-shopping-bag-01 text-purple-600 text-2xl"></i>
+					</div>
+					<span class="text-sm font-medium text-gray-900">Add Item</span>
+				</a>
+
+				<a href="/Customer/Create" class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+					<div class="p-3 bg-green-100 rounded-lg mb-2">
+						<i class="hgi hgi-stroke hgi-user text-green-600 text-2xl"></i>
+					</div>
+					<span class="text-sm font-medium text-gray-900">New Customer</span>
+				</a>
+
+				<a href="/Transaction/Create" class="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+					<div class="p-3 bg-yellow-100 rounded-lg mb-2">
+						<i class="hgi hgi-stroke hgi-invoice-02 text-yellow-600 text-2xl"></i>
+					</div>
+					<span class="text-sm font-medium text-gray-900">New Transaction</span>
+				</a>
+			</div>
+		</div>
+
+		<div>
+			<h1>Chart here</h1>
+		</div>
+	</div>
+</div>
