@@ -51,7 +51,7 @@
                 </svg>
             </button>
         </div>
-        <div class="overflow-x-auto">
+        <div>
             <table class="min-w-full divide-y divide-gray-200">
                 <thead>
                     <tr>
@@ -115,3 +115,46 @@
         </div>
     </div>
 </div>
+
+@{
+    ViewData["Title"] = "Delete Item";
+    ViewData["Message"] = "Are you sure you want to delete this item? This action cannot be undone.";
+    ViewData["DeleteUrl"] = "/Inventory/Delete/";
+}
+@await Html.PartialAsync("_DeleteModal")
+
+@section Scripts {
+    <script>
+        function toggleMenu(menuId) {
+            const menu = document.getElementById(menuId);
+            const allMenus = document.querySelectorAll('[id^="menu-"]');
+            
+            // Close all other menus
+            allMenus.forEach(m => {
+                if (m.id !== menuId) {
+                    m.classList.add('hidden');
+                }
+            });
+            
+            // Toggle the clicked menu
+            menu.classList.toggle('hidden');
+        }
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function(event) {
+            const menus = document.querySelectorAll('[id^="menu-"]');
+            const isClickInsideMenu = Array.from(menus).some(menu => menu.contains(event.target));
+            const isClickOnButton = event.target.closest('button');
+            
+            if (!isClickInsideMenu && !isClickOnButton) {
+                menus.forEach(menu => menu.classList.add('hidden'));
+            }
+        });
+
+        function deleteItem(itemId) {
+            const deleteUrl = `/Inventory/Delete/${itemId}`;
+            document.querySelector('#deleteModal button[onclick^="confirmDelete"]').setAttribute('onclick', `confirmDelete('${deleteUrl}')`);
+            showDeleteModal('deleteModal');
+        }
+    </script>
+}

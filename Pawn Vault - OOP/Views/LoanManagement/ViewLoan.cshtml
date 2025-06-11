@@ -1,0 +1,120 @@
+@{
+    ViewData["Title"] = "View Loan";
+}
+
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-semibold text-gray-800">Loan Details</h1>
+        <a href="/LoanManagement" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Loans
+        </a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Loan Information -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Loan Information</h2>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Loan ID</label>
+                        <p class="mt-1 text-gray-900">L001</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Status</label>
+                        <span class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Active
+                        </span>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Amount</label>
+                        <p class="mt-1 text-gray-900">$1,000.00</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Interest Rate</label>
+                        <p class="mt-1 text-gray-900">5%</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Date Created</label>
+                        <p class="mt-1 text-gray-900">January 15, 2024</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Due Date</label>
+                        <p class="mt-1 text-gray-900">February 15, 2024</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Information -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Customer Information</h2>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Customer Name</label>
+                        <p class="mt-1 text-gray-900">John Doe</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Contact Number</label>
+                        <p class="mt-1 text-gray-900">(555) 123-4567</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Email</label>
+                        <p class="mt-1 text-gray-900">john.doe@email.com</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Address</label>
+                        <p class="mt-1 text-gray-900">123 Main St, City, State</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item Information -->
+            <div class="space-y-4 md:col-span-2">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Item Information</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Item Name</label>
+                        <p class="mt-1 text-gray-900">Gold Watch</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Category</label>
+                        <p class="mt-1 text-gray-900">Jewelry</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Condition</label>
+                        <p class="mt-1 text-gray-900">Excellent</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Estimated Value</label>
+                        <p class="mt-1 text-gray-900">$1,500.00</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600">Description</label>
+                        <p class="mt-1 text-gray-900">18k gold watch with leather strap</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex justify-end space-x-4">
+            <a href="/LoanManagement/Edit/L001" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                <i class="fas fa-edit mr-2"></i>Edit Loan
+            </a>
+            <button onclick="deleteLoan('L001')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center">
+                <i class="fas fa-trash-alt mr-2"></i>Delete Loan
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function deleteLoan(id) {
+            showDeleteModal(id, 'loan');
+        }
+    </script>
+} 

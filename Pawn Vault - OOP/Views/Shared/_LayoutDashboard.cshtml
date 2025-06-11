@@ -5,48 +5,79 @@
     <title>@ViewData["Title"] - PawnVault</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="~/css/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        body {
+        font-family: 'Poppins', sans-serif;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 h-screen fixed top-0 left-0 bg-[#003366] text-white flex flex-col shadow-lg rounded-tr-3xl rounded-br-3xl z-30">
+        <aside class="w-64 h-screen fixed top-0 left-0 bg-slate-900 text-white flex flex-col shadow-lg z-30">
             <div class="flex items-center h-16 px-6 border-b border-gray-800">
                 <a href="~/" class="flex items-center space-x-3">
-                    <img src="~/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="h-8 w-8 opacity-75 shadow rounded-full" />
-                    <span class="text-xl font-light">PawnVault</span>
+                    <span class="text-xl font-bold">PawnVault</span>
                 </a>
             </div>
             <nav class="flex-1 pl-4 py-6 flex flex-col">
-                <ul class="space-y-4 flex-1">
-                    <li>
-                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="Home" asp-action="Index">
-                            <span>Dashboard</span>
+                <span class="text-gray-400 text-sm px-2">General</span>
+                <ul class="space-y-2 flex-1">
+                    <li class="">
+
+                        <a class="flex items-center gap-2 py-2 px-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow rounded-tl-xl rounded-bl-xl @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "bg-white text-[#d4af37] shadow font-semibold" : "")" asp-controller="Home" asp-action="Index">
+                            <i class="hgi hgi-stroke hgi-dashboard-square-03"></i>
+                            <span class="text-sm">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="Transaction" asp-action="Index">
-                            <span>Transactions</span>
+                        <a class="flex items-center gap-2 py-2 px-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow  rounded-tl-xl rounded-bl-xl @(ViewContext.RouteData.Values["controller"]?.ToString() == "Transaction" ? "bg-white text-[#d4af37] shadow font-semibold" : "")" asp-controller="Transaction" asp-action="Index">
+                            <i class="hgi hgi-stroke hgi-invoice-03"></i>
+                            <span class="text-sm">Transactions</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="LoanManagement" asp-action="Index">
-                            <span>Loan Management</span>
+                        <a class="flex items-center gap-2 py-2 px-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow  rounded-tl-xl rounded-bl-xl @(ViewContext.RouteData.Values["controller"]?.ToString() == "LoanManagement" ? "bg-white text-[#d4af37] shadow font-semibold" : "")" asp-controller="LoanManagement" asp-action="Index">
+                            <i class="hgi hgi-stroke hgi-save-money-dollar"></i>
+                            <span class="text-sm">Loan Management</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="Customer" asp-action="Index">
-                            <span>Customer Profiles</span>
+                        <a class="flex items-center gap-2 py-2 px-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow  rounded-tl-xl rounded-bl-xl @(ViewContext.RouteData.Values["controller"]?.ToString() == "Customer" ? "bg-white text-[#d4af37] shadow font-semibold" : "")" asp-controller="Customer" asp-action="Index">
+                            <i class="hgi hgi-stroke hgi-user"></i>
+                            <span class="text-sm">Customer Profiles</span>
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center px-3 py-2 transition bg-transparent hover:bg-[#f8f9fa] hover:text-[#d4af37] text-white rounded-tl-xl rounded-bl-xl" asp-controller="Inventory" asp-action="Index">
-                            <span>Inventory Tracking</span>
+                        <a class="flex items-center gap-2 py-2 px-2  transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow  rounded-tl-xl rounded-bl-xl @(ViewContext.RouteData.Values["controller"]?.ToString() == "Inventory" ? "bg-white text-[#d4af37] shadow font-semibold" : "")" asp-controller="Inventory" asp-action="Index">
+                            <i class="hgi hgi-stroke hgi-sharp hgi-database-01"></i>
+                            <span class="text-sm">Inventory Tracking</span>
                         </a>
                     </li>
                 </ul>
                 <div class="mt-4 mb-2">
-                    <partial name="_LoginPartial" />
+                    <span class="text-gray-400 text-sm px-2">Settings</span>
+                    <a class="flex items-center gap-2 py-2 px-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow rounded-tl-xl rounded-bl-xl @(ViewContext.RouteData.Values["controller"]?.ToString() == "Account" ? "bg-white text-[#d4af37] shadow font-semibold" : "")" asp-controller="Account" asp-action="Index">
+                        <i class="hgi hgi-stroke hgi-user-settings-01"></i>
+                        <span class="text-sm">Acount Settings</span>
+                    </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="flex items-center gap-2 px-2 py-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow  rounded-tl-xl rounded-bl-xl @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employee" ? "bg-white text-[#d4af37] shadow font-semibold" : "")" asp-controller="Employee" asp-action="Index">
+                            <i class="hgi hgi-stroke hgi-account-setting-01"></i>
+                        <span class="text-sm">User Management</span>
+                    </a>}
+                    <a class="flex items-center gap-2 py-2 px-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow  rounded-tl-xl rounded-bl-xl" asp-controller="Account" asp-action="Logout">
+                        <i class="hgi hgi-stroke hgi-logout-02"></i>
+                        <partial name="_LoginPartial" />
+                    </a>
+                    
                 </div>
             </nav>
         </aside>
