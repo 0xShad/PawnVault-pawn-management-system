@@ -1,0 +1,80 @@
+@{
+    ViewData["Title"] = "Add New Item";
+}
+
+<div class="px-6 py-4 min-h-screen">
+    <div class="flex items-center justify-between mb-1">
+        <h1 class="text-3xl font-bold text-gray-900">Add New Item</h1>
+    </div>
+    <p class="text-gray-500 mb-8">Enter the details of the item you want to add to inventory.</p>
+
+    <div class="bg-white rounded-xl shadow p-6">
+        <form asp-action="Create" method="post">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Item Name -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Item Name</label>
+                    <input type="text" name="Name" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required />
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select name="Category" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required>
+                        <option value="">Select a category</option>
+                        <option value="Jewelry">Jewelry</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Watches">Watches</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Description -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea name="Description" rows="3" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required></textarea>
+                </div>
+
+                <!-- Condition -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+                    <select name="Condition" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required>
+                        <option value="">Select condition</option>
+                        <option value="excellent">Excellent</option>
+                        <option value="good">Good</option>
+                        <option value="fair">Fair</option>
+                        <option value="poor">Poor</option>
+                    </select>
+                </div>
+
+                <!-- Estimated Value -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Estimated Value ($)</label>
+                    <input type="number" name="EstimatedValue" min="0" step="0.01" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required />
+                </div>
+
+                <!-- Loan Amount -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Loan Amount ($)</label>
+                    <input type="number" name="LoanAmount" min="0" step="0.01" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required />
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select name="Status" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required>
+                        <option value="available">Available</option>
+                        <option value="on loan">On Loan</option>
+                        <option value="sold">Sold</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-8 flex justify-end gap-4">
+                <a asp-action="Index" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">Cancel</a>
+                <button type="submit" class="px-6 py-2 bg-[#0a1629] text-white rounded-lg hover:bg-[#003366] transition">Add Item</button>
+            </div>
+        </form>
+    </div>
+</div> 
