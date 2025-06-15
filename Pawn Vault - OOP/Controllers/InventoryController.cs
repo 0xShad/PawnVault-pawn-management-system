@@ -77,5 +77,15 @@ namespace Pawn_Vault___OOP.Controllers
             await _inventoryRepository.DeleteItemAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> View(int id)
+        {
+            var item = await _inventoryRepository.GetItemByIdAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return View(item);
+        }
     }
 }

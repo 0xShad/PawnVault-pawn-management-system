@@ -96,16 +96,23 @@
                                     })">@item.Status</span>
                             </td>
                             <td class="px-4 py-3">@item.DateAdded.ToString("yyyy-MM-dd")</td>
-                            <td class="px-4 py-3 relative">
-                                <div class="inline-block text-left">
-                                    <button type="button" class="inline-flex justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none" id="menu-button-@item.Id" aria-expanded="true" aria-haspopup="true">
-                                        <svg class="w-5 h-5 text-[#003366]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/></svg>
-                                    </button>
-                                    <div class="hidden absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button-@item.Id" tabindex="-1">
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">View</a>
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">Edit</a>
-                                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem" tabindex="-1">Delete</a>
-                                    </div>
+                            <td class="px-4 py-3 text-center relative">
+                                <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-@item.Id')">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div id="menu-@item.Id" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                                    <a asp-action="View" asp-route-id="@item.Id" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left">
+                                        <i class="fas fa-eye mr-2"></i>View
+                                    </a>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left">
+                                            <i class="fas fa-edit mr-2"></i>Edit
+                                        </a>
+                                        <button onclick="deleteItem(@item.Id)" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                            <i class="fas fa-trash-alt mr-2"></i>Delete
+                                        </button>
+                                    }
                                 </div>
                             </td>
                         </tr>
