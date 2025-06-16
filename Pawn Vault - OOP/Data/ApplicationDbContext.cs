@@ -12,6 +12,8 @@ namespace Pawn_Vault___OOP.Data
         }
 
         public DbSet<InventoryItem> InventoryItems { get; set; }
+        public DbSet<LoanModel> LoanModels { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -24,6 +26,16 @@ namespace Pawn_Vault___OOP.Data
 
             builder.Entity<InventoryItem>()
                 .Property(i => i.LoanAmount)
+                .HasPrecision(18, 2);
+
+            // Configure LoanModel
+            builder.Entity<LoanModel>()
+                .Property(l => l.Amount)
+                .HasPrecision(18, 2);
+
+
+            builder.Entity<LoanModel>()
+                .Property(l => l.InterestRate)
                 .HasPrecision(18, 2);
         }
     }
