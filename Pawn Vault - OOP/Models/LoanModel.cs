@@ -8,11 +8,21 @@ namespace Pawn_Vault___OOP.Models
 
         [Required]
         [StringLength(100)]
-        public string ItemName { get; set; } 
+        public string ItemName { get; set; } = string.Empty;
+
+        [Required]
         public decimal Amount { get; set; }
-        public string Status { get; set; }
+
+        [Required]
+        public string Status { get; set; } = string.Empty;
+
+        [Required]
         public DateTime IssuedDate { get; set; } = DateTime.UtcNow;
+        
+        [Required]
         public decimal InterestRate { get; set; }
+
+        [Required]
         public DateOnly RetentionPeriod { get; set; }
 
         // === Foreign Keys, tho sitll not sure kung need pa ba ideclare or not ===
