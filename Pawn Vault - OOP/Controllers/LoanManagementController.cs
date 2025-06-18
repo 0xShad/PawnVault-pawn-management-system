@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pawn_Vault___OOP.Interfaces;
+using Pawn_Vault___OOP.Models;
 
 namespace Pawn_Vault___OOP.Controllers
 {
@@ -23,6 +25,18 @@ namespace Pawn_Vault___OOP.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(LoanModel loan)
+        {
+            if (ModelState.IsValid)
+            {
+                await _loanRepository.AddLoanAsync(loan);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(loan);
         }
 
         public IActionResult Edit()
