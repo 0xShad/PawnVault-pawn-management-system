@@ -1,12 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Pawn_Vault___OOP.Interfaces;
 
 namespace Pawn_Vault___OOP.Controllers
 {
+    [Authorize]
     public class LoanManagementController : Controller
     {
-        public IActionResult Index()
+        private readonly ILoanRepository _loanRepository;
+
+        public LoanManagementController(ILoanRepository loanRepository)
         {
-            return View();
+            _loanRepository = loanRepository;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var loans = await _loanRepository.GetAllLoansAsync();
+            return View(loans);
         }
 
         public IActionResult Create()

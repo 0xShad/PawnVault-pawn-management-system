@@ -26,6 +26,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 
 var app = builder.Build();
 
