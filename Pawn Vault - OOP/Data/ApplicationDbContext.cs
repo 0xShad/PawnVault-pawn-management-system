@@ -12,7 +12,7 @@ namespace Pawn_Vault___OOP.Data
         }
 
         public DbSet<InventoryItem> InventoryItems { get; set; }
-        public DbSet<LoanModel> LoanModels { get; set; }
+        public DbSet<LoanModel> LoanModels { get; set; } //  Still thinking whether the "LoanModels" should be change to just "Loans" for clarity or readability
 
 
         protected override void OnModelCreating(ModelBuilder builder)
