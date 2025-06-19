@@ -78,5 +78,11 @@ namespace Pawn_Vault___OOP.Controllers
 
             return View(loan);
         }
+
+        public async Task<IActionResult> Delete (int id) 
+        {
+            await _loanRepository.DeleteLoanAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
