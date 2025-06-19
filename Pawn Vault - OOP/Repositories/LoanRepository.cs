@@ -18,7 +18,7 @@ namespace Pawn_Vault___OOP.Repositories
         {
             return await _context.LoanModels.ToListAsync(); // fetching all record atsaka irereturn siya as list
         }
-        public async Task<LoanModel> ViewLoanAsync(int id) {
+        public async Task<LoanModel> GetLoanbyIdAsync(int id) {
             return await _context.LoanModels.FindAsync(id); // fetching the specific record base sa pinasang id
         }
 

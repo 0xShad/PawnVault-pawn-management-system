@@ -42,7 +42,7 @@ namespace Pawn_Vault___OOP.Controllers
         
         public async Task <IActionResult> Edit(int id)
         {
-            var loan = await _loanRepository.ViewLoanAsync(id);
+             var loan = await _loanRepository.GetLoanbyIdAsync(id);
             if (loan == null)
             {
                 return NotFound();
