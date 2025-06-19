@@ -6,30 +6,33 @@ using Pawn_Vault___OOP.Models;
 
 namespace Pawn_Vault___OOP.Controllers
 {
-    [Authorize]
+    [Authorize] // sinisguradong mga naka log in lang yung makakaaccess
     public class LoanManagementController : Controller
     {
-        private readonly ILoanRepository _loanRepository;
+        private readonly ILoanRepository _loanRepository; 
 
         public LoanManagementController(ILoanRepository loanRepository)
         {
             _loanRepository = loanRepository;
         }
 
+
+        // Pagpapakita ng lahat ng loan sa Index View
         public async Task<IActionResult> Index()
         {
             var loans = await _loanRepository.GetAllLoansAsync();
             return View(loans);
         }
 
-        public IActionResult Create()
+        // ===== Create Logic =====
+        public IActionResult Create() // pagpapakita lang ng Create Page
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(LoanModel loan)
+        public async Task<IActionResult> Create(LoanModel loan) // Logic sa pagcreate ng loan
         {
             if (ModelState.IsValid)
             {
@@ -39,8 +42,8 @@ namespace Pawn_Vault___OOP.Controllers
             return View(loan);
         }
 
-        
-        public async Task <IActionResult> Edit(int id)
+        // ===== EDIT LOGIC =====
+        public async Task <IActionResult> Edit(int id) // pagpapakita ng edit loan page
         {
              var loan = await _loanRepository.GetLoanbyIdAsync(id);
             if (loan == null)
@@ -52,7 +55,7 @@ namespace Pawn_Vault___OOP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, LoanModel loan)
+        public async Task<IActionResult> Edit(int id, LoanModel loan) // Pag-uupdate ng edited row sa database
         {
             if (id != loan.Id)
             {
@@ -67,6 +70,7 @@ namespace Pawn_Vault___OOP.Controllers
             return View(loan);
         }
 
+        // ===== VIEW LOAN DETAILS LOGIC =====
         public async Task<IActionResult> ViewLoan(int id)
         {
             var loan = await _loanRepository.GetLoanbyIdAsync(id);
@@ -79,6 +83,8 @@ namespace Pawn_Vault___OOP.Controllers
             return View(loan);
         }
 
+
+        // ===== DELETE LOAN LOGIC ======
         public async Task<IActionResult> Delete (int id) 
         {
             await _loanRepository.DeleteLoanAsync(id);
