@@ -67,9 +67,16 @@ namespace Pawn_Vault___OOP.Controllers
             return View(loan);
         }
 
-        public IActionResult ViewLoan()
+        public async Task<IActionResult> ViewLoan(int id)
         {
-            return View();
+            var loan = await _loanRepository.GetLoanbyIdAsync(id);
+            
+            if (loan == null)
+                {
+                    return NotFound();
+                }
+
+            return View(loan);
         }
     }
 }
