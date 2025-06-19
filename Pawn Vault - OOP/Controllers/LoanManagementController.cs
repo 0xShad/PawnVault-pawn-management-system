@@ -39,9 +39,32 @@ namespace Pawn_Vault___OOP.Controllers
             return View(loan);
         }
 
-        public IActionResult Edit()
+        
+        public async Task <IActionResult> Edit(int id)
         {
-            return View();
+            var loan = await _loanRepository.ViewLoanAsync(id);
+            if (loan == null)
+            {
+                return NotFound();
+            }            
+            return View(loan);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, LoanModel loan)
+        {
+            if (id != loan.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid) 
+            {
+                await _loanRepository.UpdateLoanAsync(loan);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(loan);
         }
 
         public IActionResult ViewLoan()
