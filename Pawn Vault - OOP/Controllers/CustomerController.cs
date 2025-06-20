@@ -15,7 +15,6 @@ namespace Pawn_Vault___OOP.Controllers
             _context = context;
         }
 
-
         public async Task<IActionResult> Index()
         {
             var customers = await _context.Customers
