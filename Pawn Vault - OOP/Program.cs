@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pawn_Vault___OOP.Data;
 using Pawn_Vault___OOP.Interfaces;
+using Pawn_Vault___OOP.Models;
 using Pawn_Vault___OOP.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,6 +56,31 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 await SeedRolesAsync(app);
+
+//TEST!! para lang sa customer profiles
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    // apply pending migrations, opitional lang
+    db.Database.Migrate();
+
+    // Add a test customer if none exist
+    if (!db.Customers.Any())
+    {
+        db.Customers.Add(new Customer
+        {
+            CustomerFN = "Maria",
+            CustomerLN = "Reyes",
+            TelephoneNo = "09991234567",
+            Street = "Burgos St",
+            Municipality = "Quezon City",
+            ZipCode = "1100"
+        });
+        db.SaveChanges();
+    }
+}
+
 
 app.Run();
 
