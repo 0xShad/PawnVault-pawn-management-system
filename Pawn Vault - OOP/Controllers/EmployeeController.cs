@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Pawn_Vault___OOP.Data;
 using Pawn_Vault___OOP.Models;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Pawn_Vault___OOP.Controllers
         public IActionResult Index()
         {
             var employees = _context.Employees.ToList();
-            System.Diagnostics.Debug.WriteLine("Employee count: " + employees.Count);
+            System.Diagnostics.Debug.WriteLine("DB Used: " + _context.Database.GetDbConnection().ConnectionString);
             return View(employees);
         }
 
