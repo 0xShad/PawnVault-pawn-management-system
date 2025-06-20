@@ -1,5 +1,4 @@
-﻿// EmployeeController.cs
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pawn_Vault___OOP.Data;
 using Pawn_Vault___OOP.Models;
 using System.Linq;
@@ -19,57 +18,8 @@ namespace Pawn_Vault___OOP.Controllers
         public IActionResult Index()
         {
             var employees = _context.Employees.ToList();
+            System.Diagnostics.Debug.WriteLine("Employee count: " + employees.Count);
             return View(employees);
-        }
-
-        // GET: Employee/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Employee/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Employee employee)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Employees.Add(employee);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(employee);
-        }
-
-        // GET: Employee/Edit/5
-        public IActionResult Edit(int id)
-        {
-            var employee = _context.Employees.Find(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            return View(employee);
-        }
-
-        // POST: Employee/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Employee employee)
-        {
-            if (id != employee.EmployeeID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                _context.Update(employee);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(employee);
         }
 
         // GET: Employee/Delete/5
