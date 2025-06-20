@@ -10,7 +10,6 @@ namespace Pawn_Vault___OOP.Data
         : base(options)
     {
     }
-
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Loan> Loans { get; set; }
