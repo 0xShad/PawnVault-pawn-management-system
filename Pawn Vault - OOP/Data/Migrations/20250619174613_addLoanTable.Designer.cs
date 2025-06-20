@@ -12,8 +12,8 @@ using Pawn_Vault___OOP.Data;
 namespace Pawn_Vault___OOP.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250616035634_addLoanModel")]
-    partial class addLoanModel
+    [Migration("20250619174613_addLoanTable")]
+    partial class addLoanTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,6 +286,13 @@ namespace Pawn_Vault___OOP.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("InterestRate")
                         .HasPrecision(18, 2)

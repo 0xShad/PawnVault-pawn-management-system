@@ -39,7 +39,8 @@ namespace Pawn_Vault___OOP.Controllers
                 await _loanRepository.AddLoanAsync(loan);
                 return RedirectToAction(nameof(Index));
             }
-            return View(loan);
+            // return View(loan);
+            return RedirectToAction("Index");
         }
 
         // ===== EDIT LOGIC =====

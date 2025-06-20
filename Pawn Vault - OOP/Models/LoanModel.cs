@@ -3,6 +3,7 @@ namespace Pawn_Vault___OOP.Models
 {
     public class LoanModel
     {
+        [Required]
         public int Id { get; set; }
 
         [Required]

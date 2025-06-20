@@ -39,16 +39,16 @@
                         <th class="px-6 py-3 text-left font-medium">Actions</th>
                     </tr>
                 </thead>
-                <!--Displaying all loans from database --> 
+                <!-- Displaying all loans from database --> 
                 <tbody class="text-gray-900 text-sm">
                     @foreach (var loan in Model) 
                     {
                         <tr class="">
                             <td class="px-6 py-4">@loan.Id</td>
                             <td class="px-6 py-4">John Doe</td>
-                            <td class="px-6 py-4">Gold Ring - 14k</td>
-                            <td class="px-6 py-4 font-semibold">$500</td>
-                            <td class="px-6 py-4">5.5%</td>
+                            <td class="px-6 py-4">@loan.ItemName</td>
+                            <td class="px-6 py-4 font-semibold">@loan.Amount</td>
+                            <td class="px-6 py-4">@loan.InterestRate</td>
                             <td class="px-6 py-4 flex items-center gap-2"><svg class="w-4 h-4 text-gray-400 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>6/15/2024</td>
                             <td class="px-6 py-4"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Active</span></td>
                             <td class="px-6 py-4 text-center relative">
@@ -69,7 +69,7 @@
                             </td>
                         </tr>
                     }
-                    <!-- Redundant Placeholders (not really) --> 
+                    <!-- Hardcoded Loans (Placeholders, to be deleted) --> 
                 <tr class="">
                     <td class="px-6 py-4">L002</td>
                     <td class="px-6 py-4">Jane Smith</td>
