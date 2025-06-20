@@ -11,13 +11,16 @@ namespace Pawn_Vault___OOP.Data
         {
         }
 
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Loan> Loans { get; set; }
+        public DbSet<Payment> Payments { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // Configure InventoryItem
             builder.Entity<InventoryItem>()
                 .Property(i => i.EstimatedValue)
                 .HasPrecision(18, 2);
@@ -27,4 +30,5 @@ namespace Pawn_Vault___OOP.Data
                 .HasPrecision(18, 2);
         }
     }
+
 }
