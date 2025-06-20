@@ -2,17 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using Pawn_Vault___OOP.Models;
 using System;
+using Pawn_Vault___OOP.Data; //access data
 
 namespace Pawn_Vault___OOP.Controllers
 {
-    public class CustomersController : Controller
+    public class CustomerController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CustomersController(ApplicationDbContext context)
+        public CustomerController(ApplicationDbContext context)
         {
             _context = context;
         }
+
 
         public async Task<IActionResult> Index()
         {
