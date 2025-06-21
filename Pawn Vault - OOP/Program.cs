@@ -81,7 +81,7 @@ using (var scope = app.Services.CreateScope())
     }
     if (!db.Employees.Any())
     {
-        db.Employees.AddRange(
+        db.Employees.AddRange( // adding employees pero di pa maayos na actions
             new Employee
             {
                 EmpFN = "Juan",
@@ -89,7 +89,7 @@ using (var scope = app.Services.CreateScope())
                 Role = "Employee",
                 Status = "Active",
                 Username = "juandelacruz",
-                Password = "admin123" // Note: For real apps, hash passwords!
+                Password = "admin123" 
             },
             new Employee
             {
