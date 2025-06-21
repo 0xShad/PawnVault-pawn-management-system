@@ -13,7 +13,7 @@ namespace Pawn_Vault___OOP.Data
 
         public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<LoanModel> LoanModels { get; set; } //  Still thinking whether the "LoanModels" should be change to just "Loans" for clarity or readability
-
+        public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,7 +32,6 @@ namespace Pawn_Vault___OOP.Data
             builder.Entity<LoanModel>()
                 .Property(l => l.Amount)
                 .HasPrecision(18, 2);
-
 
             builder.Entity<LoanModel>()
                 .Property(l => l.InterestRate)

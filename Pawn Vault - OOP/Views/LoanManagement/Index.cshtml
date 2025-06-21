@@ -1,4 +1,6 @@
 ﻿@* Loan Management Main Page *@
+@using Pawn_Vault___OOP.Data
+
 <div class="h-screen">
     <div class="flex items-center justify-between px-6 py-4">
         <div>
@@ -41,110 +43,49 @@
                 </thead>
                 <!-- Displaying all loans from database --> 
                 <tbody class="text-gray-900 text-sm">
-                    @foreach (var loan in Model) 
+					@foreach (var loan in Model)
                     {
                         <tr class="">
                             <td class="px-6 py-4">@loan.Id</td>
-                            <td class="px-6 py-4">John Doe</td>
+                            <td class="px-6 py-4">@($"{loan.Customer?.CustomerFN} {loan.Customer?.CustomerLN}")</td>
                             <td class="px-6 py-4">@loan.ItemName</td>
                             <td class="px-6 py-4 font-semibold">@loan.Amount</td>
                             <td class="px-6 py-4">@loan.InterestRate</td>
-                            <td class="px-6 py-4 flex items-center gap-2"><svg class="w-4 h-4 text-gray-400 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>6/15/2024</td>
-                            <td class="px-6 py-4"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Active</span></td>
+                            <td class="px-6 py-4 flex items-center gap-2"><svg class="w-4 h-4 text-gray-400 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>@loan.RetentionPeriod.ToString("mm/dd/yyyy")</td>
+                            <!-- conditional placing of status design -->
+                            <td class="px-6 py-4">
+                                @if (loan.Status == "Active")
+                                {
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Active</span>
+                                }
+                                else if (loan.Status == "Overdue")
+                                {
+                                    <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-semibold">Overdue</span>
+                                }
+                                else
+                                {
+                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Paid</span>
+                                }
+                            </td>
+
                             <td class="px-6 py-4 text-center relative">
-                                <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-L001')">
+                                <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-@loan.Id')">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </button>
-                                <div id="menu-L001" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="ViewLoan">
+                                <div id="menu-@loan.Id" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="ViewLoan" asp-route-id="@loan.Id">
                                         <i class="fas fa-eye mr-2"></i>View
                                     </a>
-                                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="Edit">
+                                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="Edit" asp-route-id="@loan.Id">
                                         <i class="fas fa-edit mr-2"></i>Edit
                                     </a>
-                                    <button onclick="deleteLoan('L001')" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                    <button onclick="deleteLoan('@loan.Id')" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                                         <i class="fas fa-trash-alt mr-2"></i>Delete
                                     </button>
                                 </div>
                             </td>
                         </tr>
                     }
-                    <!-- Hardcoded Loans (Placeholders, to be deleted) --> 
-                <tr class="">
-                    <td class="px-6 py-4">L002</td>
-                    <td class="px-6 py-4">Jane Smith</td>
-                    <td class="px-6 py-4">Diamond Necklace</td>
-                    <td class="px-6 py-4 font-semibold">$750</td>
-                    <td class="px-6 py-4">5.5%</td>
-                    <td class="px-6 py-4 flex items-center gap-2"><svg class="w-4 h-4 text-gray-400 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>6/10/2024</td>
-                    <td class="px-6 py-4"><span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-semibold">Overdue</span></td>
-                    <td class="px-6 py-4 text-center relative">
-                        <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-L002')">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div id="menu-L002" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="ViewLoan">
-                                <i class="fas fa-eye mr-2"></i>View
-                            </a>
-                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="Edit">
-                                <i class="fas fa-edit mr-2"></i>Edit
-                            </a>
-                            <button onclick="deleteLoan('L002')" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                <i class="fas fa-trash-alt mr-2"></i>Delete
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="px-6 py-4">L003</td>
-                    <td class="px-6 py-4">Bob Johnson</td>
-                    <td class="px-6 py-4">Silver Watch</td>
-                    <td class="px-6 py-4 font-semibold">$300</td>
-                    <td class="px-6 py-4">5.5%</td>
-                    <td class="px-6 py-4 flex items-center gap-2"><svg class="w-4 h-4 text-gray-400 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>5/20/2024</td>
-                    <td class="px-6 py-4"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Paid</span></td>
-                    <td class="px-6 py-4 text-center relative">
-                        <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-L003')">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div id="menu-L003" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="ViewLoan">
-                                <i class="fas fa-eye mr-2"></i>View
-                            </a>
-                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="Edit">
-                                <i class="fas fa-edit mr-2"></i>Edit
-                            </a>
-                            <button onclick="deleteLoan('L003')" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                <i class="fas fa-trash-alt mr-2"></i>Delete
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                 <tr>
-                    <td class="px-6 py-4">L003</td>
-                    <td class="px-6 py-4">Bob Johnson</td>
-                    <td class="px-6 py-4">Silver Watch</td>
-                    <td class="px-6 py-4 font-semibold">$300</td>
-                    <td class="px-6 py-4">5.5%</td>
-                    <td class="px-6 py-4 flex items-center gap-2"><svg class="w-4 h-4 text-gray-400 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>5/20/2024</td>
-                    <td class="px-6 py-4"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Paid</span></td>
-                    <td class="px-6 py-4 text-center relative">
-                        <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-L003')">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div id="menu-L003" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="ViewLoan">
-                                <i class="fas fa-eye mr-2"></i>View
-                            </a>
-                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left" asp-action="Edit">
-                                <i class="fas fa-edit mr-2"></i>Edit
-                            </a>
-                            <button onclick="deleteLoan('L003')" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                <i class="fas fa-trash-alt mr-2"></i>Delete
-                            </button>
-                        </div>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>

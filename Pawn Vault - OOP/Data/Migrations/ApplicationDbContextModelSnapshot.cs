@@ -224,6 +224,43 @@ namespace Pawn_Vault___OOP.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Customer", b =>
+                {
+                    b.Property<int>("CustomerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerID"));
+
+                    b.Property<string>("CustomerFN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerLN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Municipality")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelephoneNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CustomerID");
+
+                    b.ToTable("Customers", (string)null);
+                });
+
             modelBuilder.Entity("Pawn_Vault___OOP.Models.InventoryItem", b =>
                 {
                     b.Property<int>("Id")
@@ -269,7 +306,7 @@ namespace Pawn_Vault___OOP.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InventoryItems");
+                    b.ToTable("InventoryItems", (string)null);
                 });
 
             modelBuilder.Entity("Pawn_Vault___OOP.Models.LoanModel", b =>
@@ -284,7 +321,7 @@ namespace Pawn_Vault___OOP.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("CustomerID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -303,8 +340,8 @@ namespace Pawn_Vault___OOP.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateOnly>("RetentionPeriod")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("RetentionPeriod")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -312,7 +349,9 @@ namespace Pawn_Vault___OOP.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LoanModels");
+                    b.HasIndex("CustomerID");
+
+                    b.ToTable("LoanModels", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -364,6 +403,22 @@ namespace Pawn_Vault___OOP.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.LoanModel", b =>
+                {
+                    b.HasOne("Pawn_Vault___OOP.Models.Customer", "Customer")
+                        .WithMany("Loans")
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Customer", b =>
+                {
+                    b.Navigation("Loans");
                 });
 #pragma warning restore 612, 618
         }

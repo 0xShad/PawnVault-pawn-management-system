@@ -27,6 +27,8 @@ namespace Pawn_Vault___OOP.Controllers
         // ===== Create Logic =====
         public IActionResult Create() // pagpapakita lang ng Create Page
         {
+            _loanRepository.AddLoanAsync(new LoanModel()); // test method, para mag add ng customer sa db  
+
             return View();
         }
 
@@ -36,8 +38,9 @@ namespace Pawn_Vault___OOP.Controllers
         {
             if (ModelState.IsValid)
             {
+                loan.Status = "Active"; // default status ng loan kapag na create
+                loan.IssuedDate = DateTime.UtcNow;
                 await _loanRepository.AddLoanAsync(loan);
-                return RedirectToAction(nameof(Index));
             }
             // return View(loan);
             return RedirectToAction("Index");

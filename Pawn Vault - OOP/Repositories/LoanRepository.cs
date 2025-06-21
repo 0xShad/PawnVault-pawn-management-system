@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Pawn_Vault___OOP.Data;
 using Pawn_Vault___OOP.Interfaces;
 using Pawn_Vault___OOP.Models;
@@ -24,9 +25,24 @@ namespace Pawn_Vault___OOP.Repositories
 
         public async Task<LoanModel> AddLoanAsync(LoanModel loan)
         {
-            loan.IssuedDate = DateTime.UtcNow; // set the attribute IssuedDate sa time kung kailan nacreate ito
-            _context.LoanModels.Add(loan); // paglagay ng loan sa db context
-            await _context.SaveChangesAsync(); // pagsasave ng loan na nakalagay sa db context sa database
+            var loan1 = new LoanModel
+            {
+                ItemName = "Test",
+                Description = "Test Description",
+                Amount = 3000,
+                Status = "Active",
+                IssuedDate = DateTime.UtcNow,
+                InterestRate = 3,
+                RetentionPeriod = DateTime.UtcNow,
+                CustomerID = 1
+            };
+
+            //loan.IssuedDate = DateTime.UtcNow; // set the attribute IssuedDate sa time kung kailan nacreate ito
+            _context.LoanModels.Add(loan1); // paglagay ng loan sa db context
+
+            _context.SaveChanges();
+            
+            //await _context.SaveChangesAsync(); // pagsasave ng loan na nakalagay sa db context sa database
             return loan;
         }
 
@@ -46,5 +62,6 @@ namespace Pawn_Vault___OOP.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
     }
 }

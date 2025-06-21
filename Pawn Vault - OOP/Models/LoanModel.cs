@@ -3,14 +3,14 @@ namespace Pawn_Vault___OOP.Models
 {
     public class LoanModel
     {
-        [Required]
+        [Key]
         public int Id { get; set; }
 
         [Required]
         [StringLength(100)]
         public string ItemName { get; set; } = string.Empty;
 
-        [Required]
+        // [Required] // removed kase wala pang text field sa create loan view page
         public string Description { get; set; } = string.Empty;
 
         [Required]
@@ -26,13 +26,14 @@ namespace Pawn_Vault___OOP.Models
         public decimal InterestRate { get; set; }
 
         [Required]
-        public DateOnly RetentionPeriod { get; set; }
+        public DateTime RetentionPeriod { get; set; }
 
         // === Foreign Key ===
-        public int CustomerId { get; set; }
+        public int CustomerID { get; set; }
 
-        // ====== Navigation Property, para ma link yung Loan at Customer Table at makuha yung Customer Name ======
-        // public Customer Customer { get; set;} // di pa naiimplement ung table ng Customer kaya di muna siya isasama.
+        // ====== Navigation Property, para ma link yung Customer at Inventory Table sa Loan Table ======
+        public Customer? Customer { get; set;}
+        // public inventoryItem Inventory { get; set; } // di pa naiimplement ung table ng Inventory kaya di muna siya isasama.
 
         // === sitll not sure kung need pa ba ideclare or not ===
         // public int EmployeeId { get; set; 
