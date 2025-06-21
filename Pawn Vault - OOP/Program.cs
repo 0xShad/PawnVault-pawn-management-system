@@ -63,7 +63,7 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
     // apply pending migrations, opitional lang
-    db.Database.Migrate();
+    //db.Database.Migrate();
 
     // Add a test customer if none exist
     if (!db.Customers.Any())

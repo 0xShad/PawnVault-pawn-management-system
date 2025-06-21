@@ -17,7 +17,7 @@ namespace Pawn_Vault___OOP.Models
         [Required]
         public string Description { get; set; } = string.Empty;
 
-        [Required]
+        //[Required]
         [StringLength(20)]
         public string Condition { get; set; } = string.Empty;
 
