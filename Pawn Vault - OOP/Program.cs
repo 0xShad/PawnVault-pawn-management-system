@@ -79,6 +79,30 @@ using (var scope = app.Services.CreateScope())
         });
         db.SaveChanges();
     }
+    if (!db.Employees.Any())
+    {
+        db.Employees.AddRange(
+            new Employee
+            {
+                EmpFN = "Juan",
+                EmpLN = "Dela Cruz",
+                Role = "Employee",
+                Status = "Active",
+                Username = "juandelacruz",
+                Password = "admin123" // Note: For real apps, hash passwords!
+            },
+            new Employee
+            {
+                EmpFN = "Ana",
+                EmpLN = "Santos",
+                Role = "Employee",
+                Status = "Active",
+                Username = "anasantos",
+                Password = "employee123"
+            }
+        );
+        db.SaveChanges();
+    }
 }
 
 

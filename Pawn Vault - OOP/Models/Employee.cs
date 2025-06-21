@@ -16,6 +16,7 @@ namespace Pawn_Vault___OOP.Models
         public string EmpLN { get; set; }
 
         [Required]
+        [DefaultValue("Employee")]
         [RegularExpression("Admin|Employee", ErrorMessage = "Role must be either Admin or Employee")]
         public string Role { get; set; }
 
