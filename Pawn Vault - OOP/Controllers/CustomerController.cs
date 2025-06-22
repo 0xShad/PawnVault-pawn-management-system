@@ -1,12 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Pawn_Vault___OOP.Models;
+using System;
+using Pawn_Vault___OOP.Data; //access data
 
 namespace Pawn_Vault___OOP.Controllers
 {
     public class CustomerController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public CustomerController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var customers = await _context.Customers
+                .Include(c => c.Loans)
+                .ThenInclude(l => l.Payments)
+                .ToListAsync();
+
+            return View(customers);
         }
     }
 }
