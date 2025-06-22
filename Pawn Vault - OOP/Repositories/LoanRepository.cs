@@ -19,30 +19,18 @@ namespace Pawn_Vault___OOP.Repositories
         {
             return await _context.LoanModels.ToListAsync(); // fetching all record atsaka irereturn siya as list
         }
-        public async Task<LoanModel> GetLoanbyIdAsync(int id) {
-            return await _context.LoanModels.FindAsync(id); // fetching the specific record base sa pinasang id
+        public async Task<LoanModel> GetLoanbyIdAsync(int id)
+        {
+            return await _context.LoanModels.FindAsync(id);
         }
 
         public async Task<LoanModel> AddLoanAsync(LoanModel loan)
         {
-            var loan1 = new LoanModel
-            {
-                ItemName = "Test",
-                Description = "Test Description",
-                Amount = 3000,
-                Status = "Active",
-                IssuedDate = DateTime.UtcNow,
-                InterestRate = 3,
-                RetentionPeriod = DateTime.UtcNow,
-                CustomerID = 1
-            };
 
-            //loan.IssuedDate = DateTime.UtcNow; // set the attribute IssuedDate sa time kung kailan nacreate ito
-            _context.LoanModels.Add(loan1); // paglagay ng loan sa db context
-
-            _context.SaveChanges();
+            loan.IssuedDate = DateTime.UtcNow; // set the attribute IssuedDate sa time kung kailan nacreate ito
+            _context.LoanModels.Add(loan); // paglagay ng loan sa db context
             
-            //await _context.SaveChangesAsync(); // pagsasave ng loan na nakalagay sa db context sa database
+            await _context.SaveChangesAsync(); // pagsasave ng loan na nakalagay sa db context sa database
             return loan;
         }
 

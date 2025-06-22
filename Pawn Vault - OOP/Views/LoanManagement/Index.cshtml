@@ -50,8 +50,8 @@
                             <td class="px-6 py-4">@($"{loan.Customer?.CustomerFN} {loan.Customer?.CustomerLN}")</td>
                             <td class="px-6 py-4">@loan.ItemName</td>
                             <td class="px-6 py-4 font-semibold">@loan.Amount</td>
-                            <td class="px-6 py-4">@loan.InterestRate</td>
-                            <td class="px-6 py-4 flex items-center gap-2"><svg class="w-4 h-4 text-gray-400 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>@loan.RetentionPeriod.ToString("mm/dd/yyyy")</td>
+                            <td class="px-6 py-4">@loan.InterestRate.ToString("N2")%</td>
+                            <td class="px-6 py-4 flex items-center gap-2"><svg class="w-4 h-4 text-gray-400 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>@loan.RetentionPeriod.ToString("MMMM/dd/yyyy")</td>
                             <!-- conditional placing of status design -->
                             <td class="px-6 py-4">
                                 @if (loan.Status == "Active")

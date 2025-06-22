@@ -27,8 +27,6 @@ namespace Pawn_Vault___OOP.Controllers
         // ===== Create Logic =====
         public IActionResult Create() // pagpapakita lang ng Create Page
         {
-            _loanRepository.AddLoanAsync(new LoanModel()); // test method, para mag add ng customer sa db  
-
             return View();
         }
 

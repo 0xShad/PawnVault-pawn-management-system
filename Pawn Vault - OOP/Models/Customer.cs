@@ -22,7 +22,7 @@ namespace Pawn_Vault___OOP.Models
         public string Municipality { get; set; } = string.Empty;
 
         public string ZipCode { get; set; } = string.Empty;
-
+        // public string email { get; set; } = string.Empty;
         // Navigation property
 
         public ICollection<LoanModel> Loans { get; set; } = new List<LoanModel>();
