@@ -17,11 +17,15 @@ namespace Pawn_Vault___OOP.Repositories
 
         public async Task<IEnumerable<LoanModel>> GetAllLoansAsync()
         {
-            return await _context.LoanModels.ToListAsync(); // fetching all record atsaka irereturn siya as list
+            return await _context.LoanModels
+                .Include(l => l.Customer) // pag include ng Customer para makuha ang related na customer data sa LoanModel
+                .ToListAsync(); // fetching all record atsaka irereturn siya as list
         }
         public async Task<LoanModel> GetLoanbyIdAsync(int id)
         {
-            return await _context.LoanModels.FindAsync(id);
+            return await _context.LoanModels
+                .Include(l => l.Customer) 
+                .FirstOrDefaultAsync(l => l.Id == id);
         }
 
         public async Task<LoanModel> AddLoanAsync(LoanModel loan)
