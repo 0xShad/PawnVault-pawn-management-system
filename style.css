@@ -15,3 +15,12 @@
 .rotate-anim {
   animation: rotateAnim 18s linear infinite;
 }
+
+/* Bounce Animation */
+@keyframes bounceAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.bounce-anim {
+  animation: bounceAnim 2.5s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+}
