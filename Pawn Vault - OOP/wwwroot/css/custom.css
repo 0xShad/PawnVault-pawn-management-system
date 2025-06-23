@@ -1,0 +1,74 @@
+/* Floating Animation */
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+.float-anim {
+  animation: floatAnim 5s ease-in-out infinite;
+}
+
+/* Rotate Animation */
+@keyframes rotateAnim {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.rotate-anim {
+  animation: rotateAnim 18s linear infinite;
+}
+
+/* Bounce Animation */
+@keyframes bounceAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.bounce-anim {
+  animation: bounceAnim 2.5s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+}
+
+/* Animation Delays */
+.anim-delay-1 { animation-delay: 0.5s; }
+.anim-delay-2 { animation-delay: 1s; }
+.anim-delay-3 { animation-delay: 1.5s; }
+.anim-delay-4 { animation-delay: 2s; }
+
+/* Pulse (scale) Animation */
+@keyframes pulseAnim {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.pulse-anim {
+  animation: pulseAnim 3.5s ease-in-out infinite;
+}
+
+/* Fade (opacity) Animation */
+@keyframes fadeAnim {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.fade-anim {
+  animation: fadeAnim 4s ease-in-out infinite;
+}
+
+/* Counter Rotate Animation */
+@keyframes counterRotateAnim {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+.counter-rotate-anim {
+  animation: counterRotateAnim 14s linear infinite;
+}
+
+/* Float + Rotate Animation */
+@keyframes floatRotateAnim {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(8deg); }
+}
+.float-rotate-anim {
+  animation: floatRotateAnim 7s ease-in-out infinite;
+}
+
+/* More Animation Delays */
+.anim-delay-5 { animation-delay: 2.5s; }
+.anim-delay-6 { animation-delay: 3s; }
+.anim-delay-7 { animation-delay: 3.5s; }
+.anim-delay-8 { animation-delay: 4s; } 

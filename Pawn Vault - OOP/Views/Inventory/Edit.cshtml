@@ -1,0 +1,99 @@
+@model Pawn_Vault___OOP.Models.InventoryItem
+
+@{
+    ViewData["Title"] = "Edit Item";
+}
+
+<div class="px-6 py-4 min-h-screen">
+    <div class="flex items-center justify-between mb-1">
+        <h1 class="text-3xl font-bold text-gray-900">Edit Item</h1>
+        <a asp-action="Index" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+            <i class="hgi hgi-stroke hgi-arrow-left mr-2"></i>Back to Inventory
+        </a>
+    </div>
+    <p class="text-gray-500 mb-8">Update the details of this inventory item.</p>
+
+    <div class="bg-white rounded-xl shadow p-6">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="DateAdded" />
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Item Name -->
+                <div>
+                    <label asp-for="Name" class="block text-sm font-medium text-gray-700 mb-1">Item Name</label>
+                    <input asp-for="Name" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required />
+                    <span asp-validation-for="Name" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label asp-for="Category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select asp-for="Category" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required>
+                        <option value="">Select a category</option>
+                        <option value="Jewelry">Jewelry</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Watches">Watches</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="md:col-span-2">
+                    <label asp-for="Description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea asp-for="Description" rows="3" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required></textarea>
+                    <span asp-validation-for="Description" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Condition -->
+                <div>
+                    <label asp-for="Condition" class="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+                    <select asp-for="Condition" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required>
+                        <option value="">Select condition</option>
+                        <option value="excellent">Excellent</option>
+                        <option value="good">Good</option>
+                        <option value="fair">Fair</option>
+                        <option value="poor">Poor</option>
+                    </select>
+                    <span asp-validation-for="Condition" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Estimated Value -->
+                <div>
+                    <label asp-for="EstimatedValue" class="block text-sm font-medium text-gray-700 mb-1">Estimated Value ($)</label>
+                    <input asp-for="EstimatedValue" type="number" min="0" step="0.01" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required />
+                    <span asp-validation-for="EstimatedValue" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Loan Amount -->
+                <div>
+                    <label asp-for="LoanAmount" class="block text-sm font-medium text-gray-700 mb-1">Loan Amount ($)</label>
+                    <input asp-for="LoanAmount" type="number" min="0" step="0.01" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required />
+                    <span asp-validation-for="LoanAmount" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <label asp-for="Status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select asp-for="Status" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#003366] focus:border-[#003366]" required>
+                        <option value="available">Available</option>
+                        <option value="on loan">On Loan</option>
+                        <option value="sold">Sold</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-red-500 text-sm"></span>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-8 flex justify-end gap-4">
+                <a asp-action="Index" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">Cancel</a>
+                <button type="submit" class="px-6 py-2 bg-[#0a1629] text-white rounded-lg hover:bg-[#003366] transition">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 
