@@ -9,11 +9,11 @@ using Pawn_Vault___OOP.Data;
 
 #nullable disable
 
-namespace Pawn_Vault___OOP.Data.Migrations
+namespace Pawn_Vault___OOP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250621185533_addCustomerTable")]
-    partial class addCustomerTable
+    [Migration("20250623081827_addUpdateModels")]
+    partial class addUpdateModels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -264,6 +264,43 @@ namespace Pawn_Vault___OOP.Data.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Employee", b =>
+                {
+                    b.Property<int>("EmployeeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeID"));
+
+                    b.Property<string>("EmpFN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmpLN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EmployeeID");
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("Pawn_Vault___OOP.Models.InventoryItem", b =>
                 {
                     b.Property<int>("Id")
@@ -297,6 +334,9 @@ namespace Pawn_Vault___OOP.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("LoanID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -309,16 +349,18 @@ namespace Pawn_Vault___OOP.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LoanID");
+
                     b.ToTable("InventoryItems");
                 });
 
             modelBuilder.Entity("Pawn_Vault___OOP.Models.Loan", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LoanID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanID"));
 
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 2)
@@ -331,9 +373,12 @@ namespace Pawn_Vault___OOP.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("InterestRate")
+                    b.Property<int>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("InterestRate")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("float(18)");
 
                     b.Property<DateTime>("IssuedDate")
                         .HasColumnType("datetime2");
@@ -343,18 +388,49 @@ namespace Pawn_Vault___OOP.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("RetentionPeriod")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("RetentionPeriod")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("LoanID");
 
                     b.HasIndex("CustomerID");
 
-                    b.ToTable("LoanModels");
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("Loans");
+                });
+
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Balance")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("LoanID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PaymentID");
+
+                    b.HasIndex("LoanID");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -408,20 +484,58 @@ namespace Pawn_Vault___OOP.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.InventoryItem", b =>
+                {
+                    b.HasOne("Pawn_Vault___OOP.Models.Loan", null)
+                        .WithMany("InventoryItems")
+                        .HasForeignKey("LoanID");
+                });
+
             modelBuilder.Entity("Pawn_Vault___OOP.Models.Loan", b =>
                 {
-                    b.HasOne("Pawn_Vault___OOP.Models.Customer", "Customer")    
+                    b.HasOne("Pawn_Vault___OOP.Models.Customer", "Customer")
                         .WithMany("Loans")
                         .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Pawn_Vault___OOP.Models.Employee", "Employee")
+                        .WithMany("Loans")
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Payment", b =>
+                {
+                    b.HasOne("Pawn_Vault___OOP.Models.Loan", "Loan")
+                        .WithMany("Payments")
+                        .HasForeignKey("LoanID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Loan");
                 });
 
             modelBuilder.Entity("Pawn_Vault___OOP.Models.Customer", b =>
                 {
                     b.Navigation("Loans");
+                });
+
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Employee", b =>
+                {
+                    b.Navigation("Loans");
+                });
+
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Loan", b =>
+                {
+                    b.Navigation("InventoryItems");
+
+                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }

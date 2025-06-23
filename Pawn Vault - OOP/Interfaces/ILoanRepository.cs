@@ -1,5 +1,4 @@
-﻿using Pawn_Vault___OOP.Data.Migrations;
-using Pawn_Vault___OOP.Models;
+﻿using Pawn_Vault___OOP.Models;
 
 namespace Pawn_Vault___OOP.Interfaces
 {
