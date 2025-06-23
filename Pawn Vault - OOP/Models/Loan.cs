@@ -20,9 +20,9 @@ namespace Pawn_Vault___OOP.Models
         //[Column(TypeName = "decimal(18,2)")] // allocation lang for precision
         public decimal Amount { get; set; }
 
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
 
-        public DateTime IssuedDate { get; set; }
+        public DateTime IssuedDate { get; set; } = DateTime.UtcNow;
 
         public double InterestRate { get; set; }
 

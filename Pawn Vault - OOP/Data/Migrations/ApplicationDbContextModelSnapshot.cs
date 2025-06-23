@@ -386,7 +386,7 @@ namespace Pawn_Vault___OOP.Data.Migrations
                     b.ToTable("InventoryItems", (string)null);
                 });
 
-            modelBuilder.Entity("Pawn_Vault___OOP.Models.LoanModel", b =>
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Loan", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -428,7 +428,7 @@ namespace Pawn_Vault___OOP.Data.Migrations
 
                     b.HasIndex("CustomerID");
 
-                    b.ToTable("LoanModels", (string)null);
+                    b.ToTable("Loan", (string)null);
                     b.HasIndex("LoanID");
 
                     b.ToTable("InventoryItems");
@@ -560,7 +560,7 @@ namespace Pawn_Vault___OOP.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Pawn_Vault___OOP.Models.LoanModel", b =>
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Loan", b =>
                 {
                     b.HasOne("Pawn_Vault___OOP.Models.Customer", "Customer")
                         .WithMany("Loans")

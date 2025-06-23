@@ -312,7 +312,7 @@ namespace Pawn_Vault___OOP.Data.Migrations
                     b.ToTable("InventoryItems");
                 });
 
-            modelBuilder.Entity("Pawn_Vault___OOP.Models.LoanModel", b =>
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Loan", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -408,9 +408,9 @@ namespace Pawn_Vault___OOP.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Pawn_Vault___OOP.Models.LoanModel", b =>
+            modelBuilder.Entity("Pawn_Vault___OOP.Models.Loan", b =>
                 {
-                    b.HasOne("Pawn_Vault___OOP.Models.Customer", "Customer")
+                    b.HasOne("Pawn_Vault___OOP.Models.Customer", "Customer")    
                         .WithMany("Loans")
                         .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
