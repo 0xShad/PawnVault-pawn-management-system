@@ -25,6 +25,6 @@ namespace Pawn_Vault___OOP.Models
         // public string email { get; set; } = string.Empty;
         // Navigation property
 
-        public ICollection<LoanModel> Loans { get; set; } = new List<LoanModel>();
+        public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     }
 }

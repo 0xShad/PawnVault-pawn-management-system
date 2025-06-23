@@ -32,7 +32,7 @@ namespace Pawn_Vault___OOP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(LoanModel loan) // Logic sa pagcreate ng loan
+        public async Task<IActionResult> Create(Loan loan) // Logic sa pagcreate ng loan
         {
             if (ModelState.IsValid)
             {
@@ -57,9 +57,9 @@ namespace Pawn_Vault___OOP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, LoanModel loan) // Pag-uupdate ng edited row sa database
+        public async Task<IActionResult> Edit(int id, Loan loan) // Pag-uupdate ng edited row sa database
         {
-            if (id != loan.Id)
+            if (id != loan.LoanID)
             {
                 return NotFound();
             }

@@ -34,9 +34,5 @@ namespace Pawn_Vault___OOP.Models
         // ====== Navigation Property, para ma link yung Customer at Inventory Table sa Loan Table ======
         public Customer? Customer { get; set;}
         // public inventoryItem Inventory { get; set; } // di pa naiimplement ung table ng Inventory kaya di muna siya isasama.
-
-        // === sitll not sure kung need pa ba ideclare or not ===
-        // public int EmployeeId { get; set; 
-
     }
 }

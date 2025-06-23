@@ -15,30 +15,30 @@ namespace Pawn_Vault___OOP.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<LoanModel>> GetAllLoansAsync()
+        public async Task<IEnumerable<Loan>> GetAllLoansAsync()
         {
-            return await _context.LoanModels
+            return await _context.Loans
                 .Include(l => l.Customer) // pag include ng Customer para makuha ang related na customer data sa LoanModel
                 .ToListAsync(); // fetching all record atsaka irereturn siya as list
         }
-        public async Task<LoanModel> GetLoanbyIdAsync(int id)
+        public async Task<Loan> GetLoanbyIdAsync(int id)
         {
-            return await _context.LoanModels
+            return await _context.Loans
                 .Include(l => l.Customer) 
-                .FirstOrDefaultAsync(l => l.Id == id);
+                .FirstOrDefaultAsync(l => l.LoanID == id);
         }
 
-        public async Task<LoanModel> AddLoanAsync(LoanModel loan)
+        public async Task<Loan> AddLoanAsync(Loan loan)
         {
 
             loan.IssuedDate = DateTime.UtcNow; // set the attribute IssuedDate sa time kung kailan nacreate ito
-            _context.LoanModels.Add(loan); // paglagay ng loan sa db context
+            _context.Loans.Add(loan); // paglagay ng loan sa db context
             
             await _context.SaveChangesAsync(); // pagsasave ng loan na nakalagay sa db context sa database
             return loan;
         }
 
-        public async Task<LoanModel> UpdateLoanAsync(LoanModel loan)
+        public async Task<Loan> UpdateLoanAsync(Loan loan)
         {
             _context.Entry(loan).State = EntityState.Modified; // marking as modified para alam ni EF Core na inupdate ito ng user
             await _context.SaveChangesAsync(); // pagsasave ng updated na row sa database
@@ -47,10 +47,10 @@ namespace Pawn_Vault___OOP.Repositories
 
         public async Task DeleteLoanAsync(int id)
         {
-            var loan = await _context.LoanModels.FindAsync(id);
+            var loan = await _context.Loans.FindAsync(id);
             if (loan != null)
             {
-                _context.LoanModels.Remove(loan);
+                _context.Loans.Remove(loan);
                 await _context.SaveChangesAsync();
             }
         }
