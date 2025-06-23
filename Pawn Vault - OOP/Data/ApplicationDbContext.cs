@@ -35,6 +35,15 @@ namespace Pawn_Vault___OOP.Data
             builder.Entity<InventoryItem>()
                 .Property(i => i.LoanAmount)
                 .HasPrecision(18, 2);
+
+            // Configure Loan
+            builder.Entity<Loan>()
+                .Property(l => l.Amount)
+                .HasPrecision(18, 2);
+
+            builder.Entity<Loan>()
+                .Property(l => l.InterestRate)
+                .HasPrecision(18, 2);
         }
 
     }

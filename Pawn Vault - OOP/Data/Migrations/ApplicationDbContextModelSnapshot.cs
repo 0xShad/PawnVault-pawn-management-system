@@ -8,7 +8,7 @@ using Pawn_Vault___OOP.Data;
 
 #nullable disable
 
-namespace Pawn_Vault___OOP.Data.Migrations
+namespace Pawn_Vault___OOP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -360,26 +360,30 @@ namespace Pawn_Vault___OOP.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanID"));
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeeID")
                         .HasColumnType("int");
 
                     b.Property<double>("InterestRate")
-                        .HasColumnType("float");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
 
                     b.Property<DateTime>("IssuedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("RetentionPeriod")
                         .HasColumnType("int");

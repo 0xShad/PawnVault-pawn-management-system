@@ -11,17 +11,18 @@ namespace Pawn_Vault___OOP.Models
         public int LoanID { get; set; }
 
         [Required]
-        public string ItemName { get; set; }
+        [StringLength(100)]
+        public string ItemName { get; set; } = string.Empty;
 
+        public string Description { get; set; } = string.Empty;
+        
         [Required]
-        [Column(TypeName = "decimal(18,2)")] // allocation lang for precision
+        //[Column(TypeName = "decimal(18,2)")] // allocation lang for precision
         public decimal Amount { get; set; }
 
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
 
-        public DateTime IssuedDate { get; set; }
-
-        public DateTime Date { get; set; }
+        public DateTime IssuedDate { get; set; } = DateTime.UtcNow;
 
         public double InterestRate { get; set; }
 

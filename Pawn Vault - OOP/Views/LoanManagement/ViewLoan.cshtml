@@ -19,29 +19,29 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Loan ID</label>
-                        <p class="mt-1 text-gray-900">L001</p>
+                        <p class="mt-1 text-gray-900">@Model.Id</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Status</label>
                         <span class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Active
+                            @Model.Status <!-- To be added with conditional UI design . Ex.: if Active = Green, if Overdue = Red -->
                         </span>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Amount</label>
-                        <p class="mt-1 text-gray-900">$1,000.00</p>
+                        <p class="mt-1 text-gray-900">$@Model.Amount</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Interest Rate</label>
-                        <p class="mt-1 text-gray-900">5%</p>
+                        <p class="mt-1 text-gray-900">@Model.InterestRate.ToString("N2")%</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Date Created</label>
-                        <p class="mt-1 text-gray-900">January 15, 2024</p>
+                        <p class="mt-1 text-gray-900">@Model.IssuedDate.ToString("MMMM dd, yyyy")</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Due Date</label>
-                        <p class="mt-1 text-gray-900">February 15, 2024</p>
+                        <p class="mt-1 text-gray-900">@Model.RetentionPeriod.ToString("MMMM dd, yyyy")</p>
                     </div>
                 </div>
             </div>
@@ -53,19 +53,22 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Customer Name</label>
-                        <p class="mt-1 text-gray-900">John Doe</p>
+                        <p class="mt-1 text-gray-900">@($"{Model.Customer?.CustomerFN} {Model.Customer?.CustomerLN}")</p>
+                    </div>
+                    <div>
+
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Contact Number</label>
-                        <p class="mt-1 text-gray-900">(555) 123-4567</p>
+                        <p class="mt-1 text-gray-900">@Model.Customer?.TelephoneNo</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Email</label>
-                        <p class="mt-1 text-gray-900">john.doe@email.com</p>
+                        <p class="mt-1 text-gray-900">john.doe@email.com</p> <!-- To be implemented, there's no email on Customer table' -->
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Address</label>
-                        <p class="mt-1 text-gray-900">123 Main St, City, State</p>
+                        <p class="mt-1 text-gray-900">@($"{Model.Customer?.Street}, {Model.Customer?.Municipality}, {Model.Customer?.ZipCode}")</p>
                     </div>
                 </div>
             </div>
@@ -77,23 +80,23 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Item Name</label>
-                        <p class="mt-1 text-gray-900">Gold Watch</p>
+                        <p class="mt-1 text-gray-900">@Model.ItemName</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Category</label>
-                        <p class="mt-1 text-gray-900">Jewelry</p>
+                        <p class="mt-1 text-gray-900">Jewelry</p> <!-- To be implemented, Category is in Inventory Table which isn't connected yet -->
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Condition</label>
-                        <p class="mt-1 text-gray-900">Excellent</p>
+                        <p class="mt-1 text-gray-900">Excellent</p> <!-- To be implemented, Condition is also in Inventory Table -->
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Estimated Value</label>
-                        <p class="mt-1 text-gray-900">$1,500.00</p>
+                        <p class="mt-1 text-gray-900">$1,500.00</p> <!-- To be implemented, not yet connected to Inventory Table -->
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Description</label>
-                        <p class="mt-1 text-gray-900">18k gold watch with leather strap</p>
+                        <p class="mt-1 text-gray-900">@Model.Description</p>
                     </div>
                 </div>
             </div>
@@ -101,17 +104,17 @@
 
         <!-- Action Buttons -->
         <div class="mt-8 flex justify-end space-x-4">
-            <a href="/LoanManagement/Edit/L001" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+            <a href="/LoanManagement/Edit/@Model.Id" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
                 <i class="fas fa-edit mr-2"></i>Edit Loan
             </a>
-            <button onclick="deleteLoan('L001')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center">
+            <button onclick="deleteLoan('@Model.Id')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center">
                 <i class="fas fa-trash-alt mr-2"></i>Delete Loan
             </button>
         </div>
     </div>
 </div>
 
-@section Scripts {
+@section Scripts {  
     <script>
         function deleteLoan(id) {
             showDeleteModal(id, 'loan');

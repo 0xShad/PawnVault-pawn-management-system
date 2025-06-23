@@ -62,10 +62,10 @@
                         <td class="text-gray-700 hidden sm:block">
                             @{
                                         var latestLoan = customer.Loans?
-                                        .OrderByDescending(l => l.Date)
+                                        .OrderByDescending(l => l.IssuedDate) // originally l => l.Date, changed to IssuedDate for now.
                                         .FirstOrDefault();
                                     }
-                                    @latestLoan?.Date.ToShortDateString() ?? "No Loan"
+                                    @latestLoan?.IssuedDate.ToShortDateString() ?? "No Loan" <!-- originally latestLoan?.Date.ToShortDateString(), changed to IssuedDate for now. -->
                                 </td>
                                 <td class="text-gray-700 hidden sm:block">
                                     ₱@customer.Loans?.Sum(l => l.Amount).ToString("N2")
