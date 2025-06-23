@@ -24,3 +24,9 @@
 .bounce-anim {
   animation: bounceAnim 2.5s cubic-bezier(.68,-0.55,.27,1.55) infinite;
 }
+
+/* Animation Delays */
+.anim-delay-1 { animation-delay: 0.5s; }
+.anim-delay-2 { animation-delay: 1s; }
+.anim-delay-3 { animation-delay: 1.5s; }
+.anim-delay-4 { animation-delay: 2s; }
