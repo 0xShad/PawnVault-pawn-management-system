@@ -1,0 +1,57 @@
+@model Pawn_Vault___OOP.Models.Customer
+
+<div class="min-h-screen flex items-center justify-center bg-white py-8">
+    <div class="w-full max-w-lg">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Register New Customer</h1>
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty]?.Errors.Count > 0)
+        {
+            <div class="mb-4 p-3 rounded-lg bg-red-100 border border-red-300 text-red-800 text-sm font-semibold">
+                @foreach (var error in ViewData.ModelState[string.Empty].Errors)
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+        <form asp-action="Create" method="post" class="space-y-5">
+            @Html.AntiForgeryToken()
+            <div>
+                <label class="block text-gray-800 font-semibold mb-1" for="CustomerFN">First Name <span class="text-red-600">*</span></label>
+                <input asp-for="CustomerFN" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-black focus:border-black" required />
+                <span asp-validation-for="CustomerFN" class="text-red-600 text-sm"></span>
+            </div>
+            <div>
+                <label class="block text-gray-800 font-semibold mb-1" for="CustomerLN">Last Name <span class="text-red-600">*</span></label>
+                <input asp-for="CustomerLN" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-black focus:border-black" required />
+                <span asp-validation-for="CustomerLN" class="text-red-600 text-sm"></span>
+            </div>
+            <div>
+                <label class="block text-gray-800 font-semibold mb-1" for="TelephoneNo">Telephone Number</label>
+                <input asp-for="TelephoneNo" pattern="[0-9]*" inputmode="numeric" maxlength="15" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-black focus:border-black" />
+                <span asp-validation-for="TelephoneNo" class="text-red-600 text-sm"></span>
+            </div>
+            <div>
+                <label class="block text-gray-800 font-semibold mb-1" for="Street">Street</label>
+                <input asp-for="Street" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-black focus:border-black" />
+                <span asp-validation-for="Street" class="text-red-600 text-sm"></span>
+            </div>
+            <div>
+                <label class="block text-gray-800 font-semibold mb-1" for="Municipality">Municipality</label>
+                <input asp-for="Municipality" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-black focus:border-black" />
+                <span asp-validation-for="Municipality" class="text-red-600 text-sm"></span>
+            </div>
+            <div>
+                <label class="block text-gray-800 font-semibold mb-1" for="ZipCode">Zip Code</label>
+                <input asp-for="ZipCode" pattern="[0-9]*" inputmode="numeric" maxlength="10" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-black focus:border-black" />
+                <span asp-validation-for="ZipCode" class="text-red-600 text-sm"></span>
+            </div>
+            <div class="flex justify-between items-center mt-8">
+                <a href="/Customer" class="text-gray-700 hover:underline font-semibold">&larr; Back</a>
+                <button type="submit" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-8 rounded-lg shadow transition">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

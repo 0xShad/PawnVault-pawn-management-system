@@ -14,16 +14,20 @@ namespace Pawn_Vault___OOP.Models
 
         [Required]
         public string CustomerLN { get; set; } = string.Empty;
-
+        
         public string TelephoneNo { get; set; } = string.Empty;
-
+      
         public string Street { get; set; } = string.Empty;
-
+     
         public string Municipality { get; set; } = string.Empty;
-
+      
         public string ZipCode { get; set; } = string.Empty;
         // public string email { get; set; } = string.Empty;
         // Navigation property
+
+        public DateTime DateAdded { get; set; } = DateTime.UtcNow;
+
+        public bool IsDeleted { get; set; } = false;
 
         public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     }
