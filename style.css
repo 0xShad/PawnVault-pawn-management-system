@@ -48,3 +48,12 @@
 .fade-anim {
   animation: fadeAnim 4s ease-in-out infinite;
 }
+
+/* Counter Rotate Animation */
+@keyframes counterRotateAnim {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+.counter-rotate-anim {
+  animation: counterRotateAnim 14s linear infinite;
+}
