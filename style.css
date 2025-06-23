@@ -39,3 +39,12 @@
 .pulse-anim {
   animation: pulseAnim 3.5s ease-in-out infinite;
 }
+
+/* Fade (opacity) Animation */
+@keyframes fadeAnim {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.fade-anim {
+  animation: fadeAnim 4s ease-in-out infinite;
+}
