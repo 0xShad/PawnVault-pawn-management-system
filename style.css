@@ -57,3 +57,12 @@
 .counter-rotate-anim {
   animation: counterRotateAnim 14s linear infinite;
 }
+
+/* Float + Rotate Animation */
+@keyframes floatRotateAnim {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(8deg); }
+}
+.float-rotate-anim {
+  animation: floatRotateAnim 7s ease-in-out infinite;
+}
