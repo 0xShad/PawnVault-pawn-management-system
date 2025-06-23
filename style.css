@@ -1,0 +1,8 @@
+/* Floating Animation */
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+.float-anim {
+  animation: floatAnim 5s ease-in-out infinite;
+}
