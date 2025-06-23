@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Pawn_Vault___OOP.Models.InventoryItem>
+@{
+    ViewData["Title"] = "Inventory Management";
+}
 
 <div class="px-6 py-4 min-h-screen">
     <div class="flex items-center justify-between mb-1">
@@ -124,7 +127,6 @@
 </div>
 
 @{
-    ViewData["Title"] = "Delete Item";
     ViewData["Message"] = "Are you sure you want to delete this item? This action cannot be undone.";
     ViewData["DeleteUrl"] = "/Inventory/Delete/";
 }
