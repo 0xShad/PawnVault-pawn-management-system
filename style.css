@@ -66,3 +66,9 @@
 .float-rotate-anim {
   animation: floatRotateAnim 7s ease-in-out infinite;
 }
+
+/* More Animation Delays */
+.anim-delay-5 { animation-delay: 2.5s; }
+.anim-delay-6 { animation-delay: 3s; }
+.anim-delay-7 { animation-delay: 3.5s; }
+.anim-delay-8 { animation-delay: 4s; } 
