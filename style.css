@@ -30,3 +30,12 @@
 .anim-delay-2 { animation-delay: 1s; }
 .anim-delay-3 { animation-delay: 1.5s; }
 .anim-delay-4 { animation-delay: 2s; }
+
+/* Pulse (scale) Animation */
+@keyframes pulseAnim {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.pulse-anim {
+  animation: pulseAnim 3.5s ease-in-out infinite;
+}
