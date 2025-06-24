@@ -10,7 +10,7 @@ namespace Pawn_Vault___OOP.Controllers
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
-        private const int PageSize = 15;
+        private const int PageSize = 10;
 
         public CustomerController(ICustomerRepository customerRepository)
         {

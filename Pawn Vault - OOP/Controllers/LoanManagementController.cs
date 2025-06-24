@@ -117,16 +117,13 @@ namespace Pawn_Vault___OOP.Controllers
                     // Get customer name for receipt
                     var customer = (await _customerRepository.GetAllCustomersAsync()).FirstOrDefault(c => c.CustomerID == loan.CustomerID);
                     var customerName = customer != null ? customer.FullName : loan.CustomerID.ToString();
-                    return Json(new {
-                        success = true,
-                        receipt = new {
-                            TransactionCode = loan.TransactionCode,
-                            CustomerName = customerName,
-                            ItemName = loan.ItemName,
-                            Amount = loan.Amount.ToString("N2"),
-                            DueDate = loan.DueDate.ToString("MMMM dd, yyyy")
-                        }
-                    });
+                    TempData["ShowReceipt"] = true;
+                    TempData["Receipt_TransactionCode"] = loan.TransactionCode;
+                    TempData["Receipt_Amount"] = loan.Amount.ToString("N2");
+                    TempData["Receipt_Customer"] = customerName;
+                    TempData["Receipt_ItemName"] = loan.ItemName;
+                    TempData["Receipt_DueDate"] = loan.DueDate.ToString("MMMM dd, yyyy");
+                    return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
