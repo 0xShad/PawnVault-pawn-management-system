@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Pawn_Vault___OOP.Models.ViewModels;
 
 namespace Pawn_Vault___OOP.Controllers
 {
@@ -16,14 +17,14 @@ namespace Pawn_Vault___OOP.Controllers
         {
             var staffUsers = await _userManager.GetUsersInRoleAsync("Staff");
 
-            var viewData = staffUsers.Select(u => new
+            var model = staffUsers.Select(u => new StaffViewModel
             {
-                u.Id,
+                Id = u.Id,
                 Email = u.Email,
                 Status = (u.LockoutEnd != null && u.LockoutEnd > DateTimeOffset.UtcNow) ? "Inactive" : "Active"
             }).ToList();
 
-            return View(viewData);
+            return View(model);
         }
     }
 }
