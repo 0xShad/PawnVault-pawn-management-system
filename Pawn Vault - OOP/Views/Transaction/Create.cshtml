@@ -59,6 +59,7 @@
                         <option value="redemption">Redemption</option>
                         <option value="forfeit">Forfeit</option>
                         <option value="renewal">Renewal</option>
+                        <option value="overdue">Overdue Payment</option>
                     </select>
                 </div>
                 <div>
@@ -69,7 +70,7 @@
 
             <!-- Amount, Date, Payment Method -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="amountDatePaymentFields">
-                <div>
+                <div id="amountFieldWrapper">
                     <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
                     <div class="relative">
                         <span class="absolute left-3 top-2 text-gray-500">$</span>
@@ -216,15 +217,27 @@
         document.getElementById('transactionType').addEventListener('change', function(e) {
             const amountFields = document.getElementById('amountDatePaymentFields');
             const renewalField = document.getElementById('renewalDueDateField');
+            const amountFieldWrapper = document.getElementById('amountFieldWrapper');
             if (e.target.value === 'renewal') {
                 renewalField.classList.remove('hidden');
                 amountFields.classList.remove('hidden');
-            } else if (e.target.value === 'redemption' || e.target.value === 'forfeit') {
+                amountFieldWrapper.classList.remove('hidden');
+            } else if (e.target.value === 'redemption') {
                 renewalField.classList.add('hidden');
                 amountFields.classList.remove('hidden');
+                amountFieldWrapper.classList.remove('hidden');
+            } else if (e.target.value === 'forfeit') {
+                renewalField.classList.add('hidden');
+                amountFields.classList.remove('hidden');
+                amountFieldWrapper.classList.add('hidden');
+            } else if (e.target.value === 'overdue') {
+                renewalField.classList.add('hidden');
+                amountFields.classList.remove('hidden');
+                amountFieldWrapper.classList.remove('hidden');
             } else {
                 renewalField.classList.add('hidden');
                 amountFields.classList.add('hidden');
+                amountFieldWrapper.classList.remove('hidden');
             }
             // Update amount placeholder
             const amountInput = document.getElementById('amount');
@@ -233,10 +246,13 @@
                     amountInput.placeholder = 'Enter redemption amount';
                     break;
                 case 'forfeit':
-                    amountInput.placeholder = 'Enter forfeit amount';
+                    amountInput.placeholder = '';
                     break;
                 case 'renewal':
                     amountInput.placeholder = 'Enter renewal amount';
+                    break;
+                case 'overdue':
+                    amountInput.placeholder = 'Enter overdue payment amount';
                     break;
                 default:
                     amountInput.placeholder = '0.00';
@@ -270,6 +286,12 @@
                         if (parseFloat(amountInput.value) !== parseFloat(expected)) {
                             valid = false;
                             msg = `Amount must be exactly ₱${expected.toFixed(2)} (interest only)`;
+                        }
+                    } else if (type === 'overdue') {
+                        const expected = data.totalDue;
+                        if (parseFloat(amountInput.value) !== parseFloat(expected)) {
+                            valid = false;
+                            msg = `Amount must be exactly ₱${expected.toFixed(2)} (principal + interest + overdue interest)`;
                         }
                     } else {
                         amountInput.setCustomValidity("");

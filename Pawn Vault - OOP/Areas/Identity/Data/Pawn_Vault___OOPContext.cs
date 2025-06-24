@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Pawn_Vault___OOP.Areas.Identity.Data;
 
 namespace Pawn_Vault___OOP.Data;
 
-public class Pawn_Vault___OOPContext : IdentityDbContext<IdentityUser>
+public class Pawn_Vault___OOPContext : IdentityDbContext<ApplicationUser>
 {
     public Pawn_Vault___OOPContext(DbContextOptions<Pawn_Vault___OOPContext> options)
         : base(options)
