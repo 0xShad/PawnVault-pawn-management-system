@@ -57,6 +57,17 @@
                 }
             </select>
         </div>
+        <div>
+            <label class="block text-xs text-gray-500 mb-1" for="status">Status</label>
+            <select name="status" id="status" class="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                @{
+                    var statusVal = (ViewBag.Status as string ?? "");
+                }
+                <option value="" selected="@(string.IsNullOrEmpty(statusVal) ? "selected" : null)">All Status</option>
+                <option value="Active" selected="@(statusVal == "Active" ? "selected" : null)">Active</option>
+                <option value="NoLoans" selected="@(statusVal == "NoLoans" ? "selected" : null)">No Loans</option>
+            </select>
+        </div>
     </form>
 
     <!-- Customer Table -->
@@ -91,7 +102,7 @@
                                     @(customer.Loans.Any(l => l.Status == "Active") ? "Active" : (customer.Loans.Any() ? "Inactive" : "No Loans"))
                                 </span>
                             </td>
-                            <td class="px-4 py-3">@customer.DateAdded.ToString("yyyy-MM-dd")</td>
+                            <td class="px-4 py-3">@customer.DateAdded.ToString("MMMM dd, yyyy")</td>
                             <td class="px-4 py-3">@customer.Loans.Count</td>
                             <td class="px-4 py-3 text-center relative">
                                 <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-@customer.CustomerID')">
@@ -185,8 +196,11 @@
                 }, 700); // 700ms debounce
             });
         }
-        // Auto-submit on sort change
+        // Auto-submit on sort and status change
         document.getElementById('sort').addEventListener('change', function() {
+            document.getElementById('customerSearchForm').submit();
+        });
+        document.getElementById('status').addEventListener('change', function() {
             document.getElementById('customerSearchForm').submit();
         });
     </script>

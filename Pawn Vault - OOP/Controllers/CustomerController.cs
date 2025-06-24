@@ -17,7 +17,7 @@ namespace Pawn_Vault___OOP.Controllers
             _customerRepository = customerRepository;
         }
 
-        public async Task<IActionResult> Index(string search = "", string sort = "az", int page = 1)
+        public async Task<IActionResult> Index(string search = "", string sort = "az", string status = "", int page = 1)
         {
             var customers = await _customerRepository.GetAllCustomersAsync();
 
@@ -34,10 +34,27 @@ namespace Pawn_Vault___OOP.Controllers
                 ).ToList();
             }
 
+            // Status Filter
+            if (!string.IsNullOrEmpty(status))
+            {
+                if (status == "Active")
+                    customers = customers.Where(c => c.Loans.Any(l => l.Status == "Active")).ToList();
+                else if (status == "Inactive")
+                    customers = customers.Where(c => c.Loans.Any() && !c.Loans.Any(l => l.Status == "Active")).ToList();
+                else if (status == "NoLoans")
+                    customers = customers.Where(c => !c.Loans.Any()).ToList();
+            }
+
             // Sort
             customers = sort == "za"
                 ? customers.OrderByDescending(c => c.CustomerFN).ThenByDescending(c => c.CustomerLN).ToList()
                 : customers.OrderBy(c => c.CustomerFN).ThenBy(c => c.CustomerLN).ToList();
+
+            // Remove soft-deleted loans from each customer for correct loan count
+            foreach (var c in customers)
+            {
+                c.Loans = c.Loans?.Where(l => !l.IsDeleted).ToList() ?? new List<Loan>();
+            }
 
             // Pagination
             int total = customers.Count;
@@ -46,6 +63,7 @@ namespace Pawn_Vault___OOP.Controllers
 
             ViewBag.Search = search;
             ViewBag.Sort = sort;
+            ViewBag.Status = status;
             ViewBag.Page = page;
             ViewBag.TotalPages = totalPages;
             ViewBag.Total = total;
@@ -112,6 +130,12 @@ namespace Pawn_Vault___OOP.Controllers
             if (customer == null)
             {
                 return NotFound();
+            }
+            // Filter out soft-deleted loans and inventory items
+            customer.Loans = customer.Loans?.Where(l => !l.IsDeleted).ToList() ?? new List<Loan>();
+            foreach (var loan in customer.Loans)
+            {
+                loan.InventoryItems = loan.InventoryItems?.Where(i => !i.IsDeleted).ToList() ?? new List<InventoryItem>();
             }
             return View(customer);
         }

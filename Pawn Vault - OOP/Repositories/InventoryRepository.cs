@@ -16,12 +16,12 @@ namespace Pawn_Vault___OOP.Repositories
 
         public async Task<IEnumerable<InventoryItem>> GetAllItemsAsync()
         {
-            return await _context.InventoryItems.ToListAsync();
+            return await _context.InventoryItems.Where(i => !i.IsDeleted).ToListAsync();
         }
 
         public async Task<InventoryItem?> GetItemByIdAsync(int id)
         {
-            return await _context.InventoryItems.FindAsync(id);
+            return await _context.InventoryItems.FirstOrDefaultAsync(i => i.Id == id && !i.IsDeleted);
         }
 
         public async Task<InventoryItem> AddItemAsync(InventoryItem item)
@@ -44,7 +44,8 @@ namespace Pawn_Vault___OOP.Repositories
             var item = await _context.InventoryItems.FindAsync(id);
             if (item != null)
             {
-                _context.InventoryItems.Remove(item);
+                item.IsDeleted = true;
+                _context.Entry(item).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
         }
@@ -64,4 +65,4 @@ namespace Pawn_Vault___OOP.Repositories
             return await _context.InventoryItems.SumAsync(i => i.EstimatedValue);
         }
     }
-} 
+}

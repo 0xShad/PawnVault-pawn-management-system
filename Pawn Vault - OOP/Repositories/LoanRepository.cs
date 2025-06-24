@@ -53,6 +53,13 @@ namespace Pawn_Vault___OOP.Repositories
             {
                 loan.IsDeleted = true;
                 _context.Entry(loan).State = EntityState.Modified;
+                // Soft delete all related inventory items
+                var relatedItems = _context.InventoryItems.Where(i => i.LoanID == loan.LoanID);
+                foreach (var item in relatedItems)
+                {
+                    item.IsDeleted = true;
+                    _context.Entry(item).State = EntityState.Modified;
+                }
                 await _context.SaveChangesAsync();
             }
         }
