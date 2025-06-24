@@ -6,7 +6,7 @@ using Pawn_Vault___OOP.Models;
 
 namespace Pawn_Vault___OOP.Controllers
 {
-    [Authorize] // sinisguradong mga naka log in lang yung makakaaccess
+    [Authorize] 
     public class LoanManagementController : Controller
     {
         private readonly ILoanRepository _loanRepository; 
@@ -17,7 +17,7 @@ namespace Pawn_Vault___OOP.Controllers
         }
 
 
-        // Pagpapakita ng lahat ng loan sa Index View
+      
         public async Task<IActionResult> Index()
         {
             var loans = await _loanRepository.GetAllLoansAsync();
@@ -25,18 +25,18 @@ namespace Pawn_Vault___OOP.Controllers
         }
 
         // ===== Create Logic =====
-        public IActionResult Create() // pagpapakita lang ng Create Page
+        public IActionResult Create() 
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Loan loan) // Logic sa pagcreate ng loan
+        public async Task<IActionResult> Create(Loan loan) 
         {
             if (ModelState.IsValid)
             {
-                loan.Status = "Active"; // default status ng loan kapag na create
+                loan.Status = "Active"; 
                 loan.IssuedDate = DateTime.UtcNow;
                 await _loanRepository.AddLoanAsync(loan);
             }
@@ -45,7 +45,7 @@ namespace Pawn_Vault___OOP.Controllers
         }
 
         // ===== EDIT LOGIC =====
-        public async Task <IActionResult> Edit(int id) // pagpapakita ng edit loan page
+        public async Task <IActionResult> Edit(int id) 
         {
              var loan = await _loanRepository.GetLoanbyIdAsync(id);
             if (loan == null)
@@ -57,7 +57,7 @@ namespace Pawn_Vault___OOP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Loan loan) // Pag-uupdate ng edited row sa database
+        public async Task<IActionResult> Edit(int id, Loan loan) 
         {
             if (id != loan.LoanID)
             {

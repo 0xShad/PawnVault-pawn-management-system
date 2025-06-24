@@ -81,30 +81,6 @@ using (var scope = app.Services.CreateScope())
         });
         db.SaveChanges();
     }
-    if (!db.Employees.Any())
-    {
-        db.Employees.AddRange( // adding employees pero di pa maayos na actions
-            new Employee
-            {
-                EmpFN = "Juan",
-                EmpLN = "Dela Cruz",
-                Role = "Employee",
-                Status = "Active",
-                Username = "juandelacruz",
-                Password = "admin123" 
-            },
-            new Employee
-            {
-                EmpFN = "Ana",
-                EmpLN = "Santos",
-                Role = "Employee",
-                Status = "Active",
-                Username = "anasantos",
-                Password = "employee123"
-            }
-        );
-        db.SaveChanges();
-    }
 }
 
 

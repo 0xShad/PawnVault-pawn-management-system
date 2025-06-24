@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace Pawn_Vault___OOP.Models
 {
@@ -28,19 +29,26 @@ namespace Pawn_Vault___OOP.Models
 
         public int RetentionPeriod { get; set; }
 
-        // Foreign keys
-        [ForeignKey("Employee")]
-        public int EmployeeID { get; set; }
+        // Foreign key to IdentityUser (authenticated user who handled the loan)
+        [Required]
+        [ForeignKey("User")]
+        public string UserId { get; set; } = string.Empty;
+        
+        // Navigation property to get user details
+        public IdentityUser User { get; set; }
 
+        // Foreign key to Customer
         [ForeignKey("Customer")]
         public int CustomerID { get; set; }
-
-        // Navigation properties
-        public Employee Employee { get; set; }
         public Customer Customer { get; set; }
 
+        // Transaction code for the loan
+        [Required]
+        [StringLength(50)]
+        public string TransactionCode { get; set; } = string.Empty;
+
+        // Navigation properties
         public ICollection<Payment> Payments { get; set; }
         public ICollection<InventoryItem> InventoryItems { get; set; }
-
     }
 }

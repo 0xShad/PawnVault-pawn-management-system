@@ -69,24 +69,6 @@ namespace Pawn_Vault___OOP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    EmployeeID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmpFN = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmpLN = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.EmployeeID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -205,7 +187,6 @@ namespace Pawn_Vault___OOP.Migrations
                     IssuedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     InterestRate = table.Column<double>(type: "float(18)", precision: 18, scale: 2, nullable: false),
                     RetentionPeriod = table.Column<int>(type: "int", nullable: false),
-                    EmployeeID = table.Column<int>(type: "int", nullable: false),
                     CustomerID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -216,12 +197,6 @@ namespace Pawn_Vault___OOP.Migrations
                         column: x => x.CustomerID,
                         principalTable: "Customers",
                         principalColumn: "CustomerID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Loans_Employees_EmployeeID",
-                        column: x => x.EmployeeID,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -323,11 +298,6 @@ namespace Pawn_Vault___OOP.Migrations
                 column: "CustomerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Loans_EmployeeID",
-                table: "Loans",
-                column: "EmployeeID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Payments_LoanID",
                 table: "Payments",
                 column: "LoanID");
@@ -368,9 +338,6 @@ namespace Pawn_Vault___OOP.Migrations
 
             migrationBuilder.DropTable(
                 name: "Customers");
-
-            migrationBuilder.DropTable(
-                name: "Employees");
         }
     }
 }
