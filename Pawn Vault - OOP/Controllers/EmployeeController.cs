@@ -111,5 +111,45 @@ namespace Pawn_Vault___OOP.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(StaffViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Email", "Email is already taken.");
+                return View(model);
+            }
+
+            var newUser = new IdentityUser
+            {
+                Email = model.Email,
+                UserName = model.Email
+            };
+
+            var result = await _userManager.CreateAsync(newUser, model.NewPassword ?? "#Temp123");
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError("", error.Description);
+                return View(model);
+            }
+
+            await _userManager.AddToRoleAsync(newUser, "Staff");
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

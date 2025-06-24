@@ -1,0 +1,22 @@
+﻿@model Pawn_Vault___OOP.Models.ViewModels.StaffViewModel
+
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-semibold mb-4 text-blue-900">Add New Employee</h2>
+
+    <form asp-action="Create" method="post">
+        <div class="mb-4">
+            <label asp-for="Email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input asp-for="Email" class="w-full mt-1 p-2 border rounded" />
+            <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="NewPassword" class="block text-sm font-medium text-gray-700">Password</label>
+            <input asp-for="NewPassword" class="w-full mt-1 p-2 border rounded" type="password" />
+            <span asp-validation-for="NewPassword" class="text-red-600 text-sm"></span>
+        </div>
+
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Employee</button>
+        <a asp-action="Index" class="ml-3 text-blue-600 hover:underline">Cancel</a>
+    </form>
+</div>
