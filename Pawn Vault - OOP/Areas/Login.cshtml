@@ -1,0 +1,124 @@
+@page
+@model LoginModel
+@{
+    Layout = "/Views/Shared/_LayoutSimple.cshtml";
+    ViewData["Title"] = "Login";
+}
+
+<!-- Left: Welcome -->
+<div class="hidden md:flex flex-col justify-center px-32 py-16 bg-gradient-to-t from-slate-900 to-blue-900 text-white relative animate-fadeInUp md:col-span-1">
+    <div class="absolute inset-0 pointer-events-none z-0">
+        <!-- SVG lines/boxes -->
+        <svg width="100%" height="100%" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <rect x="30" y="40" width="180" height="180" rx="20" stroke="white" stroke-opacity="0.15" stroke-width="2" class="float-rotate-anim fade-anim" />
+            <rect x="350" y="100" width="120" height="120" rx="20" stroke="white" stroke-opacity="0.10" stroke-width="2" class="rotate-anim pulse-anim anim-delay-1" />
+            <rect x="100" y="350" width="160" height="160" rx="20" stroke="white" stroke-opacity="0.10" stroke-width="2" class="float-anim counter-rotate-anim anim-delay-2" />
+            <rect x="400" y="350" width="100" height="100" rx="20" stroke="white" stroke-opacity="0.08" stroke-width="2" class="float-rotate-anim fade-anim anim-delay-3" />
+            <rect x="250" y="200" width="80" height="80" rx="20" stroke="white" stroke-opacity="0.10" stroke-width="2" class="float-anim pulse-anim anim-delay-4" />
+        </svg>
+
+        <!-- Money/finance icons -->
+        <span class="absolute top-16 left-1/4 text-5xl text-white/10 bounce-anim pulse-anim">
+            <i class="hgi hgi-stroke hgi-save-money-dollar"></i>
+        </span>
+        <span class="absolute top-1/2 left-1/2 text-6xl text-white/10 bounce-anim anim-delay-1 fade-anim">
+            <i class="hgi hgi-stroke hgi-database-01"></i>
+        </span>
+        <span class="absolute bottom-24 left-1/3 text-4xl text-white/10 bounce-anim anim-delay-2 pulse-anim">
+            <i class="hgi hgi-stroke hgi-invoice-03"></i>
+        </span>
+        <span class="absolute bottom-10 right-1/4 text-5xl text-white/10 bounce-anim anim-delay-3 fade-anim">
+            <i class="hgi hgi-stroke hgi-dashboard-square-03"></i>
+        </span>
+    </div>
+
+    <div class="flex flex-col gap-1 max-w-2xl animate-fadeInUp relative z-10">
+        <span class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white mb-4 shadow-lg animate-fadeInUp bounce-anim">
+            <i class="hgi hgi-stroke hgi-dashboard-square-03 text-2xl text-blue-900"></i>
+        </span>
+        <h1 class="text-5xl font-extrabold mb-2 leading-tight animate-fadeInText text-gradient">
+            Welcome to<br />Pawn Vault!
+        </h1>
+        <p class="text-lg font-medium opacity-90 mb-4 animate-fadeInText" style="animation-delay:0.2s;">
+            Streamline your pawnshop operations with our comprehensive management platform. Manage inventory, track loans, and boost your business efficiency!
+        </p>
+        <ul class="space-y-2 mt-2">
+            <li class="flex items-center gap-2 animate-fadeInUp [animation-delay:0.2s]">
+                <i class="hgi hgi-stroke hgi-save-money-dollar text-2xl text-white"></i>
+                <span class="text-lg">Loan Management System</span>
+            </li>
+            <li class="flex items-center gap-2 animate-fadeInUp [animation-delay:0.4s]">
+                <i class="hgi hgi-stroke hgi-database-01 text-2xl text-white"></i>
+                <span class="text-lg">Inventory Tracking</span>
+            </li>
+            <li class="flex items-center gap-2 animate-fadeInUp [animation-delay:0.6s]">
+                <i class="hgi hgi-stroke hgi-invoice-03 text-2xl text-white"></i>
+                <span class="text-lg">Financial Reports</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="text-sm text-white/70 font-medium absolute bottom-8 left-1/2 -translate-x-1/2">
+        © 2024 Pawn Vault. All rights reserved.
+    </div>
+</div>
+
+<!-- Right: Login Form -->
+<div class="flex flex-col justify-center items-center bg-white px-8 py-10 min-w-[320px] w-full animate-fadeInUp md:col-span-1">
+    <div class="w-full max-w-sm">
+        <div class="mb-20">
+            <h2 class="text-2xl font-bold text-slate-900">Pawn Vault</h2>
+            <span class="text-sm text-blue-700">Professional Pawnshop Management</span>
+        </div>
+
+        <form id="login-panel" method="post" class="space-y-5">
+            <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm mb-2"></div>
+
+            <div>
+                <input asp-for="Input.Email" class="w-full px-3 py-2 border-b border-gray-400 focus:border-black focus:outline-none bg-transparent text-base" placeholder="Email" autocomplete="username" aria-required="true" />
+                <span asp-validation-for="Input.Email" class="text-red-600 text-xs"></span>
+            </div>
+
+            <div>
+                <input asp-for="Input.Password" type="password" class="w-full px-3 py-2 border-b border-gray-400 focus:border-black focus:outline-none bg-transparent text-base" placeholder="Password" autocomplete="current-password" aria-required="true" />
+                <span asp-validation-for="Input.Password" class="text-red-600 text-xs"></span>
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-black text-white rounded-md font-semibold text-base hover:bg-gray-900 transition">
+                Login Now
+            </button>
+
+            <div class="mt-6 text-sm text-gray-700 text-left">
+                Forget password?
+                <a asp-page="/Account/ForgotPassword" class="underline font-medium cursor-pointer">Click here</a>
+            </div>
+        </form>
+
+        <!-- Forgot Password Form (initially hidden) -->
+        <form id="forgot-password-panel" method="post" class="space-y-5" style="display:none;">
+            <div>
+                <input name="Email" class="w-full px-3 py-2 border-b border-gray-400 focus:border-black focus:outline-none bg-transparent text-base" placeholder="Enter your email" autocomplete="username" aria-required="true" />
+            </div>
+            <button type="submit" class="w-full py-3 bg-blue-700 text-white rounded-md font-semibold text-base hover:bg-blue-800 transition">
+                Send Reset Link
+            </button>
+            <div class="mt-6 text-sm text-gray-700 text-left">
+                Remembered your password?
+                <a href="#" id="show-login" class="underline font-medium cursor-pointer">Back to login</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('show-forgot').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('login-panel').style.display = 'none';
+        document.getElementById('forgot-password-panel').style.display = 'block';
+    });
+    document.getElementById('show-login').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('forgot-password-panel').style.display = 'none';
+        document.getElementById('login-panel').style.display = 'block';
+    });
+</script>
