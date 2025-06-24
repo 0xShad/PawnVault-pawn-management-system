@@ -23,10 +23,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Identity/Account/Login"; // default login route
+    options.LoginPath = "/Identity/Account/Login";
 });
 
-// MVC and services
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
@@ -34,7 +33,6 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 var app = builder.Build();
 
-// Run migrations, seed roles/users
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -57,12 +55,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-await SeedRolesAndUsersAsync(app); // ?? Call role/user seeding
-
+await SeedRolesAndUsersAsync(app); // Seed roles and users
 app.Run();
 
-
-// ?? Seed Roles and Users
+//  Seeding Roles and Users
 async Task SeedRolesAndUsersAsync(WebApplication app)
 {
     using var scope = app.Services.CreateScope();
@@ -71,7 +67,6 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
 
     string[] roles = { "Admin", "Staff" };
 
-    // Create roles
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
@@ -80,10 +75,9 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
         }
     }
 
-    // Admin user
+    // Admin
     string adminEmail = "admin@pawnvault.com";
     string adminPassword = "#Admin123";
-
     if (await userManager.FindByEmailAsync(adminEmail) == null)
     {
         var adminUser = new IdentityUser
@@ -95,18 +89,22 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
         await userManager.AddToRoleAsync(adminUser, "Admin");
     }
 
-    // Staff users
-    string[] staffEmails = { "staff1@pawnvault.com", "staff2@pawnvault.com" };
+    // Staff (?? Display name as UserName)
+    var staffUsers = new[]
+    {
+        new { Email = "staff1@pawnvault.com", UserName = "Staff 1" },// Renaming Staffs
+        new { Email = "staff2@pawnvault.com", UserName = "Staff 2" }
+    };
     string staffPassword = "#Staff123";
 
-    foreach (var staffEmail in staffEmails)
+    foreach (var staff in staffUsers)
     {
-        if (await userManager.FindByEmailAsync(staffEmail) == null)
+        if (await userManager.FindByEmailAsync(staff.Email) == null)
         {
             var staffUser = new IdentityUser
             {
-                UserName = staffEmail,
-                Email = staffEmail
+                UserName = staff.UserName,
+                Email = staff.Email
             };
             await userManager.CreateAsync(staffUser, staffPassword);
             await userManager.AddToRoleAsync(staffUser, "Staff");
