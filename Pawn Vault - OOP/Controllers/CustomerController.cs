@@ -48,7 +48,11 @@ namespace Pawn_Vault___OOP.Controllers
             // Sort
             customers = sort == "za"
                 ? customers.OrderByDescending(c => c.CustomerFN).ThenByDescending(c => c.CustomerLN).ToList()
-                : customers.OrderBy(c => c.CustomerFN).ThenBy(c => c.CustomerLN).ToList();
+                : sort == "date_desc"
+                    ? customers.OrderByDescending(c => c.DateAdded).ToList()
+                    : sort == "date_asc"
+                        ? customers.OrderBy(c => c.DateAdded).ToList()
+                        : customers.OrderBy(c => c.CustomerFN).ThenBy(c => c.CustomerLN).ToList();
 
             // Remove soft-deleted loans from each customer for correct loan count
             foreach (var c in customers)

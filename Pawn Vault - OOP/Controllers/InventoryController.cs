@@ -60,7 +60,11 @@ namespace Pawn_Vault___OOP.Controllers
             // Sort
             items = sort == "za"
                 ? items.OrderByDescending(i => i.Name).ToList()
-                : items.OrderBy(i => i.Name).ToList();
+                : sort == "date_desc"
+                    ? items.OrderByDescending(i => i.DateAdded).ToList()
+                    : sort == "date_asc"
+                        ? items.OrderBy(i => i.DateAdded).ToList()
+                        : items.OrderBy(i => i.Name).ToList();
 
             // Pagination
             int pageSize = 10;

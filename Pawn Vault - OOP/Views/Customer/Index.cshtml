@@ -45,16 +45,10 @@
         <div>
             <label class="block text-xs text-gray-500 mb-1" for="sort">Sort</label>
             <select name="sort" id="sort" class="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
-                @if (sort == "az")
-                {
-                    <option value="az" selected>A - Z</option>
-                    <option value="za">Z - A</option>
-                }
-                else
-                {
-                    <option value="az">A - Z</option>
-                    <option value="za" selected>Z - A</option>
-                }
+                <option value="az" selected="@(sort == "az" ? "selected" : null)">A - Z</option>
+                <option value="za" selected="@(sort == "za" ? "selected" : null)">Z - A</option>
+                <option value="date_desc" selected="@(sort == "date_desc" ? "selected" : null)">Newest</option>
+                <option value="date_asc" selected="@(sort == "date_asc" ? "selected" : null)">Oldest</option>
             </select>
         </div>
         <div>

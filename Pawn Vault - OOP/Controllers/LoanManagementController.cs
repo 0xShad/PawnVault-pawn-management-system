@@ -48,7 +48,11 @@ namespace Pawn_Vault___OOP.Controllers
             // Sort
             loans = sort == "za"
                 ? loans.OrderByDescending(l => l.ItemName).ThenByDescending(l => l.LoanID)
-                : loans.OrderBy(l => l.ItemName).ThenBy(l => l.LoanID);
+                : sort == "date_desc"
+                    ? loans.OrderByDescending(l => l.IssuedDate)
+                    : sort == "date_asc"
+                        ? loans.OrderBy(l => l.IssuedDate)
+                        : loans.OrderBy(l => l.ItemName).ThenBy(l => l.LoanID);
 
             // Pagination
             int totalCount = loans.Count();
