@@ -8,7 +8,8 @@ namespace Pawn_Vault___OOP.Interfaces
     {
         Task AddCustomerAsync(Customer customer);
         Task<List<Customer>> GetAllCustomersAsync();
+        List<Customer> GetAllCustomers();
         Task SoftDeleteCustomerAsync(int customerId);
         Task UpdateCustomerAsync(Customer customer);
     }
-} 
+}

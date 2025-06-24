@@ -35,6 +35,11 @@ namespace Pawn_Vault___OOP.Repositories
                 .ToListAsync();
         }
 
+        public List<Customer> GetAllCustomers()
+        {
+            return GetAllCustomersAsync().Result;
+        }
+
         public async Task SoftDeleteCustomerAsync(int customerId)
         {
             var customer = await _context.Customers.FindAsync(customerId);
@@ -51,4 +56,4 @@ namespace Pawn_Vault___OOP.Repositories
             await _context.SaveChangesAsync();
         }
     }
-} 
+}

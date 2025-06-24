@@ -64,5 +64,11 @@ namespace Pawn_Vault___OOP.Repositories
             }
         }
 
+        public List<Loan> GetLoansByCustomerId(int customerId)
+        {
+            return _context.Loans
+                .Where(l => l.CustomerID == customerId && !l.IsDeleted)
+                .ToList();
+        }
     }
 }
