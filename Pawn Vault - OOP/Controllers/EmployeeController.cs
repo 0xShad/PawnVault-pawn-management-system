@@ -13,18 +13,53 @@ namespace Pawn_Vault___OOP.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
         {
-            var staffUsers = await _userManager.GetUsersInRoleAsync("Staff");
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound();
 
-            var model = staffUsers.Select(u => new StaffViewModel
+            var model = new StaffViewModel
             {
-                Id = u.Id,
-                Email = u.Email,
-                Status = (u.LockoutEnd != null && u.LockoutEnd > DateTimeOffset.UtcNow) ? "Inactive" : "Active" // if log-in or out
-            }).ToList();
+                Id = user.Id,
+                Email = user.Email,
+                Status = user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.Now ? "Inactive" : "Active"
+            };
 
-            return View(model);
+            return View("Edit", model); // 👈 Use Edit.cshtml
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(StaffViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null)
+                return NotFound();
+
+            user.Email = model.Email;
+            user.UserName = model.Email;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Failed to update user.");
+                return View("Edit", model);
+            }
+
+            if (!string.IsNullOrEmpty(model.NewPassword))
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var passwordResult = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+
+                if (!passwordResult.Succeeded)
+                {
+                    ModelState.AddModelError("", "Failed to update password.");
+                    return View("Edit", model);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }
