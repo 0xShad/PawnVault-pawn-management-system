@@ -75,5 +75,41 @@ namespace Pawn_Vault___OOP.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound();
+
+            var model = new StaffViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Status = user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.Now ? "Inactive" : "Active"
+            };
+
+            return View("Delete", model); // Use Delete.cshtml
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound();
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Failed to delete user.");
+                return View("Delete", new StaffViewModel { Id = id });
+            }
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
