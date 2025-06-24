@@ -14,6 +14,20 @@ namespace Pawn_Vault___OOP.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var users = await _userManager.GetUsersInRoleAsync("Staff");
+            var model = users.Select(u => new StaffViewModel
+            {
+                Id = u.Id,
+                Email = u.Email,
+                Status = u.LockoutEnd.HasValue && u.LockoutEnd > DateTime.Now ? "Inactive" : "Active"
+            }).ToList();
+
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -27,7 +41,7 @@ namespace Pawn_Vault___OOP.Controllers
                 Status = user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.Now ? "Inactive" : "Active"
             };
 
-            return View("Edit", model); // 👈 Use Edit.cshtml
+            return View("Edit", model); //  Use Edit.cshtml
         }
 
         [HttpPost]
