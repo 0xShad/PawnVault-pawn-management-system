@@ -89,7 +89,7 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
         await userManager.AddToRoleAsync(adminUser, "Admin");
     }
 
-    // Staff (?? Display name as UserName)
+    // Staff (Display name as UserName)
     var staffUsers = new[]
     {
         new { Email = "staff1@pawnvault.com", UserName = "Staff 1" },// Renaming Staffs
@@ -99,7 +99,8 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
 
     foreach (var staff in staffUsers)
     {
-        if (await userManager.FindByEmailAsync(staff.Email) == null)
+        var existing = await userManager.FindByEmailAsync(staff.Email);
+        if (existing == null)
         {
             var staffUser = new IdentityUser
             {
@@ -108,6 +109,12 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
             };
             await userManager.CreateAsync(staffUser, staffPassword);
             await userManager.AddToRoleAsync(staffUser, "Staff");
+        }
+        else
+        if (existing.UserName != staff.UserName)
+        {
+            existing.UserName = staff.UserName;
+            await userManager.UpdateAsync(existing); //  this updates the DB
         }
     }
 }
