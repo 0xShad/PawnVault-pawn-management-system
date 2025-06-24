@@ -19,7 +19,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Loan ID</label>
-                        <p class="mt-1 text-gray-900">@Model.Id</p>
+                        <p class="mt-1 text-gray-900">@Model.LoanID</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Status</label>
@@ -41,7 +41,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Due Date</label>
-                        <p class="mt-1 text-gray-900">@Model.RetentionPeriod.ToString("MMMM dd, yyyy")</p>
+                        <p class="mt-1 text-gray-900">@Model.DueDate.ToString("MMMM dd, yyyy")</p>
                     </div>
                 </div>
             </div>
@@ -104,10 +104,10 @@
 
         <!-- Action Buttons -->
         <div class="mt-8 flex justify-end space-x-4">
-            <a href="/LoanManagement/Edit/@Model.Id" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+            <a href="/LoanManagement/Edit/@Model.LoanID" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
                 <i class="fas fa-edit mr-2"></i>Edit Loan
             </a>
-            <button onclick="deleteLoan('@Model.Id')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center">
+            <button onclick="deleteLoan('@Model.LoanID')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center">
                 <i class="fas fa-trash-alt mr-2"></i>Delete Loan
             </button>
         </div>
@@ -120,4 +120,4 @@
             showDeleteModal(id, 'loan');
         }
     </script>
-} 
+}

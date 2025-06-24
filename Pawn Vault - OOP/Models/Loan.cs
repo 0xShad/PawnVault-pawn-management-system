@@ -59,5 +59,8 @@ namespace Pawn_Vault___OOP.Models
         public DateTime DueDate { get; set; }
 
         public bool IsDeleted { get; set; } = false;
+
+        public string Category { get; set; } = string.Empty;
+        public string Condition { get; set; } = string.Empty;
     }
 }

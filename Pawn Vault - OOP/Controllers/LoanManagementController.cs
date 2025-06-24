@@ -79,9 +79,8 @@ namespace Pawn_Vault___OOP.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Loan loan) 
+        public async Task<IActionResult> Create(Loan loan)
         {
-            // Remove debug error message from ModelState
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
@@ -91,7 +90,6 @@ namespace Pawn_Vault___OOP.Controllers
             {
                 loan.UserId = userId;
             }
-            // Always set TransactionCode if missing
             if (string.IsNullOrWhiteSpace(loan.TransactionCode))
             {
                 loan.TransactionCode = GenerateTransactionCode();
@@ -103,7 +101,6 @@ namespace Pawn_Vault___OOP.Controllers
                 try
                 {
                     await _loanRepository.AddLoanAsync(loan);
-                    // Create InventoryItem for this loan
                     var inventoryItem = new InventoryItem
                     {
                         Name = loan.ItemName,
@@ -112,27 +109,35 @@ namespace Pawn_Vault___OOP.Controllers
                         LoanAmount = loan.Amount,
                         Status = "on loan",
                         DateAdded = DateTime.UtcNow,
-                        LoanID = loan.LoanID
+                        LoanID = loan.LoanID,
+                        Category = loan.Category,
+                        Condition = loan.Condition
                     };
                     await _inventoryRepository.AddItemAsync(inventoryItem);
-                    return RedirectToAction("Index");
+                    // Get customer name for receipt
+                    var customer = (await _customerRepository.GetAllCustomersAsync()).FirstOrDefault(c => c.CustomerID == loan.CustomerID);
+                    var customerName = customer != null ? customer.FullName : loan.CustomerID.ToString();
+                    return Json(new {
+                        success = true,
+                        receipt = new {
+                            TransactionCode = loan.TransactionCode,
+                            CustomerName = customerName,
+                            ItemName = loan.ItemName,
+                            Amount = loan.Amount.ToString("N2"),
+                            DueDate = loan.DueDate.ToString("MMMM dd, yyyy")
+                        }
+                    });
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError(string.Empty, $"Error saving loan: {ex.Message}");
+                    return Json(new { success = false, errors = new[] { $"Error saving loan: {ex.Message}" } });
                 }
             }
             else
             {
                 var allErrors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                if (allErrors.Any())
-                {
-                    ModelState.AddModelError(string.Empty, "Validation errors: " + string.Join(" | ", allErrors));
-                }
+                return Json(new { success = false, errors = allErrors });
             }
-            var customers = await _customerRepository.GetAllCustomersAsync();
-            ViewBag.Customers = new SelectList(customers.Where(c => !c.IsDeleted), "CustomerID", "FullName");
-            return View(loan);
         }
 
         // ===== EDIT LOGIC =====
@@ -163,6 +168,21 @@ namespace Pawn_Vault___OOP.Controllers
             if (ModelState.IsValid) 
             {
                 await _loanRepository.UpdateLoanAsync(loan);
+
+                // Update the associated InventoryItem if it exists
+                var inventoryItem = (await _inventoryRepository.GetAllItemsAsync()).FirstOrDefault(i => i.LoanID == loan.LoanID);
+                if (inventoryItem != null)
+                {
+                    inventoryItem.Name = loan.ItemName;
+                    inventoryItem.Description = loan.Description;
+                    inventoryItem.EstimatedValue = loan.EstimatedValue;
+                    inventoryItem.LoanAmount = loan.Amount;
+                    inventoryItem.Category = loan.Category;
+                    inventoryItem.Condition = loan.Condition;
+                    // Optionally update other fields if needed
+                    await _inventoryRepository.UpdateItemAsync(inventoryItem);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             
@@ -174,15 +194,11 @@ namespace Pawn_Vault___OOP.Controllers
         }
 
         // ===== VIEW LOAN DETAILS LOGIC =====
-        public async Task<IActionResult> ViewLoan(int id)
+        public async Task<IActionResult> ViewLoan(int loanId)
         {
-            var loan = await _loanRepository.GetLoanbyIdAsync(id);
-            
+            var loan = await _loanRepository.GetLoanbyIdAsync(loanId);
             if (loan == null)
-                {
-                    return NotFound();
-                }
-
+                return NotFound();
             return View(loan);
         }
 
