@@ -2,6 +2,7 @@
 
 <div class="p-4 min-h-screen flex w-full">
     <div class="w-full mx-auto bg-white rounded-lg p-6 sm:p-8 md:p-10">
+        <!-- Header -->
         <div class="flex flex-col sm:flex-row items-center justify-between mb-6">
             <div class="flex items-center mb-4 sm:mb-0">
                 <div class="w-1 h-8 bg-yellow-500 mr-2 rounded"></div>
@@ -12,13 +13,14 @@
             </div>
         </div>
 
+        <!-- Table -->
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto">
                 <thead class="bg-white">
-                    <tr class="text-sm sm:text-base bg-white text-left border-b">
-                        <th class="py-3 px-4 font-semibold text-gray-700">Email</th>
-                        <th class="py-3 px-4 font-semibold text-gray-700">Status</th>
-                        <th class="py-3 px-4 font-semibold text-gray-700">Actions</th>
+                    <tr class="text-sm sm:text-base bg-white border-b">
+                        <th class="py-3 px-4 font-semibold text-gray-700 text-left">Email</th>
+                        <th class="py-3 px-4 font-semibold text-gray-700 text-center">Status</th>
+                        <th class="py-3 px-4 font-semibold text-gray-700 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,8 +30,8 @@
                         {
                             <tr class="bg-gray-50 hover:bg-gray-100 transition border-b">
                                 <td class="py-3 px-4 text-gray-800">@user.Email</td>
-                                <td class="py-3 px-4 text-gray-800">@user.Status</td>
-                                <td class="py-3 px-4 text-gray-800">
+                                <td class="py-3 px-4 text-center text-gray-800">@user.Status</td>
+                                <td class="py-3 px-4 text-right text-gray-800 whitespace-nowrap">
                                     <a asp-action="Edit" asp-route-id="@user.Id" class="text-blue-600 hover:text-blue-800 mr-3">Edit</a>
                                     <a asp-action="Delete" asp-route-id="@user.Id" class="text-red-600 hover:text-red-800">Delete</a>
                                 </td>

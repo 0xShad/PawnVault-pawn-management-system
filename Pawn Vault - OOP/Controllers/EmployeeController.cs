@@ -21,7 +21,7 @@ namespace Pawn_Vault___OOP.Controllers
             {
                 Id = u.Id,
                 Email = u.Email,
-                Status = (u.LockoutEnd != null && u.LockoutEnd > DateTimeOffset.UtcNow) ? "Inactive" : "Active"
+                Status = (u.LockoutEnd != null && u.LockoutEnd > DateTimeOffset.UtcNow) ? "Inactive" : "Active" // if log-in or out
             }).ToList();
 
             return View(model);
