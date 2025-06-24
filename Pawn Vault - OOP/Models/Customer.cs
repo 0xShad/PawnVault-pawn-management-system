@@ -30,5 +30,8 @@ namespace Pawn_Vault___OOP.Models
         public bool IsDeleted { get; set; } = false;
 
         public ICollection<Loan> Loans { get; set; } = new List<Loan>();
+        
+        // Computed property for full name
+        public string FullName => $"{CustomerFN} {CustomerLN}".Trim();
     }
 }

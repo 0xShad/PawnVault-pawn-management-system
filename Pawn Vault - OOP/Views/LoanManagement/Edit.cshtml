@@ -1,101 +1,78 @@
-@* Loan Edit Page *@
-<div class="h-screen">
-    <div class="flex items-center justify-between mt-8 mb-6 px-6 py-4">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">Edit Loan</h1>
-            <p class="text-gray-500">Update loan details and payment information</p>
-        </div>
-        <a href="/LoanManagement" class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2 rounded-lg text-sm font-semibold shadow transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Loans
-        </a>
-    </div>
+@model Pawn_Vault___OOP.Models.Loan
+@using Pawn_Vault___OOP.Models
 
-    <div class="bg-white rounded-2xl shadow p-8 max-w-3xl mx-auto">
-        <form method="post" action="/LoanManagement/Edit">
-            <input type="hidden" name="LoanId" value="L001" />
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="min-h-screen flex flex-col justify-center items-center bg-gray-50 py-8">
+    <div class="w-full max-w-3xl bg-white rounded-2xl shadow p-8">
+        @using (Html.BeginForm("Edit", "LoanManagement", new { id = Model.LoanID }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.LoanID)
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Customer Information -->
                 <div class="space-y-4">
                     <h2 class="text-xl font-semibold text-gray-900 mb-4">Customer Information</h2>
-                    
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
-                        <input type="text" name="CustomerName" value="John Doe" 
-                               class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
-                        <input type="tel" name="ContactNumber" value="(555) 123-4567" 
-                               class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
+                        <label asp-for="CustomerID" class="block text-sm font-medium text-gray-700 mb-1">Customer</label>
+                        @Html.DropDownListFor(m => m.CustomerID, (SelectList)ViewBag.Customers, "-- Select Customer --", new { @class = "w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" })
+                        @Html.ValidationMessageFor(m => m.CustomerID, "", new { @class = "text-red-500 text-sm" })
                     </div>
                 </div>
-
                 <!-- Loan Details -->
                 <div class="space-y-4">
                     <h2 class="text-xl font-semibold text-gray-900 mb-4">Loan Details</h2>
-                    
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Item Description</label>
-                        <input type="text" name="ItemDescription" value="Gold Ring - 14k" 
-                               class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
+                        <label asp-for="ItemName" class="block text-sm font-medium text-gray-700 mb-1">Item Name</label>
+                        @Html.TextBoxFor(m => m.ItemName, new { @class = "w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" })
+                        @Html.ValidationMessageFor(m => m.ItemName, "", new { @class = "text-red-500 text-sm" })
                     </div>
-                    
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Loan Amount</label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-2 text-gray-500">$</span>
-                            <input type="number" name="LoanAmount" value="500" step="0.01" 
-                                   class="w-full border border-gray-300 rounded-lg py-2 pl-8 pr-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                        </div>
+                        <label asp-for="Description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        @Html.TextBoxFor(m => m.Description, new { @class = "w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-red-500 text-sm" })
                     </div>
-                </div>
-
-                <!-- Payment Information -->
-                <div class="space-y-4 md:col-span-2">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Payment Information</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Interest Rate (%)</label>
-                            <input type="number" name="InterestRate" value="5.5" step="0.1" 
-                                   class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
-                            <input type="date" name="DueDate" value="2024-06-15" 
-                                   class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                            <select name="Status" 
-                                    class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900">
-                                <option value="Active" selected>Active</option>
-                                <option value="Overdue">Overdue</option>
-                                <option value="Paid">Paid</option>
-                            </select>
-                        </div>
+                    <div>
+                        <label asp-for="Amount" class="block text-sm font-medium text-gray-700 mb-1">Loan Amount</label>
+                        @Html.TextBoxFor(m => m.Amount, new { type = "number", step = "0.01", @class = "w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" })
+                        @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-red-500 text-sm" })
+                    </div>
+                    <div>
+                        <label asp-for="EstimatedValue" class="block text-sm font-medium text-gray-700 mb-1">Estimated Value</label>
+                        @Html.TextBoxFor(m => m.EstimatedValue, new { type = "number", step = "0.01", @class = "w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" })
+                        @Html.ValidationMessageFor(m => m.EstimatedValue, "", new { @class = "text-red-500 text-sm" })
+                    </div>
+                    <div>
+                        <label asp-for="InterestRate" class="block text-sm font-medium text-gray-700 mb-1">Interest Rate (%)</label>
+                        @Html.TextBoxFor(m => m.InterestRate, new { type = "number", step = "0.01", @class = "w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" })
+                        @Html.ValidationMessageFor(m => m.InterestRate, "", new { @class = "text-red-500 text-sm" })
+                    </div>
+                    <div>
+                        <label asp-for="DueDate" class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                        @Html.TextBoxFor(m => m.DueDate, new { type = "date", @class = "w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" })
+                        @Html.ValidationMessageFor(m => m.DueDate, "", new { @class = "text-red-500 text-sm" })
+                    </div>
+                    <div>
+                        <label asp-for="Status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        @Html.DropDownListFor(m => m.Status, new SelectList(new[] { "Active", "Overdue", "Paid" }, Model.Status), new { @class = "w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" })
+                        @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-red-500 text-sm" })
+                    </div>
+                    <div class="space-y-4">
+                        <label asp-for="TransactionCode" class="block text-sm font-medium text-gray-700 mb-1">Transaction Code</label>
+                        @Html.HiddenFor(m => m.TransactionCode)
+                        @Html.TextBoxFor(m => m.TransactionCode, new { @class = "w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.TransactionCode, "", new { @class = "text-red-500 text-sm" })
                     </div>
                 </div>
             </div>
-
-            <!-- Action Buttons -->
             <div class="flex justify-end gap-4 mt-8">
                 <button type="button" onclick="window.location.href='/LoanManagement'" 
-                        class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2">
+                        class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
                     Cancel
                 </button>
                 <button type="submit" 
-                        class="px-6 py-2 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2">
+                        class="px-6 py-2 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
                     Save Changes
                 </button>
             </div>
-        </form>
+        }
     </div>
-</div> 
+</div>

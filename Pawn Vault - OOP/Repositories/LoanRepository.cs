@@ -19,13 +19,14 @@ namespace Pawn_Vault___OOP.Repositories
         {
             return await _context.Loans
                 .Include(l => l.Customer) // pag include ng Customer para makuha ang related na customer data sa LoanModel
+                .Where(l => !l.IsDeleted)
                 .ToListAsync(); // fetching all record atsaka irereturn siya as list
         }
         public async Task<Loan> GetLoanbyIdAsync(int id)
         {
             return await _context.Loans
                 .Include(l => l.Customer) 
-                .FirstOrDefaultAsync(l => l.LoanID == id);
+                .FirstOrDefaultAsync(l => l.LoanID == id && !l.IsDeleted);
         }
 
         public async Task<Loan> AddLoanAsync(Loan loan)
@@ -50,7 +51,8 @@ namespace Pawn_Vault___OOP.Repositories
             var loan = await _context.Loans.FindAsync(id);
             if (loan != null)
             {
-                _context.Loans.Remove(loan);
+                loan.IsDeleted = true;
+                _context.Entry(loan).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
         }

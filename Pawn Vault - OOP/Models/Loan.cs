@@ -18,8 +18,13 @@ namespace Pawn_Vault___OOP.Models
         public string Description { get; set; } = string.Empty;
         
         [Required]
-        //[Column(TypeName = "decimal(18,2)")] // allocation lang for precision
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
+
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "Estimated value must be greater than or equal to 0")]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal EstimatedValue { get; set; }
 
         public string Status { get; set; } = string.Empty;
 
@@ -35,12 +40,12 @@ namespace Pawn_Vault___OOP.Models
         public string UserId { get; set; } = string.Empty;
         
         // Navigation property to get user details
-        public IdentityUser User { get; set; }
+        public IdentityUser? User { get; set; } // navigation property, nullable
 
         // Foreign key to Customer
         [ForeignKey("Customer")]
         public int CustomerID { get; set; }
-        public Customer Customer { get; set; }
+        public Customer? Customer { get; set; } // navigation property, nullable
 
         // Transaction code for the loan
         [Required]
@@ -48,7 +53,11 @@ namespace Pawn_Vault___OOP.Models
         public string TransactionCode { get; set; } = string.Empty;
 
         // Navigation properties
-        public ICollection<Payment> Payments { get; set; }
-        public ICollection<InventoryItem> InventoryItems { get; set; }
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>(); // navigation property, no [Required], initialize to avoid null
+        public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>(); // navigation property, no [Required], initialize to avoid null
+
+        public DateTime DueDate { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

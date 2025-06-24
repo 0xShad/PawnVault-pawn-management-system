@@ -34,5 +34,7 @@ namespace Pawn_Vault___OOP.Models
         public string Status { get; set; } = string.Empty;
 
         public DateTime DateAdded { get; set; } = DateTime.UtcNow;
+
+        public int? LoanID { get; set; } // Link to Loan if item is from a loan
     }
-} 
+}
