@@ -16,7 +16,10 @@ namespace Pawn_Vault___OOP.Repositories
 
         public async Task<IEnumerable<InventoryItem>> GetAllItemsAsync()
         {
-            return await _context.InventoryItems.Where(i => !i.IsDeleted).ToListAsync();
+            // Show items that are not deleted and not redeemed, paid, or overdue (forfeited items are now included)
+            return await _context.InventoryItems
+                .Where(i => !i.IsDeleted && i.Status.ToLower() != "redeemed" && i.Status.ToLower() != "paid" && i.Status.ToLower() != "overdue")
+                .ToListAsync();
         }
 
         public async Task<InventoryItem?> GetItemByIdAsync(int id)

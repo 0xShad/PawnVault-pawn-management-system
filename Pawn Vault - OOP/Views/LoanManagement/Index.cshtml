@@ -48,6 +48,7 @@
                         <option value="Active" selected="@(statusVal == "Active" ? "selected" : null)">Active</option>
                         <option value="Overdue" selected="@(statusVal == "Overdue" ? "selected" : null)">Overdue</option>
                         <option value="Paid" selected="@(statusVal == "Paid" ? "selected" : null)">Paid</option>
+                        <option value="Forfeited" selected="@(statusVal == "Forfeited" ? "selected" : null)">Forfeited</option>
                     </select>
                 </div>
             </form>
@@ -89,6 +90,10 @@
                                     else if (loan.Status == "Overdue")
                                     {
                                         <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-semibold">Overdue</span>
+                                    }
+                                    else if (loan.Status == "Forfeited")
+                                    {
+                                        <span class="bg-gray-700 text-white px-3 py-1 rounded-full text-xs font-semibold">Forfeited</span>
                                     }
                                     else
                                     {

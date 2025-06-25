@@ -18,5 +18,11 @@ namespace Pawn_Vault___OOP.Models
 
         // Navigation
         public Loan Loan { get; set; }
+
+        public string TransactionType { get; set; } = string.Empty; // redemption, renewal, forfeit, overdue, etc.
+        public string PaymentMethod { get; set; } = string.Empty; // Cash, Card, etc.
+        public string ReferenceNumber { get; set; } = string.Empty;
+        public string Notes { get; set; } = string.Empty;
+        public string HandledBy { get; set; } = string.Empty; // User full name or user id
     }
 }

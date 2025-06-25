@@ -17,6 +17,16 @@
 
     <!-- Transaction Form -->
     <div class="bg-white rounded-xl shadow-md p-6">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="mb-4">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div class="text-red-600 text-sm font-semibold">@error.ErrorMessage</div>
+                }
+            </div>
+        }
+        <div id="formError" class="text-red-600 text-sm font-semibold mb-2"></div>
         <form id="transactionForm" asp-action="AddTransaction" asp-controller="Transaction" method="post" class="space-y-6">
             <!-- Customer and Loan Selection -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -58,13 +68,7 @@
                         <option value="">Select type</option>
                         <option value="redemption">Redemption</option>
                         <option value="forfeit">Forfeit</option>
-                        <option value="renewal">Renewal</option>
-                        <option value="overdue">Overdue Payment</option>
                     </select>
-                </div>
-                <div>
-                    <label for="transactionCode" class="block text-sm font-medium text-gray-700 mb-1">Transaction Code</label>
-                    <input type="text" id="transactionCode" name="transactionCode" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B] bg-gray-100" placeholder="Auto-generated" disabled>
                 </div>
             </div>
 
@@ -76,12 +80,13 @@
                         <span class="absolute left-3 top-2 text-gray-500">$</span>
                         <input type="number" id="amount" name="amount" step="0.01" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" placeholder="0.00">
                     </div>
+                    <div id="amountError" class="text-red-600 text-sm font-semibold mt-1"></div>
                 </div>
                 <div>
                     <label for="transactionDate" class="block text-sm font-medium text-gray-700 mb-1">Transaction Date</label>
                     <input type="date" id="transactionDate" name="transactionDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" value="@DateTime.Now.ToString("yyyy-MM-dd")">
                 </div>
-                <div>
+                <div id="paymentMethodField">
                     <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
                     <select id="paymentMethod" name="paymentMethod" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
                         <option value="">Select method</option>
@@ -105,20 +110,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="handledBy" class="block text-sm font-medium text-gray-700 mb-1">Handled By</label>
-                    <select id="handledBy" name="handledBy" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
-                        <option value="">Select staff</option>
-                        @if (staffList != null)
-                        {
-                            foreach (var staff in staffList)
-                            {
-                                <option value="@staff">@staff</option>
-                            }
-                        }
-                    </select>
+                    <input type="text" id="handledBy" name="handledBy" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B] bg-gray-100" value="@ViewBag.HandledByName" disabled />
                 </div>
                 <div>
                     <label for="referenceNumber" class="block text-sm font-medium text-gray-700 mb-1">Reference Number</label>
-                    <input type="text" id="referenceNumber" name="referenceNumber" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B] bg-gray-100" value="@generatedReference" placeholder="Auto-generated" disabled>
+                    <input type="text" id="referenceNumber" name="referenceNumber" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B] bg-gray-100" value="@generatedReference" placeholder="Auto-generated" readonly>
                 </div>
             </div>
 
@@ -143,6 +139,7 @@
 
 @section Scripts {
     <script>
+        let loanTypeMap = {};
         // Dynamically load loans for selected customer
         document.getElementById('customerId').addEventListener('change', function() {
             var customerId = this.value;
@@ -154,8 +151,10 @@
                     .then(response => response.json())
                     .then(data => {
                         loanSelect.innerHTML = '<option value="">Select a loan</option>';
+                        loanTypeMap = {};
                         data.forEach(function(loan) {
                             loanSelect.innerHTML += `<option value="${loan.loanId}">${loan.display}</option>`;
+                            loanTypeMap[loan.loanId] = loan.allowedTypes;
                         });
                     })
                     .catch(() => {
@@ -166,27 +165,43 @@
             }
         });
 
+        // Filter transaction type dropdown based on allowedTypes
+        function filterTransactionTypes() {
+            var loanId = document.getElementById('loanId').value;
+            var typeSelect = document.getElementById('transactionType');
+            var allowed = loanTypeMap[loanId];
+            if (!allowed) {
+                // Show all
+                Array.from(typeSelect.options).forEach(opt => opt.hidden = false);
+                return;
+            }
+            Array.from(typeSelect.options).forEach(opt => {
+                if (opt.value === "") return;
+                opt.hidden = !allowed.includes(opt.value);
+            });
+            // If current value is not allowed, reset
+            if (!allowed.includes(typeSelect.value)) {
+                typeSelect.value = "";
+            }
+        }
+        document.getElementById('loanId').addEventListener('change', filterTransactionTypes);
+
         // Show loan details when a loan is selected
+        let currentLoanDetails = null;
         document.getElementById('loanId').addEventListener('change', function() {
             var loanId = this.value;
             var box = document.getElementById('loanDetailsBox');
             var content = document.getElementById('loanDetailsContent');
-            var transactionCodeInput = document.getElementById('transactionCode');
             if (!loanId) {
                 box.classList.add('hidden');
                 content.innerHTML = '';
-                transactionCodeInput.value = '';
+                currentLoanDetails = null;
                 return;
             }
             fetch('/Transaction/GetLoanDetails?loanId=' + loanId)
                 .then(response => response.json())
                 .then(data => {
-                    if (!data) {
-                        box.classList.add('hidden');
-                        content.innerHTML = '';
-                        transactionCodeInput.value = '';
-                        return;
-                    }
+                    currentLoanDetails = data;
                     let html = `<div class='grid grid-cols-1 md:grid-cols-2 gap-2'>`;
                     html += `<div><span class='font-semibold text-blue-800'>Item:</span> <span class='text-gray-800'>${data.itemName}</span></div>`;
                     html += `<div><span class='font-semibold text-blue-800'>Due Date:</span> <span class='text-gray-800'>${data.dueDate}</span></div>`;
@@ -194,14 +209,8 @@
                     html += `<div><span class='font-semibold text-blue-800'>Interest Rate:</span> <span class='text-gray-800'>${data.interestRate}%</span></div>`;
                     html += `<div class='md:col-span-2'><span class='font-semibold text-blue-800'>Payment (without interest):</span> <span class='text-gray-800'>₱${data.paymentWithoutInterest.toFixed(2)}</span></div>`;
                     html += `<div class='md:col-span-2'><span class='font-semibold text-blue-800'>Total Payment (with interest):</span> <span class='text-blue-900 font-bold'>₱${data.paymentWithInterest.toFixed(2)}</span></div>`;
-                    if (data.isOverdue) {
-                        html += `<div class='md:col-span-2 text-red-700'><span class='font-semibold'>Overdue! Additional Interest:</span> ₱${data.overdueInterest.toFixed(2)}</div>`;
-                        html += `<div class='md:col-span-2 text-red-800 bg-red-100 rounded px-2 py-1 mt-1'><span class='font-semibold'>Total Payment (with overdue interest):</span> <span class='font-bold'>₱${data.totalDue.toFixed(2)}</span></div>`;
-                    }
-                    html += `</div>`;
                     content.innerHTML = html;
                     box.classList.remove('hidden');
-                    transactionCodeInput.value = data.transactionCode || '';
                 });
         });
 
@@ -218,44 +227,26 @@
             const amountFields = document.getElementById('amountDatePaymentFields');
             const renewalField = document.getElementById('renewalDueDateField');
             const amountFieldWrapper = document.getElementById('amountFieldWrapper');
-            if (e.target.value === 'renewal') {
-                renewalField.classList.remove('hidden');
-                amountFields.classList.remove('hidden');
-                amountFieldWrapper.classList.remove('hidden');
-            } else if (e.target.value === 'redemption') {
-                renewalField.classList.add('hidden');
-                amountFields.classList.remove('hidden');
-                amountFieldWrapper.classList.remove('hidden');
-            } else if (e.target.value === 'forfeit') {
-                renewalField.classList.add('hidden');
-                amountFields.classList.remove('hidden');
-                amountFieldWrapper.classList.add('hidden');
-            } else if (e.target.value === 'overdue') {
-                renewalField.classList.add('hidden');
-                amountFields.classList.remove('hidden');
-                amountFieldWrapper.classList.remove('hidden');
-            } else {
-                renewalField.classList.add('hidden');
-                amountFields.classList.add('hidden');
-                amountFieldWrapper.classList.remove('hidden');
-            }
-            // Update amount placeholder
+            const paymentMethodField = document.getElementById('paymentMethodField');
             const amountInput = document.getElementById('amount');
-            switch(e.target.value) {
-                case 'redemption':
-                    amountInput.placeholder = 'Enter redemption amount';
-                    break;
-                case 'forfeit':
-                    amountInput.placeholder = '';
-                    break;
-                case 'renewal':
-                    amountInput.placeholder = 'Enter renewal amount';
-                    break;
-                case 'overdue':
-                    amountInput.placeholder = 'Enter overdue payment amount';
-                    break;
-                default:
-                    amountInput.placeholder = '0.00';
+            const paymentMethodInput = document.getElementById('paymentMethod');
+            renewalField.classList.add('hidden');
+            amountFields.classList.remove('hidden');
+            // Always show amount and payment method fields for both redemption and forfeit
+            amountFieldWrapper.classList.remove('hidden');
+            paymentMethodField.classList.remove('hidden');
+            if (e.target.value === 'redemption') {
+                amountInput.required = true;
+                paymentMethodInput.required = true;
+                amountInput.placeholder = 'Enter redemption amount';
+            } else if (e.target.value === 'forfeit') {
+                amountInput.required = false;
+                paymentMethodInput.required = false;
+                amountInput.placeholder = '0.00';
+            } else {
+                amountInput.required = false;
+                paymentMethodInput.required = false;
+                amountInput.placeholder = '0.00';
             }
         });
 
@@ -267,56 +258,24 @@
             const errorDiv = document.getElementById('amountError');
             if (!loanId || !type) {
                 amountInput.setCustomValidity("");
-                if (errorDiv) errorDiv.innerText = '';
+                if (errorDiv) errorDiv.innerText = "";
                 return;
             }
-            fetch('/Transaction/GetLoanDetails?loanId=' + loanId)
+            fetch('/Transaction/ValidateAmount?loanId=' + loanId + '&transactionType=' + type + '&amount=' + amountInput.value)
                 .then(response => response.json())
-                .then(data => {
-                    let valid = true;
-                    let msg = '';
-                    if (type === 'redemption') {
-                        const expected = data.paymentWithInterest;
-                        if (parseFloat(amountInput.value) !== parseFloat(expected)) {
-                            valid = false;
-                            msg = `Amount must be exactly ₱${expected.toFixed(2)} (principal + interest)`;
-                        }
-                    } else if (type === 'renewal') {
-                        const expected = data.paymentWithInterest - data.amount;
-                        if (parseFloat(amountInput.value) !== parseFloat(expected)) {
-                            valid = false;
-                            msg = `Amount must be exactly ₱${expected.toFixed(2)} (interest only)`;
-                        }
-                    } else if (type === 'overdue') {
-                        const expected = data.totalDue;
-                        if (parseFloat(amountInput.value) !== parseFloat(expected)) {
-                            valid = false;
-                            msg = `Amount must be exactly ₱${expected.toFixed(2)} (principal + interest + overdue interest)`;
-                        }
-                    } else {
+                .then(result => {
+                    if (result.isValid) {
                         amountInput.setCustomValidity("");
-                        if (errorDiv) errorDiv.innerText = '';
-                        return;
-                    }
-                    if (!valid) {
-                        amountInput.setCustomValidity(msg);
-                        if (errorDiv) errorDiv.innerText = msg;
+                        if (errorDiv) errorDiv.innerText = "";
                     } else {
-                        amountInput.setCustomValidity("");
-                        if (errorDiv) errorDiv.innerText = '';
+                        amountInput.setCustomValidity("Invalid amount for the selected transaction type.");
+                        if (errorDiv) errorDiv.innerText = "Invalid amount for the selected transaction type.";
                     }
+                    amountInput.reportValidity();
                 });
         }
         document.getElementById('amount').addEventListener('input', validateAmount);
         document.getElementById('transactionType').addEventListener('change', validateAmount);
         document.getElementById('loanId').addEventListener('change', validateAmount);
-        // Add error message display below amount input
-        const amountInputDiv = document.getElementById('amount').parentElement;
-        if (!document.getElementById('amountError')) {
-            const errorDiv = document.createElement('div');
-            errorDiv.id = 'amountError';
-            errorDiv.className = 'text-red-600 text-sm mt-1';
-            amountInputDiv.appendChild(errorDiv);
-        }
     </script>
 }

@@ -30,6 +30,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 var app = builder.Build();
 
@@ -111,19 +112,26 @@ async Task SeedRolesAsync(WebApplication app)
         string email = "admin@pawnvault.com";
         string password = "#Admin123";
 
-        if(await userManager.FindByEmailAsync(email) == null)
+        var user = await userManager.FindByEmailAsync(email);
+        if (user == null)
         {
-            var user = new ApplicationUser();
-            user.UserName = email;
-            user.Email = email;
-            user.FirstName = "Shadrack";
-            user.LastName = "Castro";
-
+            user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                FirstName = "Shadrack",
+                LastName = "Castro"
+            };
             await userManager.CreateAsync(user, password);
             await userManager.AddToRoleAsync(user, "Admin");
         }
-
-      
+        else
+        {
+            // Ensure FirstName/LastName are set for existing user
+            user.FirstName = "Shadrack";
+            user.LastName = "Castro";
+            await userManager.UpdateAsync(user);
+        }
     }
       
 }

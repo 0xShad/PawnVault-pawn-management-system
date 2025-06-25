@@ -12,8 +12,8 @@ using Pawn_Vault___OOP.Data;
 namespace Pawn_Vault___OOP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250624192701_fixDbContext")]
-    partial class fixDbContext
+    [Migration("20250624195336_AddTransactionFieldsToPayment")]
+    partial class AddTransactionFieldsToPayment
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -423,11 +423,35 @@ namespace Pawn_Vault___OOP.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("HandledBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("LoanID")
                         .HasColumnType("int");
 
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferenceNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PaymentID");
 

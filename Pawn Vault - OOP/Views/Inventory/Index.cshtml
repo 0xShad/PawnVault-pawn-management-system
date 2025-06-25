@@ -57,6 +57,7 @@
                 <option value="available" selected="@(statusVal == "available" ? "selected" : null)">Available</option>
                 <option value="on loan" selected="@(statusVal == "on loan" ? "selected" : null)">On Loan</option>
                 <option value="sold" selected="@(statusVal == "sold" ? "selected" : null)">Sold</option>
+                <option value="forfeited" selected="@(statusVal == "forfeited" ? "selected" : null)">Forfeited</option>
             </select>
         </div>
         <div>
@@ -120,7 +121,7 @@
                         <tr>
                             <td class="px-4 py-3">
                                 <div class="font-semibold text-gray-900">@item.Name
-                                    @if (item.LoanID != null)
+                                    @if (item.LoanID != null && item.Status.ToLower() != "forfeited")
                                     {
                                         <span class="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">From Loan</span>
                                     }
@@ -145,13 +146,22 @@
                             <td class="px-4 py-3">$@item.EstimatedValue.ToString("N2")</td>
                             <td class="px-4 py-3">$@item.LoanAmount.ToString("N2")</td>
                             <td class="px-4 py-3">
-                                <span class="inline-block px-2 py-1 text-xs rounded-full 
-                                    @(item.Status.ToLower() switch {
-                                        "available" => "bg-green-100 text-green-700",
-                                        "on loan" => "bg-blue-100 text-blue-700",
-                                        "sold" => "bg-gray-200 text-gray-700",
-                                        _ => "bg-gray-100 text-gray-700"
-                                    })">@item.Status</span>
+                            @if (item.Status == "forfeited")
+                            {
+                                <span class="inline-block px-2 py-1 text-xs rounded-full bg-gray-700 text-white">Forfeited</span>
+                            }
+                            else if (item.Status == "on loan")
+                            {
+                                <span class="inline-block px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">On Loan</span>
+                            }
+                            else if (item.Status == "sold")
+                            {
+                                <span class="inline-block px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">Sold</span>
+                            }
+                            else
+                            {
+                                <span class="inline-block px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Available</span>
+                            }
                             </td>
                             <td class="px-4 py-3">@item.DateAdded.ToString("MMMM dd, yyyy")</td>
                             <td class="px-4 py-3 text-center relative">
@@ -162,7 +172,8 @@
                                     <a asp-action="View" asp-route-id="@item.Id" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left">
                                         <i class="fas fa-eye mr-2"></i>View
                                     </a>
-                                    @if (User.IsInRole("Admin"))
+                                    @* Show Edit/Delete for all items except those with status 'on loan' *@
+                                    @if (item.Status.ToLower() != "on loan")
                                     {
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left">
                                             <i class="fas fa-edit mr-2"></i>Edit

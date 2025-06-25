@@ -14,12 +14,14 @@ namespace Pawn_Vault___OOP.Controllers
         private readonly ILoanRepository _loanRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IInventoryRepository _inventoryRepository;
+        private readonly IPaymentRepository _paymentRepository;
 
-        public LoanManagementController(ILoanRepository loanRepository, ICustomerRepository customerRepository, IInventoryRepository inventoryRepository)
+        public LoanManagementController(ILoanRepository loanRepository, ICustomerRepository customerRepository, IInventoryRepository inventoryRepository, IPaymentRepository paymentRepository)
         {
             _loanRepository = loanRepository;
             _customerRepository = customerRepository;
             _inventoryRepository = inventoryRepository;
+            _paymentRepository = paymentRepository;
         }
 
         public async Task<IActionResult> Index(string searchString, string sort = "az", string status = "", int pageNumber = 1, int pageSize = 10)
@@ -42,7 +44,14 @@ namespace Pawn_Vault___OOP.Controllers
             // Filter by status
             if (!string.IsNullOrEmpty(status))
             {
-                loans = loans.Where(l => l.Status == status);
+                if (status == "Paid")
+                {
+                    loans = loans.Where(l => l.Status == "Paid" || l.Status == "Redeemed");
+                }
+                else
+                {
+                    loans = loans.Where(l => l.Status == status);
+                }
             }
 
             // Sort
@@ -200,10 +209,13 @@ namespace Pawn_Vault___OOP.Controllers
             var loan = await _loanRepository.GetLoanbyIdAsync(loanId);
             if (loan == null)
                 return NotFound();
+            var payments = (await _paymentRepository.GetAllPaymentsAsync()).Where(p => p.LoanID == loanId).OrderByDescending(p => p.PaymentDate).ToList();
+            ViewBag.Payments = payments;
             return View(loan);
         }
 
         // ===== DELETE LOAN LOGIC ======
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete (int id) 
         {
             await _loanRepository.DeleteLoanAsync(id);

@@ -27,7 +27,7 @@ namespace Pawn_Vault___OOP.Models
 
         [Required]
         [Range(0, double.MaxValue)]
-        public decimal LoanAmount { get; set; }
+        public decimal LoanAmount { get; set; } // Revert to required, non-nullable
 
         [Required]
         [StringLength(20)]

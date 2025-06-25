@@ -4,6 +4,7 @@ using Pawn_Vault___OOP.Interfaces;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Pawn_Vault___OOP.Controllers
 {
@@ -106,6 +107,7 @@ namespace Pawn_Vault___OOP.Controllers
         }
 
         // GET: Customer/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var customer = (await _customerRepository.GetAllCustomersAsync()).FirstOrDefault(c => c.CustomerID == id);
@@ -120,6 +122,7 @@ namespace Pawn_Vault___OOP.Controllers
 
         // POST: Customer/DeleteConfirmed/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
