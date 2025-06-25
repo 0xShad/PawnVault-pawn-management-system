@@ -5,6 +5,18 @@
 
     <form asp-action="Create" method="post">
         <div class="mb-4">
+            <label asp-for="EmpFN" class="block text-sm font-medium text-gray-700">First Name</label>
+            <input asp-for="EmpFN" class="w-full mt-1 p-2 border rounded" />
+            <span asp-validation-for="EmpFN" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="EmpLN" class="block text-sm font-medium text-gray-700">Last Name</label>
+            <input asp-for="EmpLN" class="w-full mt-1 p-2 border rounded" />
+            <span asp-validation-for="EmpLN" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div class="mb-4">
             <label asp-for="Email" class="block text-sm font-medium text-gray-700">Email</label>
             <input asp-for="Email" class="w-full mt-1 p-2 border rounded" />
             <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
