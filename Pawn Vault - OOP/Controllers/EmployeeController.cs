@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Pawn_Vault___OOP.Models.ViewModels;
+using System.Security.Claims;
 
 namespace Pawn_Vault___OOP.Controllers
 {
@@ -17,12 +18,23 @@ namespace Pawn_Vault___OOP.Controllers
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.GetUsersInRoleAsync("Staff");
-            var model = users.Select(u => new StaffViewModel
+            var model = new List<StaffViewModel>();
+
+            foreach (var user in users)
             {
-                Id = u.Id,
-                Email = u.Email,
-                Status = u.LockoutEnd.HasValue && u.LockoutEnd > DateTime.Now ? "Inactive" : "Active"
-            }).ToList();
+                var claims = await _userManager.GetClaimsAsync(user);
+                var empFN = claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
+                var empLN = claims.FirstOrDefault(c => c.Type == "LastName")?.Value;
+
+                model.Add(new StaffViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Status = user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.Now ? "Inactive" : "Active",
+                    EmpFN = empFN,
+                    EmpLN = empLN
+                });
+            }
 
             return View(model);
         }
@@ -31,31 +43,35 @@ namespace Pawn_Vault___OOP.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-                return NotFound();
+            if (user == null) return NotFound();
+
+            var claims = await _userManager.GetClaimsAsync(user);
+            var empFN = claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
+            var empLN = claims.FirstOrDefault(c => c.Type == "LastName")?.Value;
 
             var model = new StaffViewModel
             {
                 Id = user.Id,
                 Email = user.Email,
-                Status = user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.Now ? "Inactive" : "Active"
+                Status = user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.Now ? "Inactive" : "Active",
+                EmpFN = empFN,
+                EmpLN = empLN
             };
 
-            return View("Edit", model); //  Use Edit.cshtml
+            return View("Edit", model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(StaffViewModel model)
         {
             var user = await _userManager.FindByIdAsync(model.Id);
-            if (user == null)
-                return NotFound();
+            if (user == null) return NotFound();
 
             user.Email = model.Email;
             user.UserName = model.Email;
 
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
             {
                 ModelState.AddModelError("", "Failed to update user.");
                 return View("Edit", model);
@@ -64,14 +80,24 @@ namespace Pawn_Vault___OOP.Controllers
             if (!string.IsNullOrEmpty(model.NewPassword))
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var passwordResult = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+                var resetResult = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
 
-                if (!passwordResult.Succeeded)
+                if (!resetResult.Succeeded)
                 {
                     ModelState.AddModelError("", "Failed to update password.");
                     return View("Edit", model);
                 }
             }
+
+            var claims = await _userManager.GetClaimsAsync(user);
+
+            var existingFN = claims.FirstOrDefault(c => c.Type == "FirstName");
+            if (existingFN != null) await _userManager.RemoveClaimAsync(user, existingFN);
+            await _userManager.AddClaimAsync(user, new Claim("FirstName", model.EmpFN ?? ""));
+
+            var existingLN = claims.FirstOrDefault(c => c.Type == "LastName");
+            if (existingLN != null) await _userManager.RemoveClaimAsync(user, existingLN);
+            await _userManager.AddClaimAsync(user, new Claim("LastName", model.EmpLN ?? ""));
 
             return RedirectToAction("Index");
         }
@@ -80,17 +106,22 @@ namespace Pawn_Vault___OOP.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-                return NotFound();
+            if (user == null) return NotFound();
+
+            var claims = await _userManager.GetClaimsAsync(user);
+            var empFN = claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
+            var empLN = claims.FirstOrDefault(c => c.Type == "LastName")?.Value;
 
             var model = new StaffViewModel
             {
                 Id = user.Id,
                 Email = user.Email,
-                Status = user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.Now ? "Inactive" : "Active"
+                Status = user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.Now ? "Inactive" : "Active",
+                EmpFN = empFN,
+                EmpLN = empLN
             };
 
-            return View("Delete", model); // Use Delete.cshtml
+            return View("Delete", model);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -98,8 +129,7 @@ namespace Pawn_Vault___OOP.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-                return NotFound();
+            if (user == null) return NotFound();
 
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
@@ -111,7 +141,6 @@ namespace Pawn_Vault___OOP.Controllers
             return RedirectToAction("Index");
         }
 
-
         [HttpGet]
         public IActionResult Create()
         {
@@ -121,8 +150,7 @@ namespace Pawn_Vault___OOP.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(StaffViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
+            if (!ModelState.IsValid) return View(model);
 
             var existingUser = await _userManager.FindByEmailAsync(model.Email);
             if (existingUser != null)
@@ -137,19 +165,22 @@ namespace Pawn_Vault___OOP.Controllers
                 UserName = model.Email
             };
 
-            var result = await _userManager.CreateAsync(newUser, model.NewPassword ?? "#Temp123");
-
-            if (!result.Succeeded)
+            var createResult = await _userManager.CreateAsync(newUser, model.NewPassword ?? "#Temp123");
+            if (!createResult.Succeeded)
             {
-                foreach (var error in result.Errors)
+                foreach (var error in createResult.Errors)
                     ModelState.AddModelError("", error.Description);
                 return View(model);
             }
 
             await _userManager.AddToRoleAsync(newUser, "Staff");
 
+            if (!string.IsNullOrEmpty(model.EmpFN))
+                await _userManager.AddClaimAsync(newUser, new Claim("FirstName", model.EmpFN));
+            if (!string.IsNullOrEmpty(model.EmpLN))
+                await _userManager.AddClaimAsync(newUser, new Claim("LastName", model.EmpLN));
+
             return RedirectToAction("Index");
         }
-
     }
 }
