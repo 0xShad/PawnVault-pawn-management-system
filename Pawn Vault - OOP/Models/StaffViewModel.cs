@@ -6,5 +6,9 @@
         public string Email { get; set; }
         public string? Status { get; set; }
         public string? NewPassword { get; set; }
+
+        public string? EmpFN { get; set; } // First Name
+        public string? EmpLN { get; set; } // Last Name
     }
+
 }
