@@ -172,8 +172,8 @@
                                     <a asp-action="View" asp-route-id="@item.Id" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left">
                                         <i class="fas fa-eye mr-2"></i>View
                                     </a>
-                                    @* Show Edit/Delete for all items except those with status 'on loan' *@
-                                    @if (item.Status.ToLower() != "on loan")
+                                    @* Show Edit/Delete only for System/Admin items with status 'sold', 'available', or 'on loan' *@
+                                    @if (item.LoanID == null && (item.Status.ToLower() == "sold" || item.Status.ToLower() == "available" || item.Status.ToLower() == "on loan"))
                                     {
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left">
                                             <i class="fas fa-edit mr-2"></i>Edit

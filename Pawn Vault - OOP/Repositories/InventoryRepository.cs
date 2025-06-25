@@ -51,7 +51,7 @@ namespace Pawn_Vault___OOP.Repositories
             item.IsDeleted = true;
             _context.Entry(item).State = EntityState.Modified;
 
-            // Soft delete all related payments (transactions) via LoanID
+            // Only cascade soft delete if item is NOT from System/Admin
             if (item.LoanID.HasValue)
             {
                 var payments = _context.Payments.Where(p => p.LoanID == item.LoanID.Value);
@@ -61,14 +61,12 @@ namespace Pawn_Vault___OOP.Repositories
                     _context.Entry(payment).State = EntityState.Modified;
                 }
 
-                // Soft delete related loan
                 var loan = _context.Loans.Include(l => l.Customer).FirstOrDefault(l => l.LoanID == item.LoanID.Value);
                 if (loan != null)
                 {
                     loan.IsDeleted = true;
                     _context.Entry(loan).State = EntityState.Modified;
 
-                    // Soft delete related customer
                     if (loan.Customer != null)
                     {
                         loan.Customer.IsDeleted = true;
