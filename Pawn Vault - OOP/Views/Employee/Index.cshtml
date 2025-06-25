@@ -18,6 +18,8 @@
             <table class="min-w-full table-auto">
                 <thead class="bg-white">
                     <tr class="text-sm sm:text-base bg-white border-b">
+                        <th class="py-3 px-4 font-semibold text-gray-700 text-left">First Name</th>
+                        <th class="py-3 px-4 font-semibold text-gray-700 text-left">Last Name</th>
                         <th class="py-3 px-4 font-semibold text-gray-700 text-left">Email</th>
                         <th class="py-3 px-4 font-semibold text-gray-700 text-center">Status</th>
                         <th class="py-3 px-4 font-semibold text-gray-700 text-right">Actions</th>
@@ -29,6 +31,8 @@
                         foreach (var user in Model)
                         {
                             <tr class="bg-gray-50 hover:bg-gray-100 transition border-b">
+                                <td class="py-3 px-4 text-gray-800">@user.EmpFN</td>
+                                <td class="py-3 px-4 text-gray-800">@user.EmpLN</td>
                                 <td class="py-3 px-4 text-gray-800">@user.Email</td>
                                 <td class="py-3 px-4 text-center text-gray-800">@user.Status</td>
                                 <td class="py-3 px-4 text-right text-gray-800 whitespace-nowrap">
