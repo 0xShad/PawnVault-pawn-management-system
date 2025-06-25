@@ -45,12 +45,39 @@ namespace Pawn_Vault___OOP.Repositories
         public async Task DeleteItemAsync(int id)
         {
             var item = await _context.InventoryItems.FindAsync(id);
-            if (item != null)
+            if (item == null)
+                return; // Item does not exist, nothing to delete
+
+            item.IsDeleted = true;
+            _context.Entry(item).State = EntityState.Modified;
+
+            // Soft delete all related payments (transactions) via LoanID
+            if (item.LoanID.HasValue)
             {
-                item.IsDeleted = true;
-                _context.Entry(item).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                var payments = _context.Payments.Where(p => p.LoanID == item.LoanID.Value);
+                foreach (var payment in payments)
+                {
+                    payment.IsDeleted = true;
+                    _context.Entry(payment).State = EntityState.Modified;
+                }
+
+                // Soft delete related loan
+                var loan = _context.Loans.Include(l => l.Customer).FirstOrDefault(l => l.LoanID == item.LoanID.Value);
+                if (loan != null)
+                {
+                    loan.IsDeleted = true;
+                    _context.Entry(loan).State = EntityState.Modified;
+
+                    // Soft delete related customer
+                    if (loan.Customer != null)
+                    {
+                        loan.Customer.IsDeleted = true;
+                        _context.Entry(loan.Customer).State = EntityState.Modified;
+                    }
+                }
             }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<int> GetTotalItemsCountAsync()

@@ -24,5 +24,7 @@ namespace Pawn_Vault___OOP.Models
         public string ReferenceNumber { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
         public string HandledBy { get; set; } = string.Empty; // User full name or user id
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

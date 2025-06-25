@@ -28,6 +28,7 @@ namespace Pawn_Vault___OOP.Controllers
         public IActionResult Index()
         {
             var payments = _context.Payments
+                .Where(p => !p.IsDeleted)
                 .Select(p => new {
                     p.PaymentID,
                     p.PaymentDate,
@@ -345,12 +346,37 @@ namespace Pawn_Vault___OOP.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
-            var payment = _context.Payments.FirstOrDefault(p => p.PaymentID == id);
+            var payment = _context.Payments
+                .Include(p => p.Loan)
+                .ThenInclude(l => l.Payments)
+                .FirstOrDefault(p => p.PaymentID == id);
             if (payment != null)
             {
+                payment.IsDeleted = true;
                 payment.Notes += " (Soft Deleted by Admin on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + ")";
-                // Optionally add a flag if you want a dedicated IsDeleted property
-                _context.Payments.Update(payment);
+                _context.Entry(payment).State = EntityState.Modified;
+
+                // Soft delete related loan if exists
+                if (payment.Loan != null)
+                {
+                    payment.Loan.IsDeleted = true;
+                    _context.Entry(payment.Loan).State = EntityState.Modified;
+
+                    // Soft delete all payments for this loan
+                    foreach (var pay in payment.Loan.Payments)
+                    {
+                        pay.IsDeleted = true;
+                        _context.Entry(pay).State = EntityState.Modified;
+                    }
+
+                    // Soft delete all related inventory items
+                    var relatedItems = _context.InventoryItems.Where(i => i.LoanID == payment.Loan.LoanID);
+                    foreach (var item in relatedItems)
+                    {
+                        item.IsDeleted = true;
+                        _context.Entry(item).State = EntityState.Modified;
+                    }
+                }
                 _context.SaveChanges();
             }
             return RedirectToAction("Index");
