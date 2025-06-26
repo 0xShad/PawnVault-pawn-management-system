@@ -18,7 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Identity setup
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -65,7 +65,7 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
 {
     using var scope = app.Services.CreateScope();
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
     string[] roles = { "Admin", "Staff" };
 
@@ -82,7 +82,7 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
     string adminPassword = "#Admin123";
     if (await userManager.FindByEmailAsync(adminEmail) == null)
     {
-        var adminUser = new IdentityUser
+        var adminUser = new ApplicationUser
         {
             UserName = adminEmail,
             Email = adminEmail
@@ -104,7 +104,7 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
         var existing = await userManager.FindByEmailAsync(staff.Email);
         if (existing == null)
         {
-            var staffUser = new IdentityUser
+            var staffUser = new ApplicationUser
             {
                 UserName = staff.UserName,
                 Email = staff.Email

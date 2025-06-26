@@ -164,17 +164,17 @@
 </div>
 
 <!-- Receipt Modal (shows only if TempData["ShowReceipt"] is set) -->
-@if (TempData["ShowReceipt"] != null && TempData["ShowReceipt"].ToString() == "True")
+@if (TempData["ShowReceipt"] != null && TempData["ShowReceipt"]?.ToString() == "True")
 {
     <div id="receiptModal" class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-gray-900/30" onclick="closeReceiptModal(event)">
         <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full relative transition-all transform scale-100" style="min-width:320px;" onclick="event.stopPropagation();">
             <h2 class="text-2xl font-bold mb-4 text-center text-yellow-600">Loan Receipt</h2>
             <div class="mb-4 text-gray-700 text-center space-y-1">
-                <div><span class="font-semibold">Transaction Code:</span> <span class="text-gray-900">@TempData["Receipt_TransactionCode"]</span></div>
-                <div><span class="font-semibold">Customer:</span> <span class="text-gray-900">@TempData["Receipt_Customer"]</span></div>
-                <div><span class="font-semibold">Item:</span> <span class="text-gray-900">@TempData["Receipt_ItemName"]</span></div>
-                <div><span class="font-semibold">Amount:</span> <span class="text-gray-900">₱@TempData["Receipt_Amount"]</span></div>
-                <div><span class="font-semibold">Due Date:</span> <span class="text-gray-900">@TempData["Receipt_DueDate"]</span></div>
+                <div><span class="font-semibold">Transaction Code:</span> <span class="text-gray-900">@(TempData["Receipt_TransactionCode"]?.ToString() ?? "")</span></div>
+                <div><span class="font-semibold">Customer:</span> <span class="text-gray-900">@(TempData["Receipt_Customer"]?.ToString() ?? "")</span></div>
+                <div><span class="font-semibold">Item:</span> <span class="text-gray-900">@(TempData["Receipt_ItemName"]?.ToString() ?? "")</span></div>
+                <div><span class="font-semibold">Amount:</span> <span class="text-gray-900">₱@(TempData["Receipt_Amount"]?.ToString() ?? "")</span></div>
+                <div><span class="font-semibold">Due Date:</span> <span class="text-gray-900">@(TempData["Receipt_DueDate"]?.ToString() ?? "")</span></div>
             </div>
             <div class="flex justify-center mt-6">
                 <button onclick="closeReceiptModal()" class="px-6 py-2 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500">Close</button>
