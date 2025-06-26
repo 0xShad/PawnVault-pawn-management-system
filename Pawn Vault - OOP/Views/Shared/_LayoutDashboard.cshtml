@@ -63,20 +63,15 @@
                 </ul>
                 <div class="mt-4 mb-2">
                     <span class="text-gray-400 text-sm px-2">Settings</span>
-                    <a class="flex items-center gap-2 py-2 px-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow rounded-tl-xl rounded-bl-xl @(ViewContext.RouteData.Values["controller"]?.ToString() == "Account" ? "bg-white text-[#d4af37] shadow font-semibold" : "")" asp-controller="Account" asp-action="Index">
-                        <i class="hgi hgi-stroke hgi-user-settings-01"></i>
-                        <span class="text-sm">Acount Settings</span>
-                    </a>
                     @if (User.IsInRole("Admin"))
                     {
                         <a class="flex items-center gap-2 px-2 py-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow  rounded-tl-xl rounded-bl-xl @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employee" ? "bg-white text-[#d4af37] shadow font-semibold" : "")" asp-controller="Employee" asp-action="Index">
                             <i class="hgi hgi-stroke hgi-account-setting-01"></i>
                         <span class="text-sm">User Management</span>
                     </a>}
-                    <a class="flex items-center gap-2 py-2 px-2 transition bg-transparent hover:bg-white hover:text-[#d4af37] hover:shadow  rounded-tl-xl rounded-bl-xl" asp-controller="Account" asp-action="Logout">
-                        <i class="hgi hgi-stroke hgi-logout-02"></i>
+                    <div class="py-2 px-2">
                         <partial name="_LoginPartial" />
-                    </a>
+                    </div>
                     
                 </div>
             </nav>

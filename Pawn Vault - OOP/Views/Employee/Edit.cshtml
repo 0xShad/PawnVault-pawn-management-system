@@ -1,0 +1,57 @@
+﻿@model Pawn_Vault___OOP.Models.ViewModels.StaffViewModel
+
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-semibold mb-4 text-blue-900">Edit Staff</h2>
+
+    <form asp-action="Edit" method="post" novalidate>
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
+        
+        <div class="mb-4">
+            <label asp-for="EmpFN" class="block text-sm font-medium text-gray-700"></label>
+            <input asp-for="EmpFN" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter first name" />
+            <span asp-validation-for="EmpFN" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="EmpLN" class="block text-sm font-medium text-gray-700"></label>
+            <input asp-for="EmpLN" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter last name" />
+            <span asp-validation-for="EmpLN" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Email" class="block text-sm font-medium text-gray-700"></label>
+            <input asp-for="Email" type="email" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter email address" />
+            <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="NewPassword" class="block text-sm font-medium text-gray-700">New Password (Leave blank to keep current)</label>
+            <input asp-for="NewPassword" type="password" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter new password (optional)" />
+            <span asp-validation-for="NewPassword" class="text-red-600 text-sm"></span>
+            <div class="mt-2 text-sm text-gray-600">
+                <p>Password requirements (if changing):</p>
+                <ul class="list-disc list-inside text-xs">
+                    <li>At least 6 characters long</li>
+                    <li>Contains at least one uppercase letter</li>
+                    <li>Contains at least one lowercase letter</li>
+                    <li>Contains at least one number</li>
+                    <li>Contains at least one special character (!@@#$%^&*)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex gap-3">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:ring-2 focus:ring-blue-500">
+                Save Changes
+            </button>
+            <a asp-action="Index" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 focus:ring-2 focus:ring-gray-400 text-decoration-none">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

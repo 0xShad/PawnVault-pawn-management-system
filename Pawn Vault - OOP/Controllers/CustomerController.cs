@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Pawn_Vault___OOP.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;

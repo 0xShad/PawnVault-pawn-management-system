@@ -1,0 +1,88 @@
+﻿@model Pawn_Vault___OOP.Models.ViewModels.CreateStaffViewModel
+
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-semibold mb-4 text-blue-900">Add New Employee</h2>
+
+    <form asp-action="Create" method="post" novalidate>
+        <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
+        
+        <div class="mb-4">
+            <label asp-for="FirstName" class="block text-sm font-medium text-gray-700"></label>
+            <input asp-for="FirstName" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter first name" />
+            <span asp-validation-for="FirstName" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="LastName" class="block text-sm font-medium text-gray-700"></label>
+            <input asp-for="LastName" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter last name" />
+            <span asp-validation-for="LastName" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Email" class="block text-sm font-medium text-gray-700"></label>
+            <input asp-for="Email" type="email" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter email address" />
+            <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Password" class="block text-sm font-medium text-gray-700"></label>
+            <input asp-for="Password" type="password" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter password" />
+            <span asp-validation-for="Password" class="text-red-600 text-sm"></span>
+            <div class="mt-2 text-sm text-gray-600">
+                <p>Password requirements:</p>
+                <ul class="list-disc list-inside text-xs">
+                    <li>At least 6 characters long</li>
+                    <li>Contains at least one uppercase letter</li>
+                    <li>Contains at least one lowercase letter</li>
+                    <li>Contains at least one number</li>
+                    <li>Contains at least one special character (!@@#$%^&*)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex gap-3">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:ring-2 focus:ring-blue-500">
+                Add Employee
+            </button>
+            <a asp-action="Index" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 focus:ring-2 focus:ring-gray-400 text-decoration-none">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Real-time password validation
+            $('#Password').on('input', function() {
+                var password = $(this).val();
+                var requirements = {
+                    length: password.length >= 6,
+                    uppercase: /[A-Z]/.test(password),
+                    lowercase: /[a-z]/.test(password),
+                    number: /\d/.test(password),
+                    special: /[^\da-zA-Z]/.test(password)
+                };
+                
+                // Update visual feedback for each requirement
+                updateRequirementDisplay(requirements);
+            });
+            
+            function updateRequirementDisplay(requirements) {
+                var requirementList = $('.list-disc li');
+                
+                requirementList.each(function(index) {
+                    var requirement = Object.values(requirements)[index];
+                    if (requirement) {
+                        $(this).removeClass('text-red-600').addClass('text-green-600');
+                    } else {
+                        $(this).removeClass('text-green-600').addClass('text-red-600');
+                    }
+                });
+            }
+        });
+    </script>
+}

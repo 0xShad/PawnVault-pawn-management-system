@@ -8,22 +8,23 @@ using Pawn_Vault___OOP.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// Database connection
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString, sqlOptions => 
-    sqlOptions.EnableRetryOnFailure()
-    ));
+    options.UseSqlServer(connectionString, sqlOptions =>
+        sqlOptions.EnableRetryOnFailure()));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// Identity setup
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// ?? Configure where unauthenticated users should be redirected (Login Page)
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Identity/Account/Login"; // ? This is the default login URL when using Razor Identity
+    options.LoginPath = "/Identity/Account/Login";
 });
 
 builder.Services.AddControllersWithViews();
@@ -34,7 +35,6 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -42,7 +42,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -50,7 +49,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -59,79 +57,68 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-await SeedRolesAsync(app);
-
-//TEST!! para lang sa customer profiles
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-    // apply pending migrations, opitional lang
-    //db.Database.Migrate();
-
-    // Add a test customer if none exist
-    if (!db.Customers.Any())
-    {
-        db.Customers.Add(new Customer
-        {
-            CustomerFN = "Maria",
-            CustomerLN = "Reyes",
-            TelephoneNo = "09991234567",
-            Street = "Burgos St",
-            Municipality = "Quezon City",
-            ZipCode = "1100"
-        });
-        db.SaveChanges();
-    }
-}
-
-
+await SeedRolesAndUsersAsync(app); // Seed roles and users
 app.Run();
 
-async Task SeedRolesAsync(WebApplication app)
+//  Seeding Roles and Users
+async Task SeedRolesAndUsersAsync(WebApplication app)
 {
-    using (var scope = app.Services.CreateScope())
+    using var scope = app.Services.CreateScope();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+    string[] roles = { "Admin", "Staff" };
+
+    foreach (var role in roles)
     {
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-        var roles = new[] { "Admin", "Staff" };
-
-        foreach (var role in roles)
+        if (!await roleManager.RoleExistsAsync(role))
         {
-            if (!await roleManager.RoleExistsAsync(role))
-            {
-                await roleManager.CreateAsync(new IdentityRole(role));
-            }
+            await roleManager.CreateAsync(new IdentityRole(role));
         }
     }
-   
 
-    using (var scope = app.Services.CreateScope())
+    // Admin
+    string adminEmail = "admin@pawnvault.com";
+    string adminPassword = "#Admin123";
+    if (await userManager.FindByEmailAsync(adminEmail) == null)
     {
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        string email = "admin@pawnvault.com";
-        string password = "#Admin123";
-
-        var user = await userManager.FindByEmailAsync(email);
-        if (user == null)
+        var adminUser = new ApplicationUser
         {
-            user = new ApplicationUser
+            UserName = adminEmail,
+            Email = adminEmail
+        };
+        await userManager.CreateAsync(adminUser, adminPassword);
+        await userManager.AddToRoleAsync(adminUser, "Admin");
+    }
+
+    // Staff (Display name as UserName)
+    var staffUsers = new[]
+    {
+        new { Email = "staff1@pawnvault.com", UserName = "Staff 1" },// Renaming Staffs
+        new { Email = "staff2@pawnvault.com", UserName = "Staff 2" }
+    };
+    string staffPassword = "#Staff123";
+
+    foreach (var staff in staffUsers)
+    {
+        var existing = await userManager.FindByEmailAsync(staff.Email);
+        if (existing == null)
+        {
+            var staffUser = new ApplicationUser
             {
-                UserName = email,
-                Email = email,
-                FirstName = "Shadrack",
-                LastName = "Castro"
+                UserName = staff.UserName,
+                Email = staff.Email
             };
-            await userManager.CreateAsync(user, password);
-            await userManager.AddToRoleAsync(user, "Admin");
+            await userManager.CreateAsync(staffUser, staffPassword);
+            await userManager.AddToRoleAsync(staffUser, "Staff");
         }
         else
+        if (existing.UserName != staff.UserName)
         {
-            // Ensure FirstName/LastName are set for existing user
-            user.FirstName = "Shadrack";
-            user.LastName = "Castro";
-            await userManager.UpdateAsync(user);
+            existing.UserName = staff.UserName;
+            await userManager.UpdateAsync(existing); //  this updates the DB
         }
     }
-      
 }
+//PROBLEM:
+//1. May AspNetRoles table na raw kapag nag-update database
