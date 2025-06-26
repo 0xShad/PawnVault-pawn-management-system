@@ -31,8 +31,8 @@
             <!-- Customer and Loan Selection -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="customerId" class="block text-sm font-medium text-gray-700 mb-1">Customer</label>
-                    <select id="customerId" name="customerId" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
+                    <label for="customerId" class="block text-sm font-medium text-gray-700 mb-1">Customer *</label>
+                    <select id="customerId" name="customerId" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
                         <option value="">Select a customer</option>
                         @if (customers != null)
                         {
@@ -44,8 +44,8 @@
                     </select>
                 </div>
                 <div>
-                    <label for="loanId" class="block text-sm font-medium text-gray-700 mb-1">Loan</label>
-                    <select id="loanId" name="loanId" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
+                    <label for="loanId" class="block text-sm font-medium text-gray-700 mb-1">Loan *</label>
+                    <select id="loanId" name="loanId" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
                         <option value="">Select a loan</option>
                     </select>
                 </div>
@@ -63,8 +63,8 @@
             <!-- Transaction Details -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="transactionType" class="block text-sm font-medium text-gray-700 mb-1">Transaction Type</label>
-                    <select id="transactionType" name="transactionType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
+                    <label for="transactionType" class="block text-sm font-medium text-gray-700 mb-1">Transaction Type *</label>
+                    <select id="transactionType" name="transactionType" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
                         <option value="">Select type</option>
                         <option value="redemption">Redemption</option>
                         <option value="forfeit">Forfeit</option>
@@ -75,10 +75,10 @@
             <!-- Amount, Date, Payment Method -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="amountDatePaymentFields">
                 <div id="amountFieldWrapper">
-                    <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+                    <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount *</label>
                     <div class="relative">
                         <span class="absolute left-3 top-2 text-gray-500">$</span>
-                        <input type="number" id="amount" name="amount" step="0.01" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" placeholder="0.00">
+                        <input type="number" id="amount" name="amount" step="0.01" required class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" placeholder="0.00">
                     </div>
                     <div id="amountError" class="text-red-600 text-sm font-semibold mt-1"></div>
                 </div>
@@ -87,8 +87,8 @@
                     <input type="date" id="transactionDate" name="transactionDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" value="@DateTime.Now.ToString("yyyy-MM-dd")">
                 </div>
                 <div id="paymentMethodField">
-                    <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
-                    <select id="paymentMethod" name="paymentMethod" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
+                    <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Payment Method *</label>
+                    <select id="paymentMethod" name="paymentMethod" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
                         <option value="">Select method</option>
                         <option value="Cash">Cash</option>
                         <option value="Card">Card</option>
@@ -120,8 +120,8 @@
 
             <!-- Notes -->
             <div>
-                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                <textarea id="notes" name="notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" placeholder="Add any additional notes here..."></textarea>
+                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes *</label>
+                <textarea id="notes" name="notes" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" placeholder="Add any additional notes here..."></textarea>
             </div>
 
             <!-- Action Buttons -->
@@ -230,24 +230,31 @@
             const paymentMethodField = document.getElementById('paymentMethodField');
             const amountInput = document.getElementById('amount');
             const paymentMethodInput = document.getElementById('paymentMethod');
+            
             renewalField.classList.add('hidden');
             amountFields.classList.remove('hidden');
-            // Always show amount and payment method fields for both redemption and forfeit
             amountFieldWrapper.classList.remove('hidden');
             paymentMethodField.classList.remove('hidden');
+            
             if (e.target.value === 'redemption') {
                 amountInput.required = true;
                 paymentMethodInput.required = true;
-                amountInput.placeholder = 'Enter redemption amount';
+                amountInput.placeholder = 'Must equal Principal + Interest';
+                amountInput.readOnly = false;
             } else if (e.target.value === 'forfeit') {
-                amountInput.required = false;
+                amountInput.required = true;
                 paymentMethodInput.required = false;
-                amountInput.placeholder = '0.00';
+                amountInput.placeholder = 'Must be 0';
+                amountInput.value = '0';
+                amountInput.readOnly = true;
             } else {
                 amountInput.required = false;
                 paymentMethodInput.required = false;
                 amountInput.placeholder = '0.00';
+                amountInput.readOnly = false;
             }
+            
+            validateAmount();
         });
 
         // Validation for amount input based on transaction type
@@ -255,27 +262,81 @@
             const type = document.getElementById('transactionType').value;
             const amountInput = document.getElementById('amount');
             const loanId = document.getElementById('loanId').value;
+            const customerId = document.getElementById('customerId').value;
             const errorDiv = document.getElementById('amountError');
-            if (!loanId || !type) {
-                amountInput.setCustomValidity("");
-                if (errorDiv) errorDiv.innerText = "";
-                return;
+            const formError = document.getElementById('formError');
+            
+            // Clear previous errors
+            amountInput.setCustomValidity("");
+            if (errorDiv) errorDiv.innerText = "";
+            if (formError) formError.innerText = "";
+            
+            // Check if customer and loan are selected
+            if (!customerId) {
+                if (formError) formError.innerText = "Please select a customer first.";
+                return false;
             }
-            fetch('/Transaction/ValidateAmount?loanId=' + loanId + '&transactionType=' + type + '&amount=' + amountInput.value)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.isValid) {
-                        amountInput.setCustomValidity("");
-                        if (errorDiv) errorDiv.innerText = "";
-                    } else {
-                        amountInput.setCustomValidity("Invalid amount for the selected transaction type.");
-                        if (errorDiv) errorDiv.innerText = "Invalid amount for the selected transaction type.";
-                    }
-                    amountInput.reportValidity();
-                });
+            
+            if (!loanId) {
+                if (formError) formError.innerText = "Please select a loan first.";
+                return false;
+            }
+            
+            if (!type) {
+                if (formError) formError.innerText = "Please select a transaction type first.";
+                return false;
+            }
+            
+            const amount = parseFloat(amountInput.value) || 0;
+            
+            if (type === 'forfeit') {
+                if (amount !== 0) {
+                    const message = "For forfeit transactions, amount must be 0.";
+                    amountInput.setCustomValidity(message);
+                    if (errorDiv) errorDiv.innerText = message;
+                    return false;
+                }
+            } else if (type === 'redemption' && currentLoanDetails) {
+                const expectedAmount = currentLoanDetails.paymentWithInterest;
+                if (Math.abs(amount - expectedAmount) > 0.01) {
+                    const message = `For redemption, amount must equal Principal + Interest (₱${expectedAmount.toFixed(2)}).`;
+                    amountInput.setCustomValidity(message);
+                    if (errorDiv) errorDiv.innerText = message;
+                    return false;
+                }
+            }
+            
+            return true;
         }
+        
+        // Add form submission validation
+        document.getElementById('transactionForm').addEventListener('submit', function(e) {
+            const customerId = document.getElementById('customerId').value;
+            const loanId = document.getElementById('loanId').value;
+            const type = document.getElementById('transactionType').value;
+            const formError = document.getElementById('formError');
+            
+            if (!customerId || !loanId) {
+                e.preventDefault();
+                if (formError) formError.innerText = "Please select both a customer and a loan before creating the transaction.";
+                return false;
+            }
+            
+            if (!type) {
+                e.preventDefault();
+                if (formError) formError.innerText = "Please select a transaction type.";
+                return false;
+            }
+            
+            if (!validateAmount()) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
         document.getElementById('amount').addEventListener('input', validateAmount);
         document.getElementById('transactionType').addEventListener('change', validateAmount);
         document.getElementById('loanId').addEventListener('change', validateAmount);
+        document.getElementById('customerId').addEventListener('change', validateAmount);
     </script>
 }
