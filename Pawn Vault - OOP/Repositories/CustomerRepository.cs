@@ -35,12 +35,41 @@ namespace Pawn_Vault___OOP.Repositories
                 .ToListAsync();
         }
 
+        public List<Customer> GetAllCustomers()
+        {
+            return GetAllCustomersAsync().Result;
+        }
+
         public async Task SoftDeleteCustomerAsync(int customerId)
         {
-            var customer = await _context.Customers.FindAsync(customerId);
+            var customer = await _context.Customers.Include(c => c.Loans).ThenInclude(l => l.Payments).FirstOrDefaultAsync(c => c.CustomerID == customerId);
             if (customer != null && !customer.IsDeleted)
             {
                 customer.IsDeleted = true;
+                _context.Entry(customer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+                // Soft delete all loans and their payments
+                foreach (var loan in customer.Loans)
+                {
+                    loan.IsDeleted = true;
+                    _context.Entry(loan).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+                    // Soft delete all payments for this loan
+                    foreach (var pay in loan.Payments)
+                    {
+                        pay.IsDeleted = true;
+                        _context.Entry(pay).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    }
+
+                    // Soft delete all related inventory items
+                    var relatedItems = _context.InventoryItems.Where(i => i.LoanID == loan.LoanID);
+                    foreach (var item in relatedItems)
+                    {
+                        item.IsDeleted = true;
+                        _context.Entry(item).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    }
+                }
+
                 await _context.SaveChangesAsync();
             }
         }
@@ -51,4 +80,4 @@ namespace Pawn_Vault___OOP.Repositories
             await _context.SaveChangesAsync();
         }
     }
-} 
+}

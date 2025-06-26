@@ -4,20 +4,21 @@ using Pawn_Vault___OOP.Interfaces;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Pawn_Vault___OOP.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
-        private const int PageSize = 15;
+        private const int PageSize = 10;
 
         public CustomerController(ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
         }
 
-        public async Task<IActionResult> Index(string search = "", string sort = "az", int page = 1)
+        public async Task<IActionResult> Index(string search = "", string sort = "az", string status = "", int page = 1)
         {
             var customers = await _customerRepository.GetAllCustomersAsync();
 
@@ -34,10 +35,31 @@ namespace Pawn_Vault___OOP.Controllers
                 ).ToList();
             }
 
+            // Status Filter
+            if (!string.IsNullOrEmpty(status))
+            {
+                if (status == "Active")
+                    customers = customers.Where(c => c.Loans.Any(l => l.Status == "Active")).ToList();
+                else if (status == "Inactive")
+                    customers = customers.Where(c => c.Loans.Any() && !c.Loans.Any(l => l.Status == "Active")).ToList();
+                else if (status == "NoLoans")
+                    customers = customers.Where(c => !c.Loans.Any()).ToList();
+            }
+
             // Sort
             customers = sort == "za"
                 ? customers.OrderByDescending(c => c.CustomerFN).ThenByDescending(c => c.CustomerLN).ToList()
-                : customers.OrderBy(c => c.CustomerFN).ThenBy(c => c.CustomerLN).ToList();
+                : sort == "date_desc"
+                    ? customers.OrderByDescending(c => c.DateAdded).ToList()
+                    : sort == "date_asc"
+                        ? customers.OrderBy(c => c.DateAdded).ToList()
+                        : customers.OrderBy(c => c.CustomerFN).ThenBy(c => c.CustomerLN).ToList();
+
+            // Remove soft-deleted loans from each customer for correct loan count
+            foreach (var c in customers)
+            {
+                c.Loans = c.Loans?.Where(l => !l.IsDeleted).ToList() ?? new List<Loan>();
+            }
 
             // Pagination
             int total = customers.Count;
@@ -46,6 +68,7 @@ namespace Pawn_Vault___OOP.Controllers
 
             ViewBag.Search = search;
             ViewBag.Sort = sort;
+            ViewBag.Status = status;
             ViewBag.Page = page;
             ViewBag.TotalPages = totalPages;
             ViewBag.Total = total;
@@ -84,6 +107,7 @@ namespace Pawn_Vault___OOP.Controllers
         }
 
         // GET: Customer/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var customer = (await _customerRepository.GetAllCustomersAsync()).FirstOrDefault(c => c.CustomerID == id);
@@ -98,6 +122,7 @@ namespace Pawn_Vault___OOP.Controllers
 
         // POST: Customer/DeleteConfirmed/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -112,6 +137,12 @@ namespace Pawn_Vault___OOP.Controllers
             if (customer == null)
             {
                 return NotFound();
+            }
+            // Filter out soft-deleted loans and inventory items
+            customer.Loans = customer.Loans?.Where(l => !l.IsDeleted).ToList() ?? new List<Loan>();
+            foreach (var loan in customer.Loans)
+            {
+                loan.InventoryItems = loan.InventoryItems?.Where(i => !i.IsDeleted).ToList() ?? new List<InventoryItem>();
             }
             return View(customer);
         }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Pawn_Vault___OOP.Areas.Identity.Data;
 using Pawn_Vault___OOP.Data;
 using Pawn_Vault___OOP.Interfaces;
 using Pawn_Vault___OOP.Models;
@@ -30,6 +31,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 var app = builder.Build();
 

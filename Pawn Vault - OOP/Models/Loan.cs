@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Pawn_Vault___OOP.Areas.Identity.Data;
 
 namespace Pawn_Vault___OOP.Models
 {
@@ -40,7 +41,7 @@ namespace Pawn_Vault___OOP.Models
         public string UserId { get; set; } = string.Empty;
         
         // Navigation property to get user details
-        public IdentityUser? User { get; set; } // navigation property, nullable
+        public ApplicationUser? User { get; set; } // navigation property, nullable
 
         // Foreign key to Customer
         [ForeignKey("Customer")]

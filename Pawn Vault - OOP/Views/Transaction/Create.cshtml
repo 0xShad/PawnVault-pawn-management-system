@@ -1,5 +1,10 @@
+@* Add using for models if needed *@
+@using Pawn_Vault___OOP.Models
 @{
     ViewData["Title"] = "Add Transaction";
+    var customers = ViewBag.Customers as List<Customer>;
+    var staffList = ViewBag.StaffList as List<string>; // For handled by
+    var generatedReference = ViewBag.GeneratedReference as string; // For reference number
 }
 
 <div class="p-5">
@@ -12,51 +17,111 @@
 
     <!-- Transaction Form -->
     <div class="bg-white rounded-xl shadow-md p-6">
-        <form id="transactionForm" class="space-y-6">
-            <!-- Loan Selection -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="mb-4">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div class="text-red-600 text-sm font-semibold">@error.ErrorMessage</div>
+                }
+            </div>
+        }
+        <div id="formError" class="text-red-600 text-sm font-semibold mb-2"></div>
+        <form id="transactionForm" asp-action="AddTransaction" asp-controller="Transaction" method="post" class="space-y-6">
+            <!-- Customer and Loan Selection -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="loanId" class="block text-sm font-medium text-gray-700 mb-1">Loan ID</label>
-                    <select id="loanId" name="loanId" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
-                        <option value="">Select a loan</option>
-                        <option value="LOAN-001">LOAN-001 - John Doe (Gold Ring)</option>
-                        <option value="LOAN-002">LOAN-002 - Jane Smith (Diamond Necklace)</option>
-                        <option value="LOAN-003">LOAN-003 - Mike Johnson (Watch)</option>
+                    <label for="customerId" class="block text-sm font-medium text-gray-700 mb-1">Customer *</label>
+                    <select id="customerId" name="customerId" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
+                        <option value="">Select a customer</option>
+                        @if (customers != null)
+                        {
+                            foreach (var customer in customers)
+                            {
+                                <option value="@customer.CustomerID">@customer.FullName</option>
+                            }
+                        }
                     </select>
                 </div>
-
                 <div>
-                    <label for="transactionType" class="block text-sm font-medium text-gray-700 mb-1">Transaction Type</label>
-                    <select id="transactionType" name="transactionType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
+                    <label for="loanId" class="block text-sm font-medium text-gray-700 mb-1">Loan *</label>
+                    <select id="loanId" name="loanId" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
+                        <option value="">Select a loan</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Loan Details Box (hidden by default) -->
+            <div id="loanDetailsBox" class="mb-4 hidden bg-blue-50 border border-blue-300 rounded-lg p-4 shadow">
+                <div class="font-semibold mb-2 text-blue-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" /></svg>
+                    Loan Details
+                </div>
+                <div id="loanDetailsContent"></div>
+            </div>
+
+            <!-- Transaction Details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="transactionType" class="block text-sm font-medium text-gray-700 mb-1">Transaction Type *</label>
+                    <select id="transactionType" name="transactionType" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
                         <option value="">Select type</option>
-                        <option value="payment">Payment</option>
-                        <option value="interest">Interest Payment</option>
                         <option value="redemption">Redemption</option>
                         <option value="forfeit">Forfeit</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Amount and Date -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+            <!-- Amount, Date, Payment Method -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="amountDatePaymentFields">
+                <div id="amountFieldWrapper">
+                    <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount *</label>
                     <div class="relative">
                         <span class="absolute left-3 top-2 text-gray-500">$</span>
-                        <input type="number" id="amount" name="amount" step="0.01" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" placeholder="0.00">
+                        <input type="number" id="amount" name="amount" step="0.01" required class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" placeholder="0.00">
                     </div>
+                    <div id="amountError" class="text-red-600 text-sm font-semibold mt-1"></div>
                 </div>
-
                 <div>
                     <label for="transactionDate" class="block text-sm font-medium text-gray-700 mb-1">Transaction Date</label>
                     <input type="date" id="transactionDate" name="transactionDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                </div>
+                <div id="paymentMethodField">
+                    <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Payment Method *</label>
+                    <select id="paymentMethod" name="paymentMethod" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
+                        <option value="">Select method</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Card">Card</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="GCash">GCash</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Renewal Due Date (hidden by default) -->
+            <div id="renewalDueDateField" class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
+                <div>
+                    <label for="newDueDate" class="block text-sm font-medium text-gray-700 mb-1">New Due Date</label>
+                    <input type="date" id="newDueDate" name="newDueDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]">
+                </div>
+            </div>
+
+            <!-- Handled By, Reference Number -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="handledBy" class="block text-sm font-medium text-gray-700 mb-1">Handled By</label>
+                    <input type="text" id="handledBy" name="handledBy" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B] bg-gray-100" value="@ViewBag.HandledByName" disabled />
+                </div>
+                <div>
+                    <label for="referenceNumber" class="block text-sm font-medium text-gray-700 mb-1">Reference Number</label>
+                    <input type="text" id="referenceNumber" name="referenceNumber" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B] bg-gray-100" value="@generatedReference" placeholder="Auto-generated" readonly>
                 </div>
             </div>
 
             <!-- Notes -->
             <div>
-                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                <textarea id="notes" name="notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" placeholder="Add any additional notes here..."></textarea>
+                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes *</label>
+                <textarea id="notes" name="notes" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002B5B] focus:border-[#002B5B]" placeholder="Add any additional notes here..."></textarea>
             </div>
 
             <!-- Action Buttons -->
@@ -74,44 +139,204 @@
 
 @section Scripts {
     <script>
-        document.getElementById('transactionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = {
-                loanId: document.getElementById('loanId').value,
-                transactionType: document.getElementById('transactionType').value,
-                amount: document.getElementById('amount').value,
-                transactionDate: document.getElementById('transactionDate').value,
-                notes: document.getElementById('notes').value
-            };
-
-            // Here you would typically send this data to your backend
-            console.log('Transaction data:', formData);
-            
-            // For now, just redirect back to transactions list
-            window.location.href = '/Transaction';
-        });
-
-        // Update amount placeholder based on transaction type
-        document.getElementById('transactionType').addEventListener('change', function(e) {
-            const amountInput = document.getElementById('amount');
-            switch(e.target.value) {
-                case 'payment':
-                    amountInput.placeholder = 'Enter payment amount';
-                    break;
-                case 'interest':
-                    amountInput.placeholder = 'Enter interest amount';
-                    break;
-                case 'redemption':
-                    amountInput.placeholder = 'Enter redemption amount';
-                    break;
-                case 'forfeit':
-                    amountInput.placeholder = 'Enter forfeit amount';
-                    break;
-                default:
-                    amountInput.placeholder = '0.00';
+        let loanTypeMap = {};
+        // Dynamically load loans for selected customer
+        document.getElementById('customerId').addEventListener('change', function() {
+            var customerId = this.value;
+            var loanSelect = document.getElementById('loanId');
+            loanSelect.innerHTML = '<option value="">Loading...</option>';
+            document.getElementById('loanDetailsBox').classList.add('hidden');
+            if (customerId) {
+                fetch('/Transaction/GetLoansByCustomer?customerId=' + customerId)
+                    .then(response => response.json())
+                    .then(data => {
+                        loanSelect.innerHTML = '<option value="">Select a loan</option>';
+                        loanTypeMap = {};
+                        data.forEach(function(loan) {
+                            loanSelect.innerHTML += `<option value="${loan.loanId}">${loan.display}</option>`;
+                            loanTypeMap[loan.loanId] = loan.allowedTypes;
+                        });
+                    })
+                    .catch(() => {
+                        loanSelect.innerHTML = '<option value="">No loans found</option>';
+                    });
+            } else {
+                loanSelect.innerHTML = '<option value="">Select a loan</option>';
             }
         });
+
+        // Filter transaction type dropdown based on allowedTypes
+        function filterTransactionTypes() {
+            var loanId = document.getElementById('loanId').value;
+            var typeSelect = document.getElementById('transactionType');
+            var allowed = loanTypeMap[loanId];
+            if (!allowed) {
+                // Show all
+                Array.from(typeSelect.options).forEach(opt => opt.hidden = false);
+                return;
+            }
+            Array.from(typeSelect.options).forEach(opt => {
+                if (opt.value === "") return;
+                opt.hidden = !allowed.includes(opt.value);
+            });
+            // If current value is not allowed, reset
+            if (!allowed.includes(typeSelect.value)) {
+                typeSelect.value = "";
+            }
+        }
+        document.getElementById('loanId').addEventListener('change', filterTransactionTypes);
+
+        // Show loan details when a loan is selected
+        let currentLoanDetails = null;
+        document.getElementById('loanId').addEventListener('change', function() {
+            var loanId = this.value;
+            var box = document.getElementById('loanDetailsBox');
+            var content = document.getElementById('loanDetailsContent');
+            if (!loanId) {
+                box.classList.add('hidden');
+                content.innerHTML = '';
+                currentLoanDetails = null;
+                return;
+            }
+            fetch('/Transaction/GetLoanDetails?loanId=' + loanId)
+                .then(response => response.json())
+                .then(data => {
+                    currentLoanDetails = data;
+                    let html = `<div class='grid grid-cols-1 md:grid-cols-2 gap-2'>`;
+                    html += `<div><span class='font-semibold text-blue-800'>Item:</span> <span class='text-gray-800'>${data.itemName}</span></div>`;
+                    html += `<div><span class='font-semibold text-blue-800'>Due Date:</span> <span class='text-gray-800'>${data.dueDate}</span></div>`;
+                    html += `<div><span class='font-semibold text-blue-800'>Principal Amount:</span> <span class='text-gray-800'>₱${data.amount.toFixed(2)}</span></div>`;
+                    html += `<div><span class='font-semibold text-blue-800'>Interest Rate:</span> <span class='text-gray-800'>${data.interestRate}%</span></div>`;
+                    html += `<div class='md:col-span-2'><span class='font-semibold text-blue-800'>Payment (without interest):</span> <span class='text-gray-800'>₱${data.paymentWithoutInterest.toFixed(2)}</span></div>`;
+                    html += `<div class='md:col-span-2'><span class='font-semibold text-blue-800'>Total Payment (with interest):</span> <span class='text-blue-900 font-bold'>₱${data.paymentWithInterest.toFixed(2)}</span></div>`;
+                    content.innerHTML = html;
+                    box.classList.remove('hidden');
+                });
+        });
+
+        // Generate a random reference number on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            var refInput = document.getElementById('referenceNumber');
+            if (refInput && !refInput.value) {
+                refInput.value = 'REF-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            }
+        });
+
+        // Update fields based on transaction type
+        document.getElementById('transactionType').addEventListener('change', function(e) {
+            const amountFields = document.getElementById('amountDatePaymentFields');
+            const renewalField = document.getElementById('renewalDueDateField');
+            const amountFieldWrapper = document.getElementById('amountFieldWrapper');
+            const paymentMethodField = document.getElementById('paymentMethodField');
+            const amountInput = document.getElementById('amount');
+            const paymentMethodInput = document.getElementById('paymentMethod');
+            
+            renewalField.classList.add('hidden');
+            amountFields.classList.remove('hidden');
+            amountFieldWrapper.classList.remove('hidden');
+            paymentMethodField.classList.remove('hidden');
+            
+            if (e.target.value === 'redemption') {
+                amountInput.required = true;
+                paymentMethodInput.required = true;
+                amountInput.placeholder = 'Must equal Principal + Interest';
+                amountInput.readOnly = false;
+            } else if (e.target.value === 'forfeit') {
+                amountInput.required = true;
+                paymentMethodInput.required = false;
+                amountInput.placeholder = 'Must be 0';
+                amountInput.value = '0';
+                amountInput.readOnly = true;
+            } else {
+                amountInput.required = false;
+                paymentMethodInput.required = false;
+                amountInput.placeholder = '0.00';
+                amountInput.readOnly = false;
+            }
+            
+            validateAmount();
+        });
+
+        // Validation for amount input based on transaction type
+        function validateAmount() {
+            const type = document.getElementById('transactionType').value;
+            const amountInput = document.getElementById('amount');
+            const loanId = document.getElementById('loanId').value;
+            const customerId = document.getElementById('customerId').value;
+            const errorDiv = document.getElementById('amountError');
+            const formError = document.getElementById('formError');
+            
+            // Clear previous errors
+            amountInput.setCustomValidity("");
+            if (errorDiv) errorDiv.innerText = "";
+            if (formError) formError.innerText = "";
+            
+            // Check if customer and loan are selected
+            if (!customerId) {
+                if (formError) formError.innerText = "Please select a customer first.";
+                return false;
+            }
+            
+            if (!loanId) {
+                if (formError) formError.innerText = "Please select a loan first.";
+                return false;
+            }
+            
+            if (!type) {
+                if (formError) formError.innerText = "Please select a transaction type first.";
+                return false;
+            }
+            
+            const amount = parseFloat(amountInput.value) || 0;
+            
+            if (type === 'forfeit') {
+                if (amount !== 0) {
+                    const message = "For forfeit transactions, amount must be 0.";
+                    amountInput.setCustomValidity(message);
+                    if (errorDiv) errorDiv.innerText = message;
+                    return false;
+                }
+            } else if (type === 'redemption' && currentLoanDetails) {
+                const expectedAmount = currentLoanDetails.paymentWithInterest;
+                if (Math.abs(amount - expectedAmount) > 0.01) {
+                    const message = `For redemption, amount must equal Principal + Interest (₱${expectedAmount.toFixed(2)}).`;
+                    amountInput.setCustomValidity(message);
+                    if (errorDiv) errorDiv.innerText = message;
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Add form submission validation
+        document.getElementById('transactionForm').addEventListener('submit', function(e) {
+            const customerId = document.getElementById('customerId').value;
+            const loanId = document.getElementById('loanId').value;
+            const type = document.getElementById('transactionType').value;
+            const formError = document.getElementById('formError');
+            
+            if (!customerId || !loanId) {
+                e.preventDefault();
+                if (formError) formError.innerText = "Please select both a customer and a loan before creating the transaction.";
+                return false;
+            }
+            
+            if (!type) {
+                e.preventDefault();
+                if (formError) formError.innerText = "Please select a transaction type.";
+                return false;
+            }
+            
+            if (!validateAmount()) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        document.getElementById('amount').addEventListener('input', validateAmount);
+        document.getElementById('transactionType').addEventListener('change', validateAmount);
+        document.getElementById('loanId').addEventListener('change', validateAmount);
+        document.getElementById('customerId').addEventListener('change', validateAmount);
     </script>
-} 
+}

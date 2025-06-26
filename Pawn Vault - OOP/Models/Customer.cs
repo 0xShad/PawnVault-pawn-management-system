@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Pawn_Vault___OOP.Models
 {
@@ -33,5 +35,22 @@ namespace Pawn_Vault___OOP.Models
         
         // Computed property for full name
         public string FullName => $"{CustomerFN} {CustomerLN}".Trim();
+
+        [NotMapped]
+        public string Status
+        {
+            get
+            {
+                if (Loans == null || !Loans.Any())
+                    return "No Loans";
+                if (Loans.Any(l => l.Status == "Overdue" || l.Status == "Forfeited"))
+                    return "Delinquent";
+                if (Loans.Any(l => l.Status == "Active"))
+                    return "Active";
+                if (Loans.All(l => l.Status == "Paid" || l.Status == "Redeemed"))
+                    return "Cleared";
+                return "Inactive";
+            }
+        }
     }
 }

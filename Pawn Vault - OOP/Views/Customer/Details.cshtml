@@ -30,7 +30,7 @@
             </div>
             <div>
                 <span class="block text-gray-800 font-semibold">Date Added:</span>
-                <span class="text-gray-900">@Model.DateAdded.ToString("yyyy-MM-dd")</span>
+                <span class="text-gray-900">@Model.DateAdded.ToString("MMMM dd, yyyy")</span>
             </div>
         </div>
         <div class="mb-8">
@@ -53,27 +53,45 @@
                             </div>
                             <div>
                                 <span class="font-semibold text-gray-800">Transactions:</span>
-                                @if (loan.Payments != null && loan.Payments.Any())
+                                @{
+                                    var paymentsList = new List<Pawn_Vault___OOP.Models.Payment>();
+                                    if (loan.Payments != null)
+                                    {
+                                        foreach (var p in loan.Payments)
+                                        {
+                                            paymentsList.Add((Pawn_Vault___OOP.Models.Payment)p);
+                                        }
+                                        paymentsList = paymentsList.OrderByDescending(p => p.PaymentDate).ToList();
+                                    }
+                                    var lastBalance = paymentsList.FirstOrDefault()?.Balance ?? 0;
+                                }
+                                @if (paymentsList.Any())
                                 {
                                     <table class="min-w-full mt-2 text-sm">
                                         <thead>
                                             <tr>
                                                 <th class="px-2 py-1 text-left text-gray-500">Date</th>
+                                                <th class="px-2 py-1 text-left text-gray-500">Type</th>
                                                 <th class="px-2 py-1 text-left text-gray-500">Amount</th>
                                                 <th class="px-2 py-1 text-left text-gray-500">Balance</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var payment in loan.Payments.OrderByDescending(p => p.PaymentDate))
+                                            @foreach (var payment in paymentsList)
                                             {
                                                 <tr>
                                                     <td class="px-2 py-1">@payment.PaymentDate.ToString("yyyy-MM-dd")</td>
+                                                    <td class="px-2 py-1">@payment.TransactionType</td>
                                                     <td class="px-2 py-1">₱@payment.Amount.ToString("N2")</td>
                                                     <td class="px-2 py-1">₱@payment.Balance.ToString("N2")</td>
                                                 </tr>
                                             }
                                         </tbody>
                                     </table>
+                                    if (lastBalance > 0)
+                                    {
+                                        <div class="mt-2 text-red-600 font-semibold">Balance left to be paid: ₱@lastBalance.ToString("N2")</div>
+                                    }
                                 }
                                 else
                                 {
@@ -94,4 +112,4 @@
             <a asp-action="Edit" asp-route-id="@Model.CustomerID" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-8 rounded-lg shadow transition">Edit</a>
         </div>
     </div>
-</div> 
+</div>

@@ -48,14 +48,33 @@ namespace Pawn_Vault___OOP.Repositories
 
         public async Task DeleteLoanAsync(int id)
         {
-            var loan = await _context.Loans.FindAsync(id);
+            var loan = await _context.Loans.Include(l => l.Payments).FirstOrDefaultAsync(l => l.LoanID == id);
             if (loan != null)
             {
                 loan.IsDeleted = true;
                 _context.Entry(loan).State = EntityState.Modified;
+                // Soft delete all related payments
+                foreach (var payment in loan.Payments)
+                {
+                    payment.IsDeleted = true;
+                    _context.Entry(payment).State = EntityState.Modified;
+                }
+                // Soft delete all related inventory items
+                var relatedItems = _context.InventoryItems.Where(i => i.LoanID == loan.LoanID);
+                foreach (var item in relatedItems)
+                {
+                    item.IsDeleted = true;
+                    _context.Entry(item).State = EntityState.Modified;
+                }
                 await _context.SaveChangesAsync();
             }
         }
 
+        public List<Loan> GetLoansByCustomerId(int customerId)
+        {
+            return _context.Loans
+                .Where(l => l.CustomerID == customerId && !l.IsDeleted)
+                .ToList();
+        }
     }
 }

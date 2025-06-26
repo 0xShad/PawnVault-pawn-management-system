@@ -45,16 +45,21 @@
         <div>
             <label class="block text-xs text-gray-500 mb-1" for="sort">Sort</label>
             <select name="sort" id="sort" class="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
-                @if (sort == "az")
-                {
-                    <option value="az" selected>A - Z</option>
-                    <option value="za">Z - A</option>
+                <option value="az" selected="@(sort == "az" ? "selected" : null)">A - Z</option>
+                <option value="za" selected="@(sort == "za" ? "selected" : null)">Z - A</option>
+                <option value="date_desc" selected="@(sort == "date_desc" ? "selected" : null)">Newest</option>
+                <option value="date_asc" selected="@(sort == "date_asc" ? "selected" : null)">Oldest</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-xs text-gray-500 mb-1" for="status">Status</label>
+            <select name="status" id="status" class="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                @{
+                    var statusVal = (ViewBag.Status as string ?? "");
                 }
-                else
-                {
-                    <option value="az">A - Z</option>
-                    <option value="za" selected>Z - A</option>
-                }
+                <option value="" selected="@(string.IsNullOrEmpty(statusVal) ? "selected" : null)">All Status</option>
+                <option value="Active" selected="@(statusVal == "Active" ? "selected" : null)">Active</option>
+                <option value="NoLoans" selected="@(statusVal == "NoLoans" ? "selected" : null)">No Loans</option>
             </select>
         </div>
     </form>
@@ -87,11 +92,11 @@
                             <td class="px-4 py-3">@customer.TelephoneNo</td>
                             <td class="px-4 py-3">
                                 <span class="inline-block px-2 py-1 text-xs rounded-full
-                                    @((customer.Loans.Any(l => l.Status == "Active")) ? "bg-green-100 text-green-700" : (customer.Loans.Any() ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700"))">
-                                    @(customer.Loans.Any(l => l.Status == "Active") ? "Active" : (customer.Loans.Any() ? "Inactive" : "No Loans"))
+                                    @(customer.Status == "Active" ? "bg-green-100 text-green-700" : customer.Status == "Delinquent" ? "bg-red-100 text-red-700" : customer.Status == "Cleared" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700")">
+                                    @customer.Status
                                 </span>
                             </td>
-                            <td class="px-4 py-3">@customer.DateAdded.ToString("yyyy-MM-dd")</td>
+                            <td class="px-4 py-3">@customer.DateAdded.ToString("MMMM dd, yyyy")</td>
                             <td class="px-4 py-3">@customer.Loans.Count</td>
                             <td class="px-4 py-3 text-center relative">
                                 <button class="text-gray-700 hover:text-gray-900 focus:outline-none" onclick="toggleMenu('menu-@customer.CustomerID')">
@@ -185,8 +190,11 @@
                 }, 700); // 700ms debounce
             });
         }
-        // Auto-submit on sort change
+        // Auto-submit on sort and status change
         document.getElementById('sort').addEventListener('change', function() {
+            document.getElementById('customerSearchForm').submit();
+        });
+        document.getElementById('status').addEventListener('change', function() {
             document.getElementById('customerSearchForm').submit();
         });
     </script>
