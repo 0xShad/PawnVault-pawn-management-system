@@ -1,4 +1,6 @@
 ﻿using Pawn_Vault___OOP.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pawn_Vault___OOP.Interfaces
 {
@@ -10,5 +12,6 @@ namespace Pawn_Vault___OOP.Interfaces
         Task<Loan> AddLoanAsync(Loan loan); // method pag magdadagdag ng loan
         Task<Loan> UpdateLoanAsync(Loan loan); // method pag maguupdate ng existing loan
         Task DeleteLoanAsync(int id); // method pag magdedelete ng loan
+        List<Loan> GetLoansByCustomerId(int customerId);
     }
 }

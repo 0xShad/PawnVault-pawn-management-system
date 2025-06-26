@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Pawn_Vault___OOP.Areas.Identity.Data;
 using Pawn_Vault___OOP.Data;
 using Pawn_Vault___OOP.Interfaces;
 using Pawn_Vault___OOP.Models;
@@ -15,7 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     ));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -28,6 +29,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 var app = builder.Build();
 
@@ -80,30 +83,6 @@ using (var scope = app.Services.CreateScope())
         });
         db.SaveChanges();
     }
-    if (!db.Employees.Any())
-    {
-        db.Employees.AddRange( // adding employees pero di pa maayos na actions
-            new Employee
-            {
-                EmpFN = "Juan",
-                EmpLN = "Dela Cruz",
-                Role = "Employee",
-                Status = "Active",
-                Username = "juandelacruz",
-                Password = "admin123" 
-            },
-            new Employee
-            {
-                EmpFN = "Ana",
-                EmpLN = "Santos",
-                Role = "Employee",
-                Status = "Active",
-                Username = "anasantos",
-                Password = "employee123"
-            }
-        );
-        db.SaveChanges();
-    }
 }
 
 
@@ -129,22 +108,30 @@ async Task SeedRolesAsync(WebApplication app)
 
     using (var scope = app.Services.CreateScope())
     {
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         string email = "admin@pawnvault.com";
         string password = "#Admin123";
 
-        if(await userManager.FindByEmailAsync(email) == null)
+        var user = await userManager.FindByEmailAsync(email);
+        if (user == null)
         {
-            var user = new IdentityUser();
-            user.UserName = email;
-            user.Email = email;
-
+            user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                FirstName = "Shadrack",
+                LastName = "Castro"
+            };
             await userManager.CreateAsync(user, password);
-
             await userManager.AddToRoleAsync(user, "Admin");
         }
-
-      
+        else
+        {
+            // Ensure FirstName/LastName are set for existing user
+            user.FirstName = "Shadrack";
+            user.LastName = "Castro";
+            await userManager.UpdateAsync(user);
+        }
     }
       
 }

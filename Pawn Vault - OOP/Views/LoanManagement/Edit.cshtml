@@ -1,101 +1,118 @@
-@* Loan Edit Page *@
-<div class="h-screen">
-    <div class="flex items-center justify-between mt-8 mb-6 px-6 py-4">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">Edit Loan</h1>
-            <p class="text-gray-500">Update loan details and payment information</p>
+@model Pawn_Vault___OOP.Models.Loan
+@using Pawn_Vault___OOP.Models
+
+@* Tailwind CSS CDN for standalone page (remove if already included globally) *@
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    body { font-family: 'Inter', sans-serif; background-color: #f4f5f7; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem 2rem; }
+    .info-item p { margin-bottom: 0.25rem; }
+</style>
+
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 sm:p-8 lg:p-10 mt-8">
+    @using (Html.BeginForm("Edit", "LoanManagement", new { id = Model.LoanID }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.LoanID)
+        @Html.HiddenFor(m => m.UserId)
+        @Html.HiddenFor(m => m.TransactionCode)
+        @Html.HiddenFor(m => m.Status)
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b pb-4">
+            <h1 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4 sm:mb-0">Edit Loan</h1>
+            <button type="button" onclick="window.location.href='/LoanManagement'" class="flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Loans
+            </button>
         </div>
-        <a href="/LoanManagement" class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2 rounded-lg text-sm font-semibold shadow transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Loans
-        </a>
-    </div>
 
-    <div class="bg-white rounded-2xl shadow p-8 max-w-3xl mx-auto">
-        <form method="post" action="/LoanManagement/Edit">
-            <input type="hidden" name="LoanId" value="L001" />
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Customer Information -->
-                <div class="space-y-4">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Customer Information</h2>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
-                        <input type="text" name="CustomerName" value="John Doe" 
-                               class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
-                        <input type="tel" name="ContactNumber" value="(555) 123-4567" 
-                               class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                    </div>
+        <!-- Loan Information Section -->
+        <div class="mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Loan Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <p class="text-gray-500 text-sm">Loan ID</p>
+                    <p class="text-gray-900 font-medium">@Model.LoanID</p>
                 </div>
-
-                <!-- Loan Details -->
-                <div class="space-y-4">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Loan Details</h2>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Item Description</label>
-                        <input type="text" name="ItemDescription" value="Gold Ring - 14k" 
-                               class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Loan Amount</label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-2 text-gray-500">$</span>
-                            <input type="number" name="LoanAmount" value="500" step="0.01" 
-                                   class="w-full border border-gray-300 rounded-lg py-2 pl-8 pr-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                        </div>
-                    </div>
+                <div class="info-item">
+                    <p class="text-gray-500 text-sm">Status</p>
+                    <p class="text-gray-900 font-medium">@Model.Status</p>
                 </div>
-
-                <!-- Payment Information -->
-                <div class="space-y-4 md:col-span-2">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Payment Information</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Interest Rate (%)</label>
-                            <input type="number" name="InterestRate" value="5.5" step="0.1" 
-                                   class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
-                            <input type="date" name="DueDate" value="2024-06-15" 
-                                   class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900" />
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                            <select name="Status" 
-                                    class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900">
-                                <option value="Active" selected>Active</option>
-                                <option value="Overdue">Overdue</option>
-                                <option value="Paid">Paid</option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="info-item">
+                    <label asp-for="Amount" class="text-gray-500 text-sm">Amount</label>
+                    @Html.TextBoxFor(m => m.Amount, new { type = "number", step = "0.01", @class = "text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4" })
+                    @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-red-500 text-sm" })
+                </div>
+                <div class="info-item">
+                    <label asp-for="InterestRate" class="text-gray-500 text-sm">Interest Rate</label>
+                    @Html.TextBoxFor(m => m.InterestRate, new { type = "number", step = "0.01", @class = "text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4" })
+                    @Html.ValidationMessageFor(m => m.InterestRate, "", new { @class = "text-red-500 text-sm" })
+                </div>
+                <div class="info-item">
+                    <label asp-for="IssuedDate" class="text-gray-500 text-sm">Date Created</label>
+                    @Html.HiddenFor(m => m.IssuedDate)
+                    <input type="text" value="@Model.IssuedDate.ToString("MMMM dd, yyyy")" class="text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-100" readonly />
+                    @Html.ValidationMessageFor(m => m.IssuedDate, "", new { @class = "text-red-500 text-sm" })
+                </div>
+                <div class="info-item">
+                    <label asp-for="DueDate" class="text-gray-500 text-sm">Due Date</label>
+                    @Html.TextBoxFor(m => m.DueDate, new { type = "date", @class = "text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4" })
+                    @Html.ValidationMessageFor(m => m.DueDate, "", new { @class = "text-red-500 text-sm" })
                 </div>
             </div>
+        </div>
 
-            <!-- Action Buttons -->
-            <div class="flex justify-end gap-4 mt-8">
-                <button type="button" onclick="window.location.href='/LoanManagement'" 
-                        class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2">
-                    Cancel
-                </button>
-                <button type="submit" 
-                        class="px-6 py-2 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2">
-                    Save Changes
-                </button>
+        <!-- Customer Information Section -->
+        <div class="mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Customer Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label asp-for="CustomerID" class="text-gray-500 text-sm">Customer</label>
+                    @Html.HiddenFor(m => m.CustomerID)
+                    @Html.DropDownListFor(m => m.CustomerID, (SelectList)ViewBag.Customers, "-- Select Customer --", new { @class = "text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-100", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.CustomerID, "", new { @class = "text-red-500 text-sm" })
+                </div>
             </div>
-        </form>
-    </div>
-</div> 
+        </div>
+
+        <!-- Item Information Section -->
+        <div class="mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Item Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label asp-for="ItemName" class="text-gray-500 text-sm">Item Name</label>
+                    @Html.TextBoxFor(m => m.ItemName, new { @class = "text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4" })
+                    @Html.ValidationMessageFor(m => m.ItemName, "", new { @class = "text-red-500 text-sm" })
+                </div>
+                <div class="info-item">
+                    <label asp-for="Description" class="text-gray-500 text-sm">Description</label>
+                    @Html.TextBoxFor(m => m.Description, new { @class = "text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4" })
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-red-500 text-sm" })
+                </div>
+                <div class="info-item">
+                    <label asp-for="Category" class="text-gray-500 text-sm">Category</label>
+                    @Html.DropDownListFor(m => m.Category, new SelectList(new[] { "Watch", "Jewelry", "Electronics", "Gold", "Other" }, Model.Category), "-- Select Category --", new { @class = "text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4" })
+                    @Html.ValidationMessageFor(m => m.Category, "", new { @class = "text-red-500 text-sm" })
+                </div>
+                <div class="info-item">
+                    <label asp-for="Condition" class="text-gray-500 text-sm">Condition</label>
+                    @Html.DropDownListFor(m => m.Condition, new SelectList(new[] { "Excellent", "Good", "Fair", "Poor" }, Model.Condition), "-- Select Condition --", new { @class = "text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4" })
+                    @Html.ValidationMessageFor(m => m.Condition, "", new { @class = "text-red-500 text-sm" })
+                </div>
+                <div class="info-item">
+                    <label asp-for="EstimatedValue" class="text-gray-500 text-sm">Estimated Value</label>
+                    @Html.TextBoxFor(m => m.EstimatedValue, new { type = "number", step = "0.01", @class = "text-gray-900 font-medium w-full border border-gray-300 rounded-lg py-2 px-4" })
+                    @Html.ValidationMessageFor(m => m.EstimatedValue, "", new { @class = "text-red-500 text-sm" })
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-4 pt-6 border-t">
+            <button type="submit" class="flex items-center bg-black hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out shadow-md">
+                Save Changes
+            </button>
+        </div>
+    }
+</div>
