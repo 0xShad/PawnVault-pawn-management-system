@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Pawn_Vault___OOP.Controllers
 {
+    [Authorize]
     public class TransactionController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
