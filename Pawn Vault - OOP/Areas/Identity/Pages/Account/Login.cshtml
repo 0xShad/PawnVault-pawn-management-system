@@ -87,38 +87,6 @@
             <button type="submit" class="w-full py-3 bg-black text-white rounded-md font-semibold text-base hover:bg-gray-900 transition">
                 Login Now
             </button>
-
-            <div class="mt-6 text-sm text-gray-700 text-left">
-                Forget password?
-                <a asp-page="/Account/ForgotPassword" class="underline font-medium cursor-pointer">Click here</a>
-            </div>
-        </form>
-
-        <!-- Forgot Password Form (initially hidden) -->
-        <form id="forgot-password-panel" method="post" class="space-y-5" style="display:none;">
-            <div>
-                <input name="Email" class="w-full px-3 py-2 border-b border-gray-400 focus:border-black focus:outline-none bg-transparent text-base" placeholder="Enter your email" autocomplete="username" aria-required="true" />
-            </div>
-            <button type="submit" class="w-full py-3 bg-blue-700 text-white rounded-md font-semibold text-base hover:bg-blue-800 transition">
-                Send Reset Link
-            </button>
-            <div class="mt-6 text-sm text-gray-700 text-left">
-                Remembered your password?
-                <a href="#" id="show-login" class="underline font-medium cursor-pointer">Back to login</a>
-            </div>
         </form>
     </div>
 </div>
-
-<script>
-    document.getElementById('show-forgot').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('login-panel').style.display = 'none';
-        document.getElementById('forgot-password-panel').style.display = 'block';
-    });
-    document.getElementById('show-login').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('forgot-password-panel').style.display = 'none';
-        document.getElementById('login-panel').style.display = 'block';
-    });
-</script>
