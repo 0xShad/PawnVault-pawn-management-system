@@ -133,10 +133,15 @@ namespace Pawn_Vault___OOP.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(StaffViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateStaffViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid) 
+            {
+                return View(model);
+            }
 
+            // Check if email already exists
             var existingUser = await _userManager.FindByEmailAsync(model.Email);
             if (existingUser != null)
             {
@@ -148,20 +153,28 @@ namespace Pawn_Vault___OOP.Controllers
             {
                 Email = model.Email,
                 UserName = model.Email,
-                FirstName = model.EmpFN ?? "",
-                LastName = model.EmpLN ?? ""
+                FirstName = model.FirstName,
+                LastName = model.LastName
             };
 
-            var createResult = await _userManager.CreateAsync(newUser, model.NewPassword ?? "#Temp123");
+            var createResult = await _userManager.CreateAsync(newUser, model.Password);
             if (!createResult.Succeeded)
             {
                 foreach (var error in createResult.Errors)
+                {
                     ModelState.AddModelError("", error.Description);
+                }
                 return View(model);
             }
 
-            await _userManager.AddToRoleAsync(newUser, "Staff");
+            var roleResult = await _userManager.AddToRoleAsync(newUser, "Staff");
+            if (!roleResult.Succeeded)
+            {
+                ModelState.AddModelError("", "Failed to assign Staff role to user.");
+                return View(model);
+            }
 
+            TempData["SuccessMessage"] = $"Employee {model.FirstName} {model.LastName} has been successfully created.";
             return RedirectToAction("Index");
         }
     }
