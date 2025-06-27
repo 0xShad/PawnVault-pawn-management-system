@@ -85,7 +85,9 @@ async Task SeedRolesAndUsersAsync(WebApplication app)
         var adminUser = new ApplicationUser
         {
             UserName = adminEmail,
-            Email = adminEmail
+            Email = adminEmail,
+            FirstName = "Shadrack",
+            LastName = "Castro"
         };
         await userManager.CreateAsync(adminUser, adminPassword);
         await userManager.AddToRoleAsync(adminUser, "Admin");
